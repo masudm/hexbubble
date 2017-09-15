@@ -13,8 +13,8 @@ The person to create the bubble is also the admin - they control what goes on in
 The project utilises Mongo as a backend and uses Mongoose as a wrapper for the Mongo API.
 
 ### Schema ###
-Users: userId, name, email, bubbles [], dateCreated, picture, bio
-Bubbles: bubbleId, admins [], dateCreated, members[], name, picture, bio
-Posts: postId, bubbleId, userId, post, dateCreated, likes, comments
-Likes: likeId, postId, userId, dateCreated
-Comments: commentId, postId, userId, dateCreated, comment
+* Users: userId, name, email, bubbles [], dateCreated, picture, bio
+* Bubbles: bubbleId, admins [], dateCreated, members[], name, picture, bio
+* Posts: postId, bubbleId, userId, post, dateCreated, likes, comments
+* Likes: likeId, postId, userId, dateCreated
+* Comments: commentId, postId, userId, dateCreated, comment
