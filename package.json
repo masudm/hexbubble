@@ -1,0 +1,20 @@
+{
+  "name": "hexbubble",
+  "version": "1.0.0",
+  "description": "Independently connected social networks.",
+  "main": "app.js",
+  "scripts": {
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://masud_m@bitbucket.org/masud_m/hexbubble.git"
+  },
+  "keywords": [
+    "social",
+    "network"
+  ],
+  "author": "Masud Mohammed",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/masud_m/hexbubble#readme"
+}
