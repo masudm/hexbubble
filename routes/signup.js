@@ -2,6 +2,8 @@ var express = require('express'); //the express web server dependency
 var apiRoutes = express.Router(); //use the router function within express to define the routes
 
 var bodyParser = require('body-parser'); //use the body parser to parse the body request from the client
+var moment = require('moment'); //a library for time and date functions
+var db = require('./db');
 
 //after the base route (in this case, '/signup', go to the next route):
 //full route: /signup/
@@ -21,7 +23,27 @@ apiRoutes.post('/', function(req, res) {
 	let profilePicture = ""; //save this as null for now
 	let bio = req.body.bio;
 
-	console.log(email);
+	var user = {
+		email,
+		password,
+		name,
+		profilePicture,
+		bio,
+		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+	};
+	
+	db.insertData(user, 'users', function(err, results) {
+		if (err) {
+			res.json({
+				success: false
+			});
+			throw err;
+		};
+
+		res.json({
+			success: true
+		});
+	});
 });
 
 module.exports = apiRoutes;

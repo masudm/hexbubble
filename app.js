@@ -14,23 +14,6 @@ app.set('view engine', 'ejs');
 //set the publicly accessible folder (available on the client side)
 app.use(express.static('public'));
 
-//setup a database connection
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'hexbubble'
-});
-
-//connect to the database
-connection.connect();
-
-connection.query('SELECT * FROM users', function(error, results, fields) {
-    console.log(error, results, fields);
-});
-
-connection.end();
-
 //API routes
 //create an instance for routes
 var apiRoutes = express.Router();
