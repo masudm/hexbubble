@@ -23,27 +23,37 @@ apiRoutes.post('/', function(req, res) {
 	let profilePicture = ""; //save this as null for now
 	let bio = req.body.bio;
 
+	//create a new object (or associative array) using property value shorthand
+	//https://github.com/airbnb/javascript#es6-object-concise
 	var user = {
 		email,
 		password,
 		name,
 		profilePicture,
 		bio,
-		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+		//create a new MySQL formatted date using the moment library
+		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss") 
 	};
 	
+	//use the insertData function to insert the user object into the user table
 	db.insertData(user, 'users', function(err, results) {
+		//if there is an error
 		if (err) {
+			//send back a false success message
 			res.json({
 				success: false
 			});
+			//and throw an error so it can be debugged
 			throw err;
 		};
 
+		//otherwise, send back a success true message
 		res.json({
 			success: true
 		});
 	});
 });
 
+//export the apiRoutes variable (which defines all the routes) so it can be used elsewhere
+//i.e. the main app
 module.exports = apiRoutes;

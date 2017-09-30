@@ -14,14 +14,21 @@ apiRoutes.get('/', function(req, res) {
 //full route: /login/
 //post to this route
 apiRoutes.post('/', function(req, res) {
-	email = req.body.email;
-	password = req.body.password;
+	//create block level variables with the POSTed values
+	let email = req.body.email;
+	let password = req.body.password;
+
+	//login with the passed email and password
 	db.login(email, password, function(err, valid) {
+		//it returns a valid boolean if the email and password match a
+		//user in the database.
 		if (valid) {
+			//if it is true, send back a true success token
 			res.json({
 				success: true
 			});
 		} else {
+			//otherwise send back a success false token
 			res.json({
 				success: false
 			});
@@ -29,4 +36,6 @@ apiRoutes.post('/', function(req, res) {
 	});
 });
 
+//export the apiRoutes variable (which defines all the routes) so it can be used elsewhere
+//i.e. the main app
 module.exports = apiRoutes;

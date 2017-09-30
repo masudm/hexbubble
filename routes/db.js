@@ -19,7 +19,9 @@ var pool = mysql.createPool({
 exports.getData = function(columns, table, callback) {
 	//get a new connection from the pool
 	pool.getConnection(function(err, connection) {
+		//if there is an error
 		if (err) {
+			//return the error via the callback to the function that callled it
         	return callback(err);
         }
 	    // Use the connection
@@ -37,13 +39,19 @@ exports.getData = function(columns, table, callback) {
 	});
 }
 
+//an async function to login
+//pass an email, password and a callback function as parameters
 exports.login = function(email, password, callback) {
 	//get a new connection from the pool
 	pool.getConnection(function(err, connection) {
+		//if there is an error
 		if (err) {
+			//return the error via the callback to the function that callled it
         	return callback(err);
         }
 	    // Use the connection
+	    //login by finding users where the email and password match the database.
+	    //use '?' to make sure the query is parameterised to prevent sql injections
 	    connection.query('SELECT * from users WHERE email = ? and password = ?', [email, password], function(error, results, fields) {
 	        //finished with the connection - send it back to the pool
 	        connection.release();
@@ -52,9 +60,12 @@ exports.login = function(email, password, callback) {
 	        	return callback(error);
 	        }
 
+	        //if there is a result (i.e. it found a match to the email and password)
 	        if (results.length == 1) {
+	        	//return true
 	        	return callback(null, true)
 	        } else {
+	        	//otherwise return false
 	        	return callback(null, false)
 	        }
 	        //Don't use the connection here, it has been returned to the pool.
@@ -62,13 +73,19 @@ exports.login = function(email, password, callback) {
 	});
 }
 
+//insert data using a data object into a table
 exports.insertData = function(data, table, callback) {
 	//get a new connection from the pool
 	pool.getConnection(function(err, connection) {
+		//if there is an error
 		if (err) {
+			//return the error via the callback to the function that callled it
         	return callback(err);
         }
 	    // Use the connection
+	    //insert into a table and use the SET MySQL command to easily insert an object of data
+	    //rather than the typical columns...values... SQL command
+	    //this also allows the data to be parsed to prevent SQL injections
 	    connection.query('INSERT INTO '+ table +' SET ?', data, function(error, results, fields) {
 	        //finished with the connection - send it back to the pool
 	        connection.release();
@@ -77,6 +94,7 @@ exports.insertData = function(data, table, callback) {
 	        	return callback(error);
 	        }
 
+	        //return the results of the command
 	        return callback(null, results)
 	        //Don't use the connection here, it has been returned to the pool.
 	    });
