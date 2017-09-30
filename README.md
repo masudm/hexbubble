@@ -18,3 +18,30 @@ The project utilises Mongo as a backend and uses Mongoose as a wrapper for the M
 * Posts: postId, bubbleId, userId, post, dateCreated, likes, comments
 * Likes: likeId, postId, userId, dateCreated
 * Comments: commentId, postId, userId, dateCreated, comment
+
+### MySQL Schema ###
+## Users Table ##
+	CREATE TABLE `hexbubble`.`users` (
+	  `userId` INT NOT NULL AUTO_INCREMENT,
+	  `email` VARCHAR(320) NOT NULL,
+	  `password` CHAR(60) NOT NULL,
+	  `name` TINYTEXT NOT NULL,
+	  `dateCreated` DATETIME NOT NULL,
+	  `profilePicture` VARCHAR(100) NOT NULL,
+	  `bio` TEXT NOT NULL,
+	  PRIMARY KEY (`userId`),
+	  UNIQUE INDEX `userId_UNIQUE` (`userId` ASC),
+	  UNIQUE INDEX `email_UNIQUE` (`email` ASC))
+	ENGINE = InnoDB;
+
+## Bubbles Table ##
+	CREATE TABLE `hexbubble`.`bubbles` (
+	  `bubbleId` INT NOT NULL AUTO_INCREMENT,
+	  `bubbleName` VARCHAR(255) NOT NULL,
+	  `dateCreated` DATETIME NOT NULL,
+	  `bubblePicture` VARCHAR(100) NOT NULL,
+	  `bio` TEXT NOT NULL,
+	  PRIMARY KEY (`bubbleId`),
+	  UNIQUE INDEX `bubbleId_UNIQUE` (`bubbleId` ASC),
+	  UNIQUE INDEX `name_UNIQUE` (`bubbleName` ASC));
+
