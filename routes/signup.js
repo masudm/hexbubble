@@ -36,20 +36,51 @@ apiRoutes.post('/', function(req, res) {
 	};
 	
 	//use the insertData function to insert the user object into the user table
-	db.insertData(user, 'users', function(err, results) {
+	db.insertData(user, 'users', function(err, userResults) {
 		//if there is an error
 		if (err) {
 			//send back a false success message
-			res.json({
+			res.status(200).json({
 				success: false
 			});
 			//and throw an error so it can be debugged
 			throw err;
 		};
 
-		//otherwise, send back a success true message
-		res.json({
-			success: true
+		db.getDataWhere('bubbleId', 'bubbles', 'bubbleName = "' + req.body.bubble + '"', function(err, results) {
+			//if there is an error
+			if (err) {
+				//send back a false success message
+				res.status(200).json({
+					success: false
+				});
+				//and throw an error so it can be debugged
+				throw err;
+			};
+
+			member = {
+				userId: userResults.insertId,
+				bubbleId: results[0].bubbleId,
+				admin: 0, //false
+				dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss") 
+			};
+
+			db.insertData(member, 'members', function(err, results) {
+				//if there is an error
+				if (err) {
+					//send back a false success message
+					res.status(200).json({
+						success: false
+					});
+					//and throw an error so it can be debugged
+					throw err;
+				};
+				
+				//otherwise, send back a success true message
+				res.json({
+					success: true
+				});
+			});			
 		});
 	});
 });

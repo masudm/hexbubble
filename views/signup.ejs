@@ -15,6 +15,8 @@
             <br>
             <input placeholder="Name" id='name'>
             <br>
+            <input placeholder="Bubble" id='bubble'>
+            <br>
             <textarea placeholder="Bio" id='bio'></textarea>
             <div class='button' onclick="signup()">Signup</div>
         </div>
@@ -26,7 +28,8 @@
     	    {
     	        name: $("#name").val(),
     	        email: $("#email").val(),
-    	        password: $("#password").val(),
+                password: $("#password").val(),
+    	        bubble: $("#bubble").val(),
     	        bio: $("#bio").val()
     	    },
     	    function(data, status){

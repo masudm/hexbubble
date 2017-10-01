@@ -22,6 +22,7 @@ var apiRoutes = express.Router();
 //the routes within the base route and what each route does
 app.use('/login', require('./routes/login'));
 app.use('/signup', require('./routes/signup'));
+app.use('/dev', require('./routes/dev'));
 app.use('/', require('./routes/feed'));
 
 //finally, start the server on port 3000 within the local network.

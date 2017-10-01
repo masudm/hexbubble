@@ -39,6 +39,30 @@ exports.getData = function(columns, table, callback) {
 	});
 }
 
+//async function to get data where a specific query is met
+exports.getDataWhere = function(columns, table, where, callback) {
+	//get a new connection from the pool
+	pool.getConnection(function(err, connection) {
+		//if there is an error
+		if (err) {
+			//return the error via the callback to the function that callled it
+        	return callback(err);
+        }
+	    // Use the connection
+	    connection.query('SELECT ' + columns + ' FROM ' + table + ' WHERE ' + where, function(error, results, fields) {
+	        //finished with the connection - send it back to the pool
+	        connection.release();
+	        //Handle error after the release.
+	        if (error) {
+	        	return callback(error);
+	        }
+
+	        return callback(null, results)
+	        //Don't use the connection here, it has been returned to the pool.
+	    });
+	});
+}
+
 //an async function to login
 //pass an email, password and a callback function as parameters
 exports.login = function(email, password, callback) {

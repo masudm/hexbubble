@@ -38,3 +38,14 @@ The project utilises MySQL as a backend.
 	  UNIQUE INDEX `bubbleId_UNIQUE` (`bubbleId` ASC),
 	  UNIQUE INDEX `name_UNIQUE` (`bubbleName` ASC));
 
+## Members Table ##
+	CREATE TABLE `hexbubble`.`members` (
+	  `memberId` INT NOT NULL AUTO_INCREMENT,
+	  `userId` INT NOT NULL,
+	  `bubbleId` INT NOT NULL,
+	  `admin` TINYINT NOT NULL,
+	  `dateCreated` DATETIME NOT NULL,
+	  PRIMARY KEY (`memberId`),
+	  UNIQUE INDEX `memberId_UNIQUE` (`memberId` ASC));
+
+

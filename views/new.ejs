@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href='/style.css' rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+		<div class='container'>
+			<div class='login'>
+				<h1>New Bubble</h1>
+				<input placeholder="Name" id='name'><br>
+				<div class='button' onclick="newBubble()">New</div>
+			</div>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+		<script>
+			function newBubble() {
+				$.post("/dev/new",
+				    {
+				        name: $("#name").val()
+				    },
+				    function(data, status){
+				        if (data.success == true) {
+				        	window.location = '/';
+				        } else {
+				        	alert("Failed.");
+				        }
+				    });
+			}
+		</script>
+	</body>
+</html>
