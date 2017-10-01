@@ -51,7 +51,7 @@ app.use(function (req, res, next) {
 
 //for each base route (such as '/'), provide a route file which defines
 //the routes within the base route and what each route does
-
+app.use('/dev', require('./routes/dev'));
 app.use('/login', require('./routes/login'));
 app.use('/signup', require('./routes/signup'));
 
@@ -64,7 +64,6 @@ app.use(function(req, res, next) {
 	}
 });
 
-app.use('/dev', require('./routes/dev'));
 app.use('/post', require('./routes/post'));
 app.use('/', require('./routes/feed'));
 

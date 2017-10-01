@@ -52,7 +52,7 @@ The project utilises MySQL as a backend.
 	CREATE TABLE `hexbubble`.`posts` (
 	  `postId` INT NOT NULL AUTO_INCREMENT,
 	  `userId` INT NOT NULL,
-	  `bubbleId` INT NOT NULL,w
+	  `bubbleId` INT NOT NULL,
 	  `post` TEXT NOT NULL,
 	  `dateCreated` DATETIME NOT NULL,
 	  PRIMARY KEY (`postId`),
