@@ -23,12 +23,11 @@ var apiRoutes = express.Router();
 app.use(function (req, res, next) {
 	// check header or url parameters or post parameters for token
 	var token = req.body.token || req.query.token || req.headers['x-access-token'];
-	console.log("token: " + token);
 	// decode token
 	if (token) {
-
 		// verifies secret and checks exp
 		jwt.verify(token, 'hexbubblesecret', function (err, decoded) {
+			//if there was an error or an incorrect token...
 			if (err) {
 				return res.json({
 					success: false,
@@ -37,10 +36,12 @@ app.use(function (req, res, next) {
 			} else {
 				// if everything is good, save to request for use in other routes
 				req.decoded = decoded;
+				//go to the next route (route that was requested)
 				next();
 			}
 		});
 	} else {
+		//go to the next route (route that was requested)
 		next();
 	}
 });

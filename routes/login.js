@@ -1,8 +1,7 @@
 var express = require('express'); //the express web server dependency
 var apiRoutes = express.Router(); //use the router function within express to define the routes
-
 var bodyParser = require('body-parser'); //use the body parser to parse the body request from the client
-var db = require('./db');
+var db = require('./db'); //a reference to the database functions so they can be used
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
 //after the base route (in this case, '/login', go to the next route):
@@ -23,8 +22,10 @@ apiRoutes.post('/', function(req, res) {
 	db.login(email, password, function(err, valid, results) {
 		//it returns a valid boolean if the email and password match a
 		//user in the database.
+		//if it is true, send back a true success token
 		if (valid) {
-			//if it is true, send back a true success token
+			//create a new json web token using the data from the database.
+			//inside the token include userId, name, etc
 			var token = jwt.sign({
 				email: results[0].email, 
 				name: results[0].name, 
@@ -34,7 +35,7 @@ apiRoutes.post('/', function(req, res) {
 				expiresIn: '1y' // expires in 24 hours
 			});		
 
-			//otherwise, send back a success true message
+			//send back a success true message along with the token
 			res.json({
 				success: true,
 				token
