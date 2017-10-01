@@ -3,6 +3,7 @@ var apiRoutes = express.Router(); //use the router function within express to de
 
 var bodyParser = require('body-parser'); //use the body parser to parse the body request from the client
 var db = require('./db');
+var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
 //after the base route (in this case, '/login', go to the next route):
 //full route: /login/
@@ -19,13 +20,24 @@ apiRoutes.post('/', function(req, res) {
 	let password = req.body.password;
 
 	//login with the passed email and password
-	db.login(email, password, function(err, valid) {
+	db.login(email, password, function(err, valid, results) {
 		//it returns a valid boolean if the email and password match a
 		//user in the database.
 		if (valid) {
 			//if it is true, send back a true success token
+			var token = jwt.sign({
+				email: results[0].email, 
+				name: results[0].name, 
+				profilePicture: results[0].profilePicture, 
+				userId: results[0].userId
+			}, 'hexbubblesecret', {
+				expiresIn: '1y' // expires in 24 hours
+			});		
+
+			//otherwise, send back a success true message
 			res.json({
-				success: true
+				success: true,
+				token
 			});
 		} else {
 			//otherwise send back a success false token

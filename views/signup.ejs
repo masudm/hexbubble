@@ -33,6 +33,7 @@
     	        bio: $("#bio").val()
     	    },
     	    function(data, status){
+                localStorage.setItem('token', data.token);
     	        if (data.success == true) {
     	        	window.location = '/';
     	        } else {

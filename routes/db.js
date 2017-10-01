@@ -87,7 +87,7 @@ exports.login = function(email, password, callback) {
 	        //if there is a result (i.e. it found a match to the email and password)
 	        if (results.length == 1) {
 	        	//return true
-	        	return callback(null, true)
+	        	return callback(null, true, results)
 	        } else {
 	        	//otherwise return false
 	        	return callback(null, false)

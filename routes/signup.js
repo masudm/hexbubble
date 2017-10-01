@@ -3,6 +3,7 @@ var apiRoutes = express.Router(); //use the router function within express to de
 
 var bodyParser = require('body-parser'); //use the body parser to parse the body request from the client
 var moment = require('moment'); //a library for time and date functions
+var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var db = require('./db');
 
 //after the base route (in this case, '/signup', go to the next route):
@@ -75,10 +76,15 @@ apiRoutes.post('/', function(req, res) {
 					//and throw an error so it can be debugged
 					throw err;
 				};
-				
+
+				var token = jwt.sign({email, name, profilePicture, userId: userResults.insertId}, 'hexbubblesecret', {
+					expiresIn: '1y' // expires in 24 hours
+				});				
+
 				//otherwise, send back a success true message
 				res.json({
-					success: true
+					success: true,
+					token
 				});
 			});			
 		});

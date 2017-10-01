@@ -5,6 +5,13 @@
 	</head>
 	<body>
 		<div class='container'>
+			<textarea id='post' placeholder='Say something!'></textarea>
+			<div class='button' onclick="newPost()">Post!</div>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
 			<div class='post'>
 				<div class='postUser'>
 					<img class='postProfilePic'>
@@ -19,7 +26,6 @@
 						<li>Comment</li>
 					</ul>
 					<input placeholder="Enter another comment...">
-					<div class='button' onclick="newPost()">newpost</div>
 				</div>
 			</div>
 		</div>
@@ -28,7 +34,8 @@
 			function newPost() {
 				$.post("/post/new",
 				    {
-				        
+				        token: localStorage.getItem('token'),
+				        post: $("#post").val()
 				    },
 				    function(data, status){
 				        console.log(data);

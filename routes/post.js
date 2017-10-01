@@ -7,10 +7,10 @@ var db = require('./db');
 
 apiRoutes.post('/new', function(req, res) {
 	post = {
-		userId: 19,
+		userId: req.decoded.userId,
 		bubbleId: 1,
 		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
-		post: "Hello World"
+		post: req.body.post
 	};
 	db.insertData(post, 'posts', function(err, results) {
 		console.log(err);
