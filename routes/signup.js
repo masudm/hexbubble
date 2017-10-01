@@ -84,6 +84,10 @@ apiRoutes.post('/', function(req, res) {
 					expiresIn: '1y' // expires in 24 hours
 				});				
 
+				//set a cookie with the auth token
+				//res.cookie('token', token, { maxAge: 31622400, httpOnly: true });
+				res.cookie('token', token, { maxAge: 31622400});
+
 				//otherwise, send back a success true message
 				res.json({
 					success: true,

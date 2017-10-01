@@ -4,6 +4,7 @@ const app = express(); //create a web server using express
 const mysql = require('mysql'); //mysql api connection wrapper to connect to mysql server
 const bodyParser = require('body-parser'); //middleware for parsing body requests
 const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
+const cookieParser = require('cookie-parser');
 
 //config
 //parse application/x-www-form-urlencoded
@@ -14,6 +15,8 @@ app.use(bodyParser.json())
 app.set('view engine', 'ejs');
 //set the publicly accessible folder (available on the client side)
 app.use(express.static('public'));
+//get and set cookies using the cookie parser. useful for auth
+app.use(cookieParser());
 
 //API routes
 //create an instance for routes
@@ -22,7 +25,7 @@ var apiRoutes = express.Router();
 //middleware - all the routes go through here
 app.use(function (req, res, next) {
 	// check header or url parameters or post parameters for token
-	var token = req.body.token || req.query.token || req.headers['x-access-token'];
+	var token = req.body.token || req.query.token || req.headers['x-access-token'] || req.cookies.token;
 	// decode token
 	if (token) {
 		// verifies secret and checks exp
@@ -50,6 +53,15 @@ app.use(function (req, res, next) {
 //the routes within the base route and what each route does
 app.use('/login', require('./routes/login'));
 app.use('/signup', require('./routes/signup'));
+
+app.use(function(req, res, next) {
+	if (!req.decoded) {
+		res.status(300).json('Unauthorised');
+	} else {
+		next();
+	}
+});
+
 app.use('/dev', require('./routes/dev'));
 app.use('/post', require('./routes/post'));
 app.use('/', require('./routes/feed'));

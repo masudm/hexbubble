@@ -37,7 +37,12 @@ body {
 }
 
 .post {
+	background-color: white;
+	display: inline-block;
+}
 
+.postUser {
+	border-bottom: 2px solid black;
 }
 
 .button {

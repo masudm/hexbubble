@@ -5,32 +5,38 @@
 	</head>
 	<body>
 		<div class='container'>
+			<br>
 			<textarea id='post' placeholder='Say something!'></textarea>
 			<div class='button' onclick="newPost()">Post!</div>
 			<br>
 			<br>
-			<br>
-			<br>
-			<br>
-			<div class='post'>
-				<div class='postUser'>
-					<img class='postProfilePic'>
-					<div class='postUserName'>Masud</div>
-					<div class='postUserDate'>10/10/10</div>
+			<% for(i in (posts)) { %>
+				<div class='post'>
+					<div class='postUser'>
+						<img class='postProfilePic'>
+						<div class='postUserName'><%- posts[i].username %></div>
+						<div class='postUserDate'><%- posts[i].dateCreated %></div>
+					</div>
+					<div class='postData'><%- posts[i].post %></div>
+					<br>
+					<div class='postLikes'>Likes: NULL</div>
+					<div class='postComments'>
+						Comments: 
+						<ul>
+							<li>NULL</li>
+						</ul>
+						<input placeholder="Enter another comment...">
+					</div>
 				</div>
-				<div class='postData'>askfhasfksj</div>
-				<div class='postLikes'>10</div>
-				<div class='postComments'>
-					<ul>
-						<li>Comment</li>
-						<li>Comment</li>
-					</ul>
-					<input placeholder="Enter another comment...">
-				</div>
-			</div>
+				<br>
+				<br>
+				<br>
+				<br>
+			<% } %>
 		</div>
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 		<script>
+			//console.log(JSON.parse('<%- (posts) %>')); on server: JSON.stringify(results)
 			function newPost() {
 				$.post("/post/new",
 				    {
