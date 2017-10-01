@@ -48,4 +48,15 @@ The project utilises MySQL as a backend.
 	  PRIMARY KEY (`memberId`),
 	  UNIQUE INDEX `memberId_UNIQUE` (`memberId` ASC));
 
+## Posts Table ##
+	CREATE TABLE `hexbubble`.`posts` (
+	  `postId` INT NOT NULL AUTO_INCREMENT,
+	  `userId` INT NOT NULL,
+	  `bubbleId` INT NOT NULL,
+	  `post` TEXT NOT NULL,
+	  `dateCreated` DATETIME NOT NULL,
+	  PRIMARY KEY (`postId`),
+	  UNIQUE INDEX `postId_UNIQUE` (`postId` ASC));
+
+
 
