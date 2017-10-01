@@ -126,7 +126,7 @@ exports.insertData = function(data, table, callback) {
 }
 
 //get posts
-exports.getPosts = function(skip, callback) {
+exports.getPosts = function(bubbleId, skip, callback) {
 	//get a new connection from the pool
 	pool.getConnection(function(err, connection) {
 		//if there is an error
@@ -139,7 +139,9 @@ exports.getPosts = function(skip, callback) {
 	    SELECT p.post, p.dateCreated, b.bubbleName, u.name AS username FROM posts AS p
 		INNER JOIN bubbles AS b ON p.bubbleId = b.bubbleId
 		INNER JOIN users AS u ON p.userId = u.userId
-		ORDER BY p.dateCreated DESC`;
+		WHERE p.bubbleId = ${bubbleId}
+		ORDER BY p.dateCreated DESC
+		LIMIT ${skip}, ${skip+10}`;
 	    connection.query(sql, function(error, results, fields) {
 	        //finished with the connection - send it back to the pool
 	        connection.release();

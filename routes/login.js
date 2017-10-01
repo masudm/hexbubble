@@ -7,6 +7,10 @@ var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 //after the base route (in this case, '/login', go to the next route):
 //full route: /login/
 apiRoutes.get('/', function(req, res) {
+	if (req.decoded) {
+		res.redirect('/');
+		return false;
+	}
 	//as a response, render the login view
 	res.render("login");
 });
@@ -34,6 +38,10 @@ apiRoutes.post('/', function(req, res) {
 			}, 'hexbubblesecret', {
 				expiresIn: '1y' // expires in 24 hours
 			});		
+
+			//set a cookie with the auth token
+			//res.cookie('token', token, { maxAge: 31622400, httpOnly: true });
+			res.cookie('token', token, { maxAge: 31622400});
 
 			//send back a success true message along with the token
 			res.json({

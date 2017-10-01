@@ -8,6 +8,10 @@ var db = require('./db'); //a reference to the database functions so they can be
 //after the base route (in this case, '/signup', go to the next route):
 //full route: /signup/
 apiRoutes.get('/', function(req, res) {
+	if (req.decoded) {
+		res.redirect('/');
+		return false;
+	}
 	//as a response, render the signup view
 	res.render("signup");
 });

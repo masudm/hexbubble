@@ -51,12 +51,14 @@ app.use(function (req, res, next) {
 
 //for each base route (such as '/'), provide a route file which defines
 //the routes within the base route and what each route does
+
 app.use('/login', require('./routes/login'));
 app.use('/signup', require('./routes/signup'));
 
 app.use(function(req, res, next) {
 	if (!req.decoded) {
-		res.status(300).json('Unauthorised');
+		//res.status(300).json('Unauthorised');
+		res.redirect('/login');
 	} else {
 		next();
 	}
