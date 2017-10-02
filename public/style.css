@@ -1,8 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,500');
 body {
-	font-family: Arial;
+	font-family: 'Raleway', Arial, 'Arial', sans-serif;
 	margin: 0;
 	padding: 0;
-	background-color: #29464b;
+	background-color: #fff;
 	margin: auto;
 	text-align: center;
 }
@@ -14,10 +15,11 @@ body {
 .login {
 	background-color: white;
 	text-align: center;
-	border-radius: 5px;
+	border-radius: 2px;
 	display: inline-block;
 	padding: 10px;
 	margin-top: 15vh;
+	border: 1px solid #ebebeb;
 }
 
 .login h1 {
@@ -25,11 +27,11 @@ body {
 }
 
 .login input {
-	border-radius: 5px;
+	border-radius: 2px;
 	font-size: 1.2em;
 	-webkit-appearance: none; 
     -moz-appearance: none; 
-    border: 2px solid #23f499;
+    border: 1px solid #cfd1d3;
     margin-top: 10px;
     padding: 5px;
     width: 40vw;
@@ -39,6 +41,8 @@ body {
 .post {
 	background-color: white;
 	display: inline-block;
+	border: 1px solid #ebebeb;
+	border-radius: 2px;
 }
 
 .postUser {
@@ -46,12 +50,13 @@ body {
 }
 
 .button {
+	font-weight: 500;
 	display: inline-block;
-	border-radius: 5px;
+	border-radius: 2px;
 	font-size: 1.2em;
 	-webkit-appearance: none; 
     -moz-appearance: none; 
-    border: 2px solid #23f499;
+    border: 1px solid #cfd1d3;
     margin-top: 10px;
     padding: 5px 50px;
     background-color: white;
@@ -59,6 +64,6 @@ body {
 }
 
 .button:hover {
-	background-color: #23f499;
+	background-color: #cfd1d3;
 	color: white;
 }
