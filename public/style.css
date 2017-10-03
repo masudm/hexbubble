@@ -13,7 +13,6 @@ body {
 }
 
 .header {
-    width: 100%;
     background-color: #60AEFE;
     padding: 10px;
     height: 2.2em;
@@ -89,7 +88,7 @@ body {
 	display: inline-block;
 	padding: 10px;
 	margin-top: 15vh;
-	border: 1px solid #ebebeb;
+	border: 1px solid #60AEFE;
 }
 
 .login h1 {
@@ -101,7 +100,7 @@ body {
 	font-size: 1.2em;
 	-webkit-appearance: none; 
     -moz-appearance: none; 
-    border: 1px solid #cfd1d3;
+    border: 1px solid #60AEFE;
     margin-top: 10px;
     padding: 5px;
     width: 40vw;
@@ -171,7 +170,7 @@ body {
 	font-size: 1.2em;
 	-webkit-appearance: none; 
     -moz-appearance: none; 
-    border: 1px solid #cfd1d3;
+    border: 1px solid #60AEFE;
     margin-top: 10px;
     padding: 5px 50px;
     background-color: white;
@@ -179,7 +178,7 @@ body {
 }
 
 .button:hover {
-	background-color: #cfd1d3;
+	background-color: #60AEFE;
 	color: white;
 }
 
