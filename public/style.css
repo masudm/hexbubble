@@ -3,19 +3,89 @@ body {
 	font-family: 'Raleway', Arial, 'Arial', sans-serif;
 	margin: 0;
 	padding: 0;
-	background-color: #fff;
+	background-color: #f5f6fb;
 	margin: auto;
 	text-align: center;
 }
 
+.main {
+    display: flex;
+}
+
+.header {
+    width: 100%;
+    background-color: #60AEFE;
+    padding: 10px;
+    height: 2.2em;
+}
+
+.search {
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 0;
+    width: 25vw;
+}
+
+.search::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    text-align: center;
+}
+.search::-moz-placeholder { /* Firefox 19+ */
+    text-align: center;
+}
+.search:-ms-input-placeholder { /* IE 10+ */
+    text-align: center;
+}
+.search:-moz-placeholder { /* Firefox 18- */
+    text-align: center;
+}
+
+.logo {
+    width: 8.7vw;
+    width: calc(10vw - 21px);
+    float: left;
+    background-color: #72C1FD;
+    height: 2.2em;
+    padding: 10px;
+}
+
+.logo img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.sidebar {
+    width: 10vw;
+    background-color: white;
+}
+
+.sidebar ul {
+    margin: 0;
+    list-style: none;
+    padding: 0;
+    width: 10vw;
+}
+
+.sidebar .elem {
+    padding: 2.5vw;
+    font-size: 2em;
+    color: #a6adc4;
+    cursor: pointer;
+    border-bottom: 1px solid #60AEFE;
+}
+
+.sidebar .elem.active, .sidebar .elem:hover {
+    color: #60AEFE;
+}
+
 .container {
+    width: 90vw;
 	margin: auto;
 }
 
 .login {
 	background-color: white;
 	text-align: center;
-	border-radius: 2px;
+	border-radius: 10px;
 	display: inline-block;
 	padding: 10px;
 	margin-top: 15vh;
@@ -27,7 +97,7 @@ body {
 }
 
 .login input {
-	border-radius: 2px;
+	border-radius: 10px;
 	font-size: 1.2em;
 	-webkit-appearance: none; 
     -moz-appearance: none; 
@@ -38,23 +108,66 @@ body {
     max-width: 400px;
 }
 
+.newPost {
+    display: inline-block;
+    width: 40vw;
+    background-color: white;
+    padding: 10px 0;
+    border-radius: 10px;
+}
+
+.newPost textarea {
+    resize: vertical;
+    border-radius: 10px;
+    padding: 10px;
+    width: 90%;
+    width: calc(100% - 40px);
+    font-family: 'Raleway', Arial, 'Arial', sans-serif;
+    font-weight: 500; 
+}
 
 .post {
 	background-color: white;
 	display: inline-block;
 	border: 1px solid #ebebeb;
-	border-radius: 2px;
+	border-radius: 10px;
 	width: 40vw;
 }
 
 .postUser {
-	border-bottom: 2px solid black;
+	border-bottom: 1px solid #60AEFE;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    font-size: 0.8em;
+}
+
+.postUserName a {
+    color: #60AEFE;
+    text-decoration: none;
+}
+
+.postData {
+    font-size: 1.2em;
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #60AEFE;
+}
+
+.postLikes {
+    display: flex;
+    padding-bottom: 10px;
+}
+
+.likeNum {
+    font-size: 1.1em;
+    font-weight: 500;
 }
 
 .button {
 	font-weight: 500;
 	display: inline-block;
-	border-radius: 2px;
+	border-radius: 10px;
 	font-size: 1.2em;
 	-webkit-appearance: none; 
     -moz-appearance: none; 
@@ -70,24 +183,25 @@ body {
 	color: white;
 }
 
-
-
-#heart {
+.heart {
     position: relative;
-    width: 100px;
-    height: 90px;
+    width: 2.5vw;
+    height: 2.25vw;
+    display: inline-block;
+    margin: 0 10px;
 }
-#heart:before,
-#heart:after {
+.heart:before,
+.heart:after {
     position: absolute;
     content: "";
-    left: 50px;
+    left: 1.25vw;
     top: 0;
-    width: 50px;
-    height: 80px;
-    background: red;
-    -moz-border-radius: 50px 50px 0 0;
-    border-radius: 50px 50px 0 0;
+    width: 1.25vw;
+    height: 2vw;
+    background: #FF70A6;
+    cursor: pointer;
+    -moz-border-radius: 1.25vw 1.25vw 0 0;
+    border-radius: 1.25vw 1.25vw 0 0;
     -webkit-transform: rotate(-45deg);
        -moz-transform: rotate(-45deg);
         -ms-transform: rotate(-45deg);
@@ -99,7 +213,10 @@ body {
          -o-transform-origin: 0 100%;
             transform-origin: 0 100%;
 }
-#heart:after {
+.heart:hover:after, .heart:hover:before, .activeHeart:after, .activeHeart:before {
+    background: #60AEFE;
+}
+.heart:after {
     left: 0;
     -webkit-transform: rotate(45deg);
        -moz-transform: rotate(45deg);

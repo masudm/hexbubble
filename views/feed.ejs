@@ -2,28 +2,49 @@
 <html>
 	<head>
 		<link href='/style.css' rel="stylesheet" type="text/css"/>
+		<link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
-		<div class='container'>
-			<br>
-			<textarea id='post' placeholder='Say something!'></textarea>
-			<div class='button' onclick="newPost()">Post!</div>
-			<br>
-				<div id='posts'>
-				
+		<div class='logo'><img src='/hexlogo.png'></div>
+		<div class='header'>
+			<!--<div class='headerName'>HexBubble</div>-->
+			<input id='search' class='search' placeholder="Search">
+		</div>
+		<div class='main'>
+			<div class='sidebar'>
+				<ul>
+					<li class='elem active'><i class="fa fa-user" aria-hidden="true"></i></li>
+					<li class='elem'><i class="fa fa-user" aria-hidden="true"></i></li>
+				</ul>
+			</div>
+			<div class='container'>
+				<br>
+				<div class='newPost'>
+					<textarea id='post' placeholder='Say something!'></textarea>
+					<div class='button' onclick="newPost()">Post!</div>
 				</div>
+				<br>
+				<br>
+					<div id='posts'>
+						<!-- POSTS GO HERE -->
+					</div>
+			</div>
 		</div>
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js'></script>
 		<script>
 			var me = JSON.parse('<%- me %>');
+			postsNum = 0;
 			$(document).ready(function() {
 			    posts = JSON.parse('<%- (posts) %>');
 			    for (i in posts) {
-			    	addPost(posts[i].username, posts[i].dateCreated, posts[i].post, false);
+			    	addPost(posts[i].username, posts[i].dateCreated, posts[i].post, false, i);
+			    	postsNum = i;
 			    }
 			});
 
 			function newPost() {
+				postsNum += 1;
 				var p = $("#post").val();
 				$.post("/post/new",
 				    {
@@ -33,27 +54,27 @@
 				    function(data, status){
 				        console.log(data);
 				    });
-				addPost(me.username, Date(), p, true);
+				addPost(me.username, Date(), p, true, postsNum);
 			}
 
-			function addPost(username, date, post, newP) {
+			function addPost(username, date, post, newP, id) {
 				var postStructure = `
 				<div class='post'>
 					<div class='postUser'>
-						<img class='postProfilePic'>
-						<div class='postUserName'>${username}</div>
-						<div class='postUserDate'>${date}</div>
+						<!-- <img class='postProfilePic'> -->
+						<div class='postUserName'><a href='#'>${username}</a></div>
+						<div class='postUserDate' title='${date}'>${moment(date).fromNow()}</div>
 					</div>
 					<div class='postData'>${post}</div>
 					<br>
-					<div class='postLikes'><div id='heart'>/div>Likes: NULL</div>
-					<div class='postComments'>
+					<div class='postLikes'><div class='heart' id='heart.${id}' onclick='love("${id}")'></div><span>Likes: <span class='likeNum' id='like.${id}'>0</span></span></div>
+					<!--<div class='postComments'>
 						Comments: 
 						<ul>
 							<li>NULL</li>
 						</ul>
 						<input placeholder="Enter another comment...">
-					</div>
+					</div>-->
 				</div>
 				<br><br>`;
 
@@ -63,6 +84,14 @@
 					$("#posts").append(postStructure);
 				}
 				
+			}
+
+			function love(id) {
+				var heart = document.getElementById("heart." + id);
+				heart.className = "heart activeHeart";
+				var elem = document.getElementById("like." + id);
+				curLikes = parseInt(elem.innerHTML);
+				elem.innerHTML = curLikes + 1;
 			}
 		</script>
 	</body>
