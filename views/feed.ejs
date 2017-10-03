@@ -9,15 +9,42 @@
 			<textarea id='post' placeholder='Say something!'></textarea>
 			<div class='button' onclick="newPost()">Post!</div>
 			<br>
-			<br>
-			<% for(i in (posts)) { %>
+				<div id='posts'>
+				
+				</div>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+		<script>
+			var me = JSON.parse('<%- me %>');
+			$(document).ready(function() {
+			    posts = JSON.parse('<%- (posts) %>');
+			    for (i in posts) {
+			    	addPost(posts[i].username, posts[i].dateCreated, posts[i].post, false);
+			    }
+			});
+
+			function newPost() {
+				var p = $("#post").val();
+				$.post("/post/new",
+				    {
+				        token: localStorage.getItem('token'),
+				        post: p
+				    },
+				    function(data, status){
+				        console.log(data);
+				    });
+				addPost(me.username, Date(), p, true);
+			}
+
+			function addPost(username, date, post, newP) {
+				var postStructure = `
 				<div class='post'>
 					<div class='postUser'>
 						<img class='postProfilePic'>
-						<div class='postUserName'><%- posts[i].username %></div>
-						<div class='postUserDate'><%- posts[i].dateCreated %></div>
+						<div class='postUserName'>${username}</div>
+						<div class='postUserDate'>${date}</div>
 					</div>
-					<div class='postData'><%- posts[i].post %></div>
+					<div class='postData'>${post}</div>
 					<br>
 					<div class='postLikes'>Likes: NULL</div>
 					<div class='postComments'>
@@ -28,24 +55,14 @@
 						<input placeholder="Enter another comment...">
 					</div>
 				</div>
-				<br>
-				<br>
-				<br>
-				<br>
-			<% } %>
-		</div>
-		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-		<script>
-			//console.log(JSON.parse('<%- (posts) %>')); on server: JSON.stringify(results)
-			function newPost() {
-				$.post("/post/new",
-				    {
-				        token: localStorage.getItem('token'),
-				        post: $("#post").val()
-				    },
-				    function(data, status){
-				        console.log(data);
-				    });
+				<br><br>`;
+
+				if (newP) {
+					$("#posts").prepend(postStructure);
+				} else {
+					$("#posts").append(postStructure);
+				}
+				
 			}
 		</script>
 	</body>

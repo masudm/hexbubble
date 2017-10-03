@@ -155,3 +155,10 @@ exports.getPosts = function(bubbleId, skip, callback) {
 	    });
 	});
 }
+
+exports.me = function(decoded) {
+	return {
+		email: decoded.email,
+		username: decoded.name
+	}
+}
