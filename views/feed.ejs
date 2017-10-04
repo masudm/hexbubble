@@ -38,7 +38,11 @@
 			$(document).ready(function() {
 			    posts = JSON.parse('<%- (posts) %>');
 			    for (i in posts) {
-			    	addPost(posts[i].username, posts[i].dateCreated, posts[i].post, false, posts[i].postId);
+			    	if (posts[i].likeId != null) {
+			    		addPost(posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId);
+			    	} else {
+			    		addPost(posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId);
+			    	}
 			    	postsNum = i;
 			    }
 			});
@@ -54,10 +58,14 @@
 				    function(data, status){
 				        console.log(data);
 				    });
-				addPost(me.username, Date(), p, true, postsNum);
+				addPost(me.username, Date(), p, 0, true, postsNum);
 			}
 
-			function addPost(username, date, post, newP, id) {
+			function addPost(username, date, post, likes, isLiked, newP, id) {
+				var heart = "";
+				if (isLiked) {
+					heart = "activeHeart"
+				}
 				var postStructure = `
 				<div class='post'>
 					<div class='postUser'>
@@ -67,7 +75,7 @@
 					</div>
 					<div class='postData'>${post}</div>
 					<br>
-					<div class='postLikes'><div class='heart' id='heart.${id}' onclick='love("${id}")'></div><span>Likes: <span class='likeNum' id='like.${id}'>0</span></span></div>
+					<div class='postLikes'><div class='heart ${heart}' id='heart.${id}' onclick='love("${id}")'></div><span>Likes: <span class='likeNum' id='like.${id}'>${likes}</span></span></div>
 					<!--<div class='postComments'>
 						Comments: 
 						<ul>
@@ -98,10 +106,8 @@
 				        postId: id
 				    },
 				    function(data, status){
-				        if (data.success == true) {
-				        	alert("Liked!");
-				        } else {
-				        	alert("failed.");
+				        if (data.success == false)  {
+				        	alert("like failed.");
 				        }
 				    });
 			}
