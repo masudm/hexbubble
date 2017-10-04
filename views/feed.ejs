@@ -38,7 +38,7 @@
 			$(document).ready(function() {
 			    posts = JSON.parse('<%- (posts) %>');
 			    for (i in posts) {
-			    	addPost(posts[i].username, posts[i].dateCreated, posts[i].post, false, i);
+			    	addPost(posts[i].username, posts[i].dateCreated, posts[i].post, false, posts[i].postId);
 			    	postsNum = i;
 			    }
 			});
@@ -92,6 +92,18 @@
 				var elem = document.getElementById("like." + id);
 				curLikes = parseInt(elem.innerHTML);
 				elem.innerHTML = curLikes + 1;
+
+				$.post("/post/like",
+				    {
+				        postId: id
+				    },
+				    function(data, status){
+				        if (data.success == true) {
+				        	alert("Liked!");
+				        } else {
+				        	alert("failed.");
+				        }
+				    });
 			}
 		</script>
 	</body>

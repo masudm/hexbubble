@@ -136,7 +136,7 @@ exports.getPosts = function(bubbleId, skip, callback) {
         }
 	    // Use the connection
 	    var sql = `
-	    SELECT p.post, p.dateCreated, b.bubbleName, u.name AS username FROM posts AS p
+	    SELECT p.postId, p.post, p.dateCreated, b.bubbleName, u.name AS username FROM posts AS p
 		INNER JOIN bubbles AS b ON p.bubbleId = b.bubbleId
 		INNER JOIN users AS u ON p.userId = u.userId
 		WHERE p.bubbleId = ${bubbleId}
@@ -153,6 +153,21 @@ exports.getPosts = function(bubbleId, skip, callback) {
 	        return callback(null, results)
 	        //Don't use the connection here, it has been returned to the pool.
 	    });
+	});
+}
+
+exports.likePost = function(userId, postId, date, callback) {
+	var like = {
+		likeId: parseInt(String(userId) + String(postId)),
+		userId: userId,
+		postId: postId,
+		dateCreated: date
+	};
+	exports.insertData(like, 'likes', function(err, results) {
+		if (err) {
+			callback(err);
+		} 
+		callback(null, results);
 	});
 }
 

@@ -22,6 +22,17 @@ apiRoutes.post('/new', function(req, res) {
 	});
 });
 
+
+apiRoutes.post('/like', function(req, res) {
+	db.likePost(req.decoded.userId, req.body.postId, moment(new Date()).format("YYYY-MM-DD HH:mm:ss"), function(err, data) {
+		if (err) {
+			console.log(err);
+			return res.json({success: true});
+		}
+		res.json({success: true});
+	});
+});
+
 //export the apiRoutes variable (which defines all the routes) so it can be used elsewhere
 //i.e. the main app
 module.exports = apiRoutes;

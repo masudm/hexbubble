@@ -58,5 +58,17 @@ The project utilises MySQL as a backend.
 	  PRIMARY KEY (`postId`),
 	  UNIQUE INDEX `postId_UNIQUE` (`postId` ASC));
 
+## Likes Table ##
+CREATE TABLE `hexbubble`.`likes` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `likeId` BIGINT NOT NULL,
+  `userId` INT NOT NULL,
+  `postId` INT NOT NULL,
+  `dateCreated` DATETIME NOT NULL,
+  PRIMARY KEY (`likeId`),
+  UNIQUE INDEX `likeId_UNIQUE` (`likeId` ASC),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC));
+
+
 
 
