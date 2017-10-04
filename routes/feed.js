@@ -7,7 +7,11 @@ var db = require('./db'); //a reference to the database functions so they can be
 
 apiRoutes.get('/', function(req, res) {
 	db.getPosts(1, 0, req.decoded.userId, function(err, results) {
-		res.render('feed', {posts: JSON.stringify(results), me: JSON.stringify(db.me(req.decoded))});
+		if (err) {
+			res.render(err);
+		} else {
+			res.render('feed', {posts: JSON.stringify(results), me: JSON.stringify(db.me(req.decoded))});
+		}
 	});
 });
 

@@ -58,13 +58,15 @@
 				    function(data, status){
 				        console.log(data);
 				    });
-				addPost(me.username, Date(), p, 0, true, postsNum);
+				addPost(me.username, Date(), p, 1, true, postsNum);
 			}
 
 			function addPost(username, date, post, likes, isLiked, newP, id) {
 				var heart = "";
+				var heartAction = `onclick='love("${id}")'`;
 				if (isLiked) {
-					heart = "activeHeart"
+					heart = "activeHeart";
+					heartAction = "";
 				}
 				var postStructure = `
 				<div class='post'>
@@ -75,7 +77,7 @@
 					</div>
 					<div class='postData'>${post}</div>
 					<br>
-					<div class='postLikes'><div class='heart ${heart}' id='heart.${id}' onclick='love("${id}")'></div><span>Likes: <span class='likeNum' id='like.${id}'>${likes}</span></span></div>
+					<div class='postLikes'><div class='heart ${heart}' id='heart.${id}' ${heartAction}></div><span>Likes: <span class='likeNum' id='like.${id}'>${likes}</span></span></div>
 					<!--<div class='postComments'>
 						Comments: 
 						<ul>
@@ -107,7 +109,9 @@
 				    },
 				    function(data, status){
 				        if (data.success == false)  {
-				        	alert("like failed.");
+				        	alert("Like failed. " + data.error);
+				        	console.log(data.error);
+				        	elem.innerHTML = curLikes;
 				        }
 				    });
 			}

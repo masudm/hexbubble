@@ -215,6 +215,9 @@ body {
 .heart:hover:after, .heart:hover:before, .activeHeart:after, .activeHeart:before {
     background: #60AEFE;
 }
+.activeHeart:after, .activeHeart:before {
+    cursor: not-allowed;
+}
 .heart:after {
     left: 0;
     -webkit-transform: rotate(45deg);

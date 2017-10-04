@@ -22,7 +22,8 @@ exports.getData = function(columns, table, callback) {
 		//if there is an error
 		if (err) {
 			//return the error via the callback to the function that callled it
-        	return callback(err);
+        	console.log(err);
+        	return callback("Server error.");
         }
 	    // Use the connection
 	    connection.query('SELECT ' + columns + ' FROM ' + table, function(error, results, fields) {
@@ -30,7 +31,8 @@ exports.getData = function(columns, table, callback) {
 	        connection.release();
 	        //Handle error after the release.
 	        if (error) {
-	        	return callback(error);
+	        	console.log(error);
+	        	return callback("Server error.");
 	        }
 
 	        return callback(null, results)
@@ -46,7 +48,8 @@ exports.getDataWhere = function(columns, table, where, callback) {
 		//if there is an error
 		if (err) {
 			//return the error via the callback to the function that callled it
-        	return callback(err);
+        	console.log(err);
+        	return callback("Server error.");
         }
 	    // Use the connection
 	    connection.query('SELECT ' + columns + ' FROM ' + table + ' WHERE ' + where, function(error, results, fields) {
@@ -54,7 +57,8 @@ exports.getDataWhere = function(columns, table, where, callback) {
 	        connection.release();
 	        //Handle error after the release.
 	        if (error) {
-	        	return callback(error);
+	        	console.log(error);
+	        	return callback("Server error.");
 	        }
 
 	        return callback(null, results)
@@ -71,7 +75,8 @@ exports.login = function(email, password, callback) {
 		//if there is an error
 		if (err) {
 			//return the error via the callback to the function that callled it
-        	return callback(err);
+        	console.log(err);
+        	return callback("Server error.");
         }
 	    // Use the connection
 	    //login by finding users where the email and password match the database.
@@ -81,7 +86,8 @@ exports.login = function(email, password, callback) {
 	        connection.release();
 	        //Handle error after the release.
 	        if (error) {
-	        	return callback(error);
+	        	console.log(error);
+	        	return callback("Server error.");
 	        }
 
 	        //if there is a result (i.e. it found a match to the email and password)
@@ -104,7 +110,8 @@ exports.insertData = function(data, table, callback) {
 		//if there is an error
 		if (err) {
 			//return the error via the callback to the function that callled it
-        	return callback(err);
+        	console.log(err);
+        	return callback("Server error.");
         }
 	    // Use the connection
 	    //insert into a table and use the SET MySQL command to easily insert an object of data
@@ -115,7 +122,8 @@ exports.insertData = function(data, table, callback) {
 	        connection.release();
 	        //Handle error after the release.
 	        if (error) {
-	        	return callback(error);
+	        	console.log(error);
+	        	return callback("Server error.");
 	        }
 
 	        //return the results of the command
@@ -132,7 +140,8 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
 		//if there is an error
 		if (err) {
 			//return the error via the callback to the function that callled it
-        	return callback(err);
+        	console.log(err);
+        	return callback("Server error.");
         }
 	    // Use the connection
 	    var sql = `
@@ -151,7 +160,8 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
 	        connection.release();
 	        //Handle error after the release.
 	        if (error) {
-	        	return callback(error);
+	        	console.log(error);
+	        	return callback("Server error.");
 	        }
 
 	        return callback(null, results)
@@ -169,9 +179,13 @@ exports.likePost = function(userId, postId, date, callback) {
 	};
 	exports.insertData(like, 'likes', function(err, results) {
 		if (err) {
-			callback(err);
+			if (err.errno == 1062) {
+				return callback("Post already liked by this user.");
+			}
+			console.log(err);
+			return callback("Server error.");
 		} 
-		callback(null, results);
+		return callback(null, results);
 	});
 }
 
