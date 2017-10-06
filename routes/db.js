@@ -170,15 +170,27 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
 	});
 }
 
+//like the post using the insert id function
 exports.likePost = function(userId, postId, date, callback) {
+	//create an object for inserting into the like table
 	var like = {
+		//the like id is a concatention of the userId and the postId
+		//in a string form. this can be used as a unique key as
+		//it is always in this form so the same user liking 
+		//the same post will not be inserted into the post
 		likeId: parseInt(String(userId) + String(postId)),
 		userId: userId,
 		postId: postId,
 		dateCreated: date
 	};
+	//using the insert data function, the like object is 
+	//inserted into the like table
 	exports.insertData(like, 'likes', function(err, results) {
+		//if there is an error, return the error
 		if (err) {
+			//if the error is a duplicate entry, that means the user has
+			//already liked the post. return an error that displays 
+			//that rather than the long and complicated mysql error.
 			if (err.errno == 1062) {
 				return callback("Post already liked by this user.");
 			}
@@ -189,6 +201,9 @@ exports.likePost = function(userId, postId, date, callback) {
 	});
 }
 
+//using the decoded id, return the email and username
+//instead of returning the whole decoded array 
+//which may contain sensitive info.
 exports.me = function(decoded) {
 	return {
 		email: decoded.email,
