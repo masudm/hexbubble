@@ -30,8 +30,8 @@
 					</div>
 			</div>
 		</div>
-		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-		<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js'></script>
+		<script src="/jquery.js"></script>
+		<script src='/moment.js'></script>
 		<script>
 			var me = JSON.parse('<%- me %>');
 			postsNum = 0;
@@ -98,7 +98,7 @@
 
 			function love(id) {
 				var heart = document.getElementById("heart." + id);
-				heart.className = "heart activeHeart";
+				heart.className = "heart activeHeart animateHeart";
 				var elem = document.getElementById("like." + id);
 				curLikes = parseInt(elem.innerHTML);
 				elem.innerHTML = curLikes + 1;

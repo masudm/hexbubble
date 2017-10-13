@@ -152,7 +152,7 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
 		LEFT JOIN likes AS l ON p.postId = l.postId
 		LEFT JOIN likes as lu on p.postId = lu.postId AND l.userId = ${userId}
 		WHERE p.bubbleId = ${bubbleId}
-		GROUP BY postId, l.id
+		GROUP BY postId
 		ORDER BY p.dateCreated DESC
 		LIMIT ${skip}, ${skip+10}`;
 	    connection.query(sql, function(error, results, fields) {
