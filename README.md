@@ -1,6 +1,6 @@
 # README #
 ## What is this project? ##
-A social network built for my A Level Computer Science Controlled Assessment. 
+A social network built with Node and MySQL. 
 
 ## About this project ##
 The social network is built on Node and MySQL with a plain HTML/Javascript setup running the front end.
