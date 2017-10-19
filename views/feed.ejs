@@ -39,9 +39,9 @@
 			    posts = JSON.parse('<%- (posts) %>');
 			    for (i in posts) {
 			    	if (posts[i].likeId != null) {
-			    		addPost(posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId);
+			    		addPost(posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId, posts[i].comments);
 			    	} else {
-			    		addPost(posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId);
+			    		addPost(posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId, posts[i].comments);
 			    	}
 			    	postsNum = i;
 			    }
@@ -58,10 +58,10 @@
 				    function(data, status){
 				        console.log(data);
 				    });
-				addPost(me.username, Date(), p, 1, true, postsNum);
+				addPost(me.username, Date(), p, 1, true, postsNum, 0);
 			}
 
-			function addPost(username, date, post, likes, isLiked, newP, id) {
+			function addPost(username, date, post, likes, isLiked, newP, id, comments) {
 				var heart = "";
 				var heartAction = `onclick='love("${id}")'`;
 				if (isLiked) {
@@ -78,21 +78,37 @@
 					<div class='postData'>${post}</div>
 					<br>
 					<div class='postLikes'><div class='heart ${heart}' id='heart.${id}' ${heartAction}></div><span>Likes: <span class='likeNum' id='like.${id}'>${likes}</span></span></div>
-					<!--<div class='postComments'>
-						Comments: 
+					<div class='postCommentsInfo button'>View next 10 of ${comments} comments</div>
+					<div class='postComments'>
 						<ul>
-							<li>NULL</li>
+							<li class='comment'>
+								<span class='commentUser'><a href='#'>Bob</a></span>
+								<span class='commentTime'>${moment(date).fromNow()} change</span>
+								<p>A long comment</p>
+							</li>
+							<br>
+							<li class='comment'>
+								<span class='commentUser'><a href='#'>Bob</a></span>
+								<span class='commentTime'>${moment(date).fromNow()} change</span>
+								<p>A long comment</p>
+							</li>
 						</ul>
-						<input placeholder="Enter another comment...">
-					</div>-->
+						<input type='text' placeholder='Comment....'>
+						<div class='submitComment button' onclick='addComment()'>Submit</div>
+					</div>
 				</div>
-				<br><br>`;
+				<br>
+				<br>`;
 
 				if (newP) {
 					$("#posts").prepend(postStructure);
 				} else {
 					$("#posts").append(postStructure);
 				}
+				
+			}
+
+			function addComment(id) {
 				
 			}
 

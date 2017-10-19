@@ -69,6 +69,17 @@ CREATE TABLE `hexbubble`.`likes` (
   UNIQUE INDEX `likeId_UNIQUE` (`likeId` ASC),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC));
 
+## Comments Table ##
+CREATE TABLE `hexbubble`.`comments` (
+  `commentId` INT NOT NULL AUTO_INCREMENT,
+  `userId` INT NOT NULL,
+  `comment` TEXT NOT NULL,
+  `dateCreated` DATETIME NOT NULL,
+  `postId` INT NOT NULL,
+  PRIMARY KEY (`commentId`),
+  UNIQUE INDEX `commentId_UNIQUE` (`commentId` ASC));
+
+
 
 
 

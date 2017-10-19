@@ -155,9 +155,56 @@ body {
     border-bottom: 1px solid #60AEFE;
 }
 
+.postCommentsInfo {
+    font-size: 1.2em;
+    padding: 10px;
+    border-top: 1px solid #60AEFE;
+}
+
+.postComments ul {
+    list-style: none;
+    padding: 0 10px;
+    text-align: left;
+}
+
+.postComments input {
+    border-radius: 10px;
+    font-size: 1em;
+    -webkit-appearance: none; 
+    -moz-appearance: none; 
+    border: 1px solid #60AEFE;
+    margin-top: 10px;
+    padding: 5px;
+    max-width: 400px;
+}
+
+.commentUser, .commentTime {
+    font-size: 0.8em;
+}
+
+.commentTime {
+    font-style: italic;
+    color: grey;
+    float: right;
+    margin-right: 5px;
+}
+
+.comment {
+    border-bottom: 1px solid #60AEFE;
+}
+
+.comment p {
+    margin: 1px;
+}
+
 .postLikes {
     display: flex;
     padding-bottom: 10px;
+    border-bottom: 1px solid #60AEFE;
+}
+
+.postComments {
+
 }
 
 .likeNum {
@@ -182,6 +229,10 @@ body {
 .button:hover {
 	background-color: #60AEFE;
 	color: white;
+}
+
+.submitComment {
+    font-size: 1em;
 }
 
 .heart {
