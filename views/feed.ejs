@@ -79,8 +79,14 @@
 					</div>
 					<div class='postData'>${post}</div>
 					<br>
-					<div class='postLikes'><div class='heart ${heart}' id='heart.${id}' ${heartAction}></div><span>Likes: <span class='likeNum' id='like.${id}'>${likes}</span></span></div>
-					<div class='postCommentsInfo button'>View next 10 of ${comments} comments</div>
+					<div class='postLikes'>
+						<div>
+						<div class='heart ${heart}' id='heart.${id}' ${heartAction}></div>
+						<span>Likes: <span class='likeNum' id='like.${id}'>${likes}</span></span>
+						</div>
+						<div class='postCommentsInfo button'>View next 10 of ${comments} comments</div>
+					</div>
+					
 					<div class='postComments'>
 						<ul>
 							<li class='comment'>
@@ -95,7 +101,7 @@
 								<p>A long comment</p>
 							</li>
 						</ul>
-						<input type='text' placeholder='Comment....'>
+						<input type='text' placeholder='Comment....' class='commenter'>
 						<div class='submitComment button' onclick='addComment()'>Submit</div>
 					</div>
 				</div>

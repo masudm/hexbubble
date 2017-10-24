@@ -155,12 +155,6 @@ body {
     border-bottom: 1px solid #60AEFE;
 }
 
-.postCommentsInfo {
-    font-size: 1.2em;
-    padding: 10px;
-    border-top: 1px solid #60AEFE;
-}
-
 .postComments ul {
     list-style: none;
     padding: 0 10px;
@@ -201,6 +195,7 @@ body {
     display: flex;
     padding-bottom: 10px;
     border-bottom: 1px solid #60AEFE;
+    justify-content: space-between;
 }
 
 .postComments {
@@ -231,8 +226,22 @@ body {
 	color: white;
 }
 
+.postCommentsInfo {
+    font-size: 1.2em;
+    padding: 10px;
+    border-top: 1px solid #60AEFE;
+    padding: 5px;
+    margin: -5px 10px;
+}
+
 .submitComment {
     font-size: 1em;
+    width: 15%;
+    padding: 5px 2.5%;
+}
+
+.commenter {
+    width: 75%;
 }
 
 .heart {
