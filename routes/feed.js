@@ -11,17 +11,24 @@ apiRoutes.get('/feed', function(req, res) {
 });
 
 apiRoutes.get('/feed/:bubbleId', function(req, res) {
-	db.getPosts(parseInt(req.params.bubbleId), 0, req.decoded.userId, function(err, results) {
-		if (err) {
-			//if there is an error, just render the error
-			res.render(err);
+	db.isMember(parseInt(req.decoded.userId), parseInt(req.params.bubbleId), function(err, data) {
+		if (data.length > 0) {
+			db.getPosts(parseInt(req.params.bubbleId), 0, req.decoded.userId, function(err, results) {
+				if (err) {
+					//if there is an error, just render the error
+					res.render(err);
+				} else {
+					//render the feed page
+					//send the posts in a json format
+					//and send the user object as json too
+					res.render('feed', {posts: JSON.stringify(results), me: JSON.stringify(db.me(req.decoded))});
+				}
+			});
 		} else {
-			//render the feed page
-			//send the posts in a json format
-			//and send the user object as json too
-			res.render('feed', {posts: JSON.stringify(results), me: JSON.stringify(db.me(req.decoded))});
+			res.send('You are not allowed in this bubble.'); //TODO: change this to error message
 		}
 	});
+	
 });
 
 module.exports = apiRoutes;

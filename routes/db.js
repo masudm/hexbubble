@@ -203,6 +203,12 @@ exports.likePost = function(userId, postId, date, callback) {
 	});
 }
 
+exports.isMember = function(userId, bubbleId, callback) {
+	exports.getDataWhere('memberId', 'members', ('userId = ' + userId + ' and bubbleId = ' + bubbleId), function(err, data) {
+		callback(err, data);
+	});
+}
+
 //using the decoded id, return the email and username
 //instead of returning the whole decoded array 
 //which may contain sensitive info.
