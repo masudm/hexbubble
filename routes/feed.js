@@ -6,7 +6,7 @@ var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var db = require('./db'); //a reference to the database functions so they can be used
 
 //this is the main page and requests to here
-apiRoutes.get('/', function(req, res) {
+apiRoutes.get('/feed', function(req, res) {
 	db.getPosts(1, 0, req.decoded.userId, function(err, results) {
 		if (err) {
 			//if there is an error, just render the error

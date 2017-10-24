@@ -8,7 +8,7 @@ var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 //full route: /login/
 apiRoutes.get('/', function(req, res) {
 	if (req.decoded) {
-		res.redirect('/');
+		res.redirect('/feed');
 		return false;
 	}
 	//as a response, render the login view
