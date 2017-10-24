@@ -34,6 +34,7 @@
 		<script src='/moment.js'></script>
 		<script>
 			var me = JSON.parse('<%- me %>');
+			var bubbleId = <%- bubbleId %>;
 			postsNum = 0;
 			$(document).ready(function() {
 			    posts = JSON.parse('<%- (posts) %>');
@@ -53,7 +54,8 @@
 				$.post("/post/new",
 				    {
 				        token: localStorage.getItem('token'),
-				        post: p
+						post: p,
+						bubbleId: bubbleId
 				    },
 				    function(data, status){
 				        console.log(data);

@@ -7,13 +7,16 @@ var db = require('./db'); //a reference to the database functions so they can be
 
 //this is the main page and requests to here
 apiRoutes.get('/feed', function(req, res) {
-	res.redirect('/feed/1');
+	db.getDataWhere('bubbleId', 'members', 'userId = ' + req.decoded.userId, function(err, data) {
+		res.redirect('/feed/' + (data[0].bubbleId)); //go to the first bubble the user is signed up for
+	});
 });
 
 apiRoutes.get('/feed/:bubbleId', function(req, res) {
-	db.isMember(parseInt(req.decoded.userId), parseInt(req.params.bubbleId), function(err, data) {
+	bid = parseInt(req.params.bubbleId);
+	db.isMember(parseInt(req.decoded.userId), bid, function(err, data) {
 		if (data.length > 0) {
-			db.getPosts(parseInt(req.params.bubbleId), 0, req.decoded.userId, function(err, results) {
+			db.getPosts(bid, 0, req.decoded.userId, function(err, results) {
 				if (err) {
 					//if there is an error, just render the error
 					res.render(err);
@@ -21,7 +24,11 @@ apiRoutes.get('/feed/:bubbleId', function(req, res) {
 					//render the feed page
 					//send the posts in a json format
 					//and send the user object as json too
-					res.render('feed', {posts: JSON.stringify(results), me: JSON.stringify(db.me(req.decoded))});
+					res.render('feed', {
+						posts: JSON.stringify(results), 
+						me: JSON.stringify(db.me(req.decoded)),
+						bubbleId: bid
+					});
 				}
 			});
 		} else {
