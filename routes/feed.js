@@ -7,7 +7,11 @@ var db = require('./db'); //a reference to the database functions so they can be
 
 //this is the main page and requests to here
 apiRoutes.get('/feed', function(req, res) {
-	db.getPosts(1, 0, req.decoded.userId, function(err, results) {
+	res.redirect('/feed/1');
+});
+
+apiRoutes.get('/feed/:bubbleId', function(req, res) {
+	db.getPosts(parseInt(req.params.bubbleId), 0, req.decoded.userId, function(err, results) {
 		if (err) {
 			//if there is an error, just render the error
 			res.render(err);
