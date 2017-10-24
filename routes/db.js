@@ -3,6 +3,7 @@
 
 //dependencies
 var mysql = require('mysql'); //mysql wrapper for the mysql api
+var moment = require('moment'); //mysql wrapper for the mysql api
 
 //create a new pool of mysql connection. better for performance - especially Node which is highly async
 var pool = mysql.createPool({
@@ -203,9 +204,91 @@ exports.likePost = function(userId, postId, date, callback) {
 	});
 }
 
+//verify if they are a member by checking that userid against that bubbleid in the member table
 exports.isMember = function(userId, bubbleId, callback) {
 	exports.getDataWhere('memberId', 'members', ('userId = ' + userId + ' and bubbleId = ' + bubbleId), function(err, data) {
-		callback(err, data);
+		//if there is an error
+		if (err) {
+			//send back a false success message
+			callback(err);
+			//and throw an error so it can be debugged
+			throw err;
+		};
+		callback(err, data); //return the data
+	});
+}
+
+//a signup function 
+exports.signup = function(email, password, name, profilePicture, bio, callback) {
+	//create a new object (or associative array) using property value shorthand
+	//https://github.com/airbnb/javascript#es6-object-concise
+	var user = {
+		email,
+		password,
+		name,
+		profilePicture,
+		bio,
+		//create a new MySQL formatted date using the moment library
+		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss") 
+	};
+
+	//inset the user object into the user table
+	exports.insertData(user, 'users', function(err, userResults) {
+		//if there is an error
+		if (err) {
+			//send back a false success message
+			callback(err);
+			//and throw an error so it can be debugged
+			throw err;
+		};
+		//send the data back
+		callback(null, userResults);
+	});
+}
+
+//a function to add a new member to the member table
+exports.newMember = function(userId, bubbleId, admin, callback) {
+	//create a new member object
+	member = {
+		userId,
+		bubbleId,
+		admin,
+		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss") //create a MySQL formatted date
+	};
+
+	//insert the member object into the member table
+	exports.insertData(member, 'members', function(err, results) {
+		//if there is an error
+		if (err) {
+			//send back a false success message
+			callback(err);
+			//and throw an error so it can be debugged
+			throw err;
+		};
+		callback(null, results);
+	});
+}
+
+//a function to create a new bubble
+exports.createBubble = function(name, bio, pic, callback) {
+	//create a new bubble object
+	let bubble = {
+		bubbleName: name,
+		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+		bio: bio,
+		bubblePicture: pic
+	};
+
+	//use the insertData function to insert the user object into the user table
+	exports.insertData(bubble, 'bubbles', function(err, results) {
+		//if there is an error
+		if (err) {
+			//send back a false success message
+			callback(err);
+			//and throw an error so it can be debugged
+			throw err;
+		};
+		callback(null, results); //send the data back
 	});
 }
 
