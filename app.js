@@ -8,9 +8,9 @@ const cookieParser = require('cookie-parser');
 
 //config
 //parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 //parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 // set the view engine to ejs (similar to html)
 app.set('view engine', 'ejs');
 //set the publicly accessible folder (available on the client side)
