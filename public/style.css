@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Raleway:400,500');
+/*@import url('https://fonts.googleapis.com/css?family=Raleway:400,500');*/
 body {
 	font-family: 'Raleway', Arial, 'Arial', sans-serif;
 	margin: 0;
@@ -159,6 +159,11 @@ body {
     list-style: none;
     padding: 0 10px;
     text-align: left;
+    margin: 0;
+}
+
+.comment:first-child { 
+    margin: 10px 0;
 }
 
 .postComments input {

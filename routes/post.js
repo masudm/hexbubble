@@ -52,6 +52,11 @@ apiRoutes.post('/like', function(req, res) {
 	});
 });
 
+//comment on a post
+apiRoutes.post('/comment', function(req, res) {
+	
+});
+
 //export the apiRoutes variable (which defines all the routes) so it can be used elsewhere
 //i.e. the main app
 module.exports = apiRoutes;

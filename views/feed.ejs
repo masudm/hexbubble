@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<link href='/style.css' rel="stylesheet" type="text/css"/>
-		<link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel="stylesheet" type="text/css"/>
+		<link href='/font-awesome.min.css' rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 		<div class='logo'><img src='/hexlogo.png'></div>
@@ -84,7 +84,7 @@
 						<div class='heart ${heart}' id='heart.${id}' ${heartAction}></div>
 						<span class='likeNum'>Likes: <span id='like.${id}'>${likes}</span></span>
 						</div>
-						<div class='postCommentsInfo button'>View next 10 of ${comments} comments</div>
+						<div class='postCommentsInfo button'>Load more comments...</div>
 					</div>
 					
 					<div class='postComments'>
@@ -112,10 +112,9 @@
 				let commentTemplate = `
 				<li class='comment'>
 					<span class='commentUser'><a href='#'>${me.username}</a></span>
-					<span class='commentTime'>${moment(Date()).fromNow()}</span>
+					<span class='commentTime' title='${Date()}'>${moment(Date()).fromNow()}</span>
 					<p>${comment}</p>
-				</li>
-				<br>`;
+				</li>`;
 
 				$("#comments").append(commentTemplate);
 			}
