@@ -149,7 +149,7 @@ body {
 }
 
 .postData {
-    font-size: 1.2em;
+    font-size: 1.4em;
     text-align: left;
     padding: 10px;
     border-bottom: 1px solid #60AEFE;
@@ -198,17 +198,17 @@ body {
 
 .postLikes {
     display: flex;
-    padding-bottom: 10px;
     border-bottom: 1px solid #60AEFE;
     justify-content: space-between;
+    margin-top: 10px;
 }
 
 .postComments {
-
+    margin-bottom: 10px;
 }
 
 .likeNum, .likeNum span {
-    font-size: 1.1em;
+    font-size: 1em;
     font-weight: 500;
 }
 
@@ -236,12 +236,12 @@ body {
 }
 
 .postCommentsInfo {
-    font-size: 1.2em;
-    padding: 10px;
+    font-size: 1em;
     border-top: 1px solid #60AEFE;
     padding: 5px;
-    margin: -5px 10px;
-    height: 1.4em;
+    position: relative;
+    top: -10px;
+    left: -10px;
 }
 
 .submitComment {

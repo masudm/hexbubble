@@ -36,15 +36,15 @@
 			var me = JSON.parse('<%- me %>');
 			var bubbleId = <%- bubbleId %>;
 			var postsNum = 0;
-			var commentsSkip = [];
+			var commentsSkip = {};
 
 			$(document).ready(function() {
 			    posts = JSON.parse('<%- (posts) %>');
 			    for (i in posts) {
-			    	if (posts[i].likeId != null) {
-			    		addPost(posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId, posts[i].comments);
+			    	if (posts[i].likeId != null && posts[i].likeId != 0) {
+			    		addPost(posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId);
 			    	} else {
-			    		addPost(posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId, posts[i].comments);
+			    		addPost(posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId);
 			    	}
 			    	postsNum = i;
 			    }
@@ -80,7 +80,6 @@
 						<div class='postUserDate' title='${date}'>${moment(date).fromNow()}</div>
 					</div>
 					<div class='postData'>${post}</div>
-					<br>
 					<div class='postLikes'>
 						<div>
 						<div class='heart ${heart}' id='heart.${id}' ${heartAction}></div>
@@ -108,19 +107,22 @@
 			}
 
 			function getComments(id) {
+				skip = 0;
+				if (commentsSkip[id] != undefined) {
+					skip = commentsSkip[id];
+				}
 				$.post("/post/comments",
 				    {
-				        postId: id
+				        postId: id,
+				        skip: skip
 				    },
 				    function(data, status){
 				        for (comment in data) {
-							insertComment(data[comment].comment, data[comment].userId + "change", data[comment].dateCreated);
+							insertComment(data[comment].comment, data[comment].username, data[comment].dateCreated, false);
 						}
 						console.log("check this code below for unique elements");
-						commentsSkip.push({
-							postId: id,
-							comments: data.length
-						});
+						
+						commentsSkip[id] = data.length;
 				    });
 			}
 
@@ -128,11 +130,11 @@
 				let comment = $("#commenter").val();
 				$("#commenter").val("");
 
-				insertComment(comment, me.username, Date());	
+				insertComment(comment, me.username, Date(), true);	
 				postComment(id, comment);			
 			}
 
-			function insertComment(comment, user, date) {
+			function insertComment(comment, user, date, now) {
 				let commentTemplate = `
 				<li class='comment'>
 					<span class='commentUser'><a href='#'>${user}</a></span>
@@ -140,7 +142,12 @@
 					<p>${comment}</p>
 				</li>`;
 
-				$("#comments").append(commentTemplate);
+				if (now) {
+					$("#comments").append(commentTemplate);
+				} else {
+					$("#comments").prepend(commentTemplate);
+				}
+				
 			}
 
 			function postComment(postId, comment) {

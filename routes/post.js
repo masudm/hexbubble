@@ -54,7 +54,7 @@ apiRoutes.post('/like', function(req, res) {
 
 //get comments on a post
 apiRoutes.post('/comments', function(req, res) {
-	db.getComments(req.body.postId, 0, function(err, data) {
+	db.getComments(req.body.postId, req.body.skip, function(err, data) {
 		res.json(data);
 	});
 });

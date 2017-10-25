@@ -147,13 +147,12 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
 	    // Use the connection
 	    var sql = `
 	    SELECT p.postId, p.post, p.dateCreated, b.bubbleName, u.name AS username, 
-	    COUNT(l.likeId) as likes, COUNT(lu.likeId) as likeId, COUNT(c.commentId) as comments
+	    COUNT(l.likeId) as likes, COUNT(lu.likeId) as likeId
 	    FROM posts AS p
 		INNER JOIN bubbles AS b ON p.bubbleId = b.bubbleId
 		INNER JOIN users AS u ON p.userId = u.userId
 		LEFT JOIN likes AS l ON p.postId = l.postId
-		LEFT JOIN likes as lu on p.postId = lu.postId AND lu.userId = ${userId}
-		LEFT JOIN comments as c on p.postId = c.postId
+		LEFT JOIN likes AS lu on p.postId = lu.postId AND lu.userId = ${userId}
 		WHERE p.bubbleId = ${bubbleId}
 		GROUP BY postId
 		ORDER BY p.dateCreated DESC
@@ -234,7 +233,14 @@ exports.getComments = function(postId, skip, callback) {
         	return callback("Server error.");
         }
 	    // Use the connection
-	    connection.query(`SELECT * from comments WHERE postId = "${postId}" LIMIT ${skip}, ${skip+10}`, function(error, results, fields) {
+	    connection.query(`
+	    	SELECT c.comment as comment, c.dateCreated as dateCreated, u.name as username
+	    	FROM comments as c
+	    	INNER JOIN users AS u ON c.userId = u.userId
+	    	WHERE postId = "${postId}" 
+	    	ORDER BY dateCreated DESC 
+	    	LIMIT ${skip}, ${skip+10}`, 
+	    function(error, results, fields) {
 	        //finished with the connection - send it back to the pool
 	        connection.release();
 	        //Handle error after the release.
