@@ -42,7 +42,7 @@ apiRoutes.post('/like', function(req, res) {
 	//like the post using the database method
 	//send the request's user id and the post id that they are sending
 	//also format a new date for mysql
-	db.likePost(req.decoded.userId, req.body.postId, moment(new Date()).format("YYYY-MM-DD HH:mm:ss"), function(err, data) {
+	db.likePost(req.decoded.userId, req.body.postId, function(err, data) {
 		//if there is an error, return a success: false message along with the error
 		if (err) {
 			return res.json({success: false, error: err});
@@ -52,9 +52,23 @@ apiRoutes.post('/like', function(req, res) {
 	});
 });
 
+//get comments on a post
+apiRoutes.post('/comments', function(req, res) {
+	db.getComments(req.body.postId, 0, function(err, data) {
+		res.json(data);
+	});
+});
+
 //comment on a post
 apiRoutes.post('/comment', function(req, res) {
-	
+	db.addComment(req.decoded.userId, req.body.postId, req.body.comment, function(err, data) {
+		//if there is an error, return a success: false message along with the error
+		if (err) {
+			return res.json({success: false, error: err});
+		}
+		//otherwise, return a success true message
+		return res.json({success: true});
+	});
 });
 
 //export the apiRoutes variable (which defines all the routes) so it can be used elsewhere

@@ -1,3 +1,4 @@
+//require('node-offline-localhost').ifOfflineAtStartUp(); //make sure localhost works when offline
 //dependencies
 const express = require('express'); //the express web server dependency
 const app = express(); //create a web server using express

@@ -8,7 +8,7 @@ var moment = require('moment'); //mysql wrapper for the mysql api
 //create a new pool of mysql connection. better for performance - especially Node which is highly async
 var pool = mysql.createPool({
     connectionLimit: 10,
-    host: 'localhost',
+    host: '127.0.0.1',
     user: 'root',
     password: 'root',
     database: 'hexbubble'
@@ -152,7 +152,7 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
 		INNER JOIN bubbles AS b ON p.bubbleId = b.bubbleId
 		INNER JOIN users AS u ON p.userId = u.userId
 		LEFT JOIN likes AS l ON p.postId = l.postId
-		LEFT JOIN likes as lu on p.postId = lu.postId AND l.userId = ${userId}
+		LEFT JOIN likes as lu on p.postId = lu.postId AND lu.userId = ${userId}
 		LEFT JOIN comments as c on p.postId = c.postId
 		WHERE p.bubbleId = ${bubbleId}
 		GROUP BY postId
@@ -174,7 +174,7 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
 }
 
 //like the post using the insert id function
-exports.likePost = function(userId, postId, date, callback) {
+exports.likePost = function(userId, postId, callback) {
 	//create an object for inserting into the like table
 	var like = {
 		//the like id is a concatention of the userId and the postId
@@ -184,7 +184,7 @@ exports.likePost = function(userId, postId, date, callback) {
 		likeId: parseInt(String(userId) + String(postId)),
 		userId: userId,
 		postId: postId,
-		dateCreated: date
+		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
 	};
 	//using the insert data function, the like object is 
 	//inserted into the like table
@@ -201,6 +201,51 @@ exports.likePost = function(userId, postId, date, callback) {
 			return callback("Server error.");
 		} 
 		return callback(null, results);
+	});
+}
+
+exports.addComment = function(userId, postId, comment, callback) {
+	var comment = {
+		userId,
+		postId,
+		comment,
+		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+	}
+
+	exports.insertData(comment, 'comments', function(err, data) {
+		//if there is an error
+		if (err) {
+			//send back a false success message
+			callback(err);
+			//and throw an error so it can be debugged
+			throw err;
+		};
+		callback(null, data);
+	});
+}
+
+exports.getComments = function(postId, skip, callback) {
+	//get a new connection from the pool
+	pool.getConnection(function(err, connection) {
+		//if there is an error
+		if (err) {
+			//return the error via the callback to the function that callled it
+        	console.log(err);
+        	return callback("Server error.");
+        }
+	    // Use the connection
+	    connection.query(`SELECT * from comments WHERE postId = "${postId}" LIMIT ${skip}, ${skip+10}`, function(error, results, fields) {
+	        //finished with the connection - send it back to the pool
+	        connection.release();
+	        //Handle error after the release.
+	        if (error) {
+	        	console.log(error);
+	        	return callback("Server error.");
+	        }
+
+	        return callback(null, results)
+	        //Don't use the connection here, it has been returned to the pool.
+	    });
 	});
 }
 
