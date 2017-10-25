@@ -4,7 +4,9 @@ var bodyParser = require('body-parser'); //use the body parser to parse the body
 var db = require('./db'); //a reference to the database functions so they can be used
 
 apiRoutes.get('/:userid', function(req, res) {
-	res.send(req.params.userid);
+	db.getUser(req.params.userid, function(err, data) {
+		res.send(data);
+	});
 });
 
 //export the apiRoutes variable (which defines all the routes) so it can be used elsewhere

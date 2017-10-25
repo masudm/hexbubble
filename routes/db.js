@@ -343,6 +343,12 @@ exports.createBubble = function(name, bio, pic, callback) {
 	});
 }
 
+exports.getUser = function(userId, callback) {
+	db.getDataWhere('*', 'users', 'userId = "' + userId + '"', function(err, data) {
+		callback(err, data);
+	});
+}
+
 //using the decoded id, return the email and username
 //instead of returning the whole decoded array 
 //which may contain sensitive info.
