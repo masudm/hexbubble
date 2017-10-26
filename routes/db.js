@@ -107,7 +107,7 @@ exports.isMember = function(userId, bubbleId, callback) {
 
 //get bubbleId using the name
 exports.getBubble = function(name, callback) {
-	rawdb.getDataWhere("bubbleId", "bubbles", "bubbleName = '" + name + "'", function(err, data) {
+	rawdb.getDataWhereLimit("bubbleId", "bubbles", "bubbleName = '" + name + "'", 1, function(err, data) {
 		//if there is an error
 		if (err) {
 			//send back a false success message

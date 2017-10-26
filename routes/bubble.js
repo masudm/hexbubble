@@ -7,6 +7,20 @@ apiRoutes.get('/new', function(req, res) {
     res.render('newbubble');
 });
 
+apiRoutes.post('/new', function(req, res) {
+    db.getBubble(req.body.name, function(err, data) {
+        if (data[0] == undefined) {
+            return res.json({
+                success: false,
+                error: "Bubble does not exist"
+            });
+        }
+        db.newMember(req.decoded.userId, data[0].bubbleId, 0, function(err, data) {
+            res.json({success: true});
+        });
+    });
+});
+
 //export the apiRoutes variable (which defines all the routes) so it can be used elsewhere
 //i.e. the main app
 module.exports = apiRoutes;

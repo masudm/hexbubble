@@ -12,14 +12,24 @@
             <div class='container'>
                 <br>
                 <h1>Join a new bubble: </h1>
-                <input placeholder="Bubble name" class='newbubble'>
-                <div class='button'>Join</div>
+                <input placeholder="Bubble name" class='newbubble' id='bubbleName'>
+                <div class='button' onclick='joinBubble()'>Join</div>
             </div>
         </div>
         <script src="/jquery.js"></script>
 		<script src='/moment.js'></script>
         <script>
             $("#newIcon").addClass("active");
+            
+            function joinBubble() {
+                $.post("/bubble/new",
+                {
+                    name: $('#bubbleName').val()
+                },
+                function(data, status){
+                    console.log(data);
+                });
+            }
         </script>
     </body>
 </html>

@@ -29,7 +29,7 @@ exports.getDataWhere = function(columns, table, where, callback) {
 
 //async function to get data where a specific query is met and with a limit
 exports.getDataWhereLimit = function(columns, table, where, limit, callback) {
-	let sql = `SELECT ${columns} FROM ${table} WHERE ${pool.escape(where)} LIMIT ${limit}`;
+	let sql = `SELECT ${columns} FROM ${table} WHERE ${where} LIMIT ${limit}`;
     query(sql, callback);
 }
 
