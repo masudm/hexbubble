@@ -63,6 +63,17 @@ exports.insertData = function(data, table, callback) {
 	});
 }
 
+exports.searchUsers = function(term, callback) {
+	let sql = `SELECT *
+	FROM users
+	WHERE
+	(
+		name LIKE '%${term}%'
+	)
+	LIMIT 5`;
+	query(sql, callback);
+}
+
 exports.getPosts = function(bubbleId, skip, userId, callback) {
 	//get a new connection from the pool
 	pool.getConnection(function(err, connection) {

@@ -214,6 +214,10 @@ exports.getUser = function(userId, callback) {
 	});
 }
 
+exports.searchUsers = function(term, callback) {
+	rawdb.searchUsers(term, callback);
+}
+
 //using the decoded id, return the email and username
 //instead of returning the whole decoded array 
 //which may contain sensitive info.
