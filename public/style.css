@@ -70,13 +70,20 @@ body {
 .sidebar .elem {
     padding: 2.5vw;
     font-size: 2em;
-    color: #a6adc4;
+    color: white;
     cursor: pointer;
-    border-bottom: 1px solid #60AEFE;
+    border-bottom: 5px solid #72C1FD;
+    background-color: #60AEFE;
+}
+
+.bubbleIcon img {
+    max-width: 100%;
+    max-height: 1.5em;
 }
 
 .sidebar .elem.active, .sidebar .elem:hover {
     color: #60AEFE;
+    background-color: white;
 }
 
 .feed.container {
