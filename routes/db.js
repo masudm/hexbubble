@@ -119,6 +119,10 @@ exports.getBubble = function(name, callback) {
 	});
 }
 
+exports.getBubbles = function(userId, callback) {
+	rawdb.getBubbles(userId, callback);
+}
+
 //get first bubbleid
 exports.getFirstBubble = function(userId, callback) {
 	rawdb.getDataWhere('bubbleId', 'members', 'userId = ' + userId, function(err, data) {

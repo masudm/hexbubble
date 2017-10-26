@@ -67,6 +67,11 @@ body {
     width: 10vw;
 }
 
+.bubbleName {
+    font-size: 0.7em !important;
+    word-wrap: break-word;
+}
+
 .sidebar .elem {
     padding: 2.5vw;
     font-size: 2em;

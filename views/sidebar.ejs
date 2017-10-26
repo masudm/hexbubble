@@ -1,7 +1,23 @@
 <div class='sidebar'>
     <ul>
         <a href='/me'><li class='elem' id='meIcon'><i class="fa fa-user" aria-hidden="true"></i></li></a>
-        <a href='#'><li class='elem bubbleIcon' id='bubbleIcon_1'><img src='/hexlogo.png'></li></a>
+        <li class='elem bubbleName' id='sidebarLoading'>Loading...</li>
         <a href='/bubble/new'><li class='elem' id='newIcon'><i class="fa fa-plus" aria-hidden="true"></i></li></a>
     </ul>
 </div>
+<script src="/jquery.js"></script>
+<script>
+    $.get("/me/bubbles", function(data, status){
+        $('#sidebarLoading').remove();
+        for (bubble in data) {
+            $('.sidebar ul a:eq(0)').after(`
+            <a href='/feed/${data[bubble].bubbleId}'>
+                <li class='elem bubbleIcon' id='bubbleIcon_${data[bubble].bubbleId}'>
+                    <img src='/${data[bubble].bubblePicture}'>
+                    <div class='bubbleName'>${data[bubble].bubbleName}</div>
+                </li>
+            </a>
+            `);
+        }
+    });
+</script>

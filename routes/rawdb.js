@@ -74,6 +74,14 @@ exports.searchUsers = function(term, callback) {
 	query(sql, callback);
 }
 
+exports.getBubbles = function(userId, callback) {
+	let sql = `SELECT b.bubbleId, b.bubblePicture, b.bubbleName
+	FROM members AS m
+	INNER JOIN bubbles AS b ON m.bubbleId = b.bubbleId
+	WHERE m.userId = ${userId}`;
+	query(sql, callback);
+}
+
 exports.getPosts = function(bubbleId, skip, userId, callback) {
 	//get a new connection from the pool
 	pool.getConnection(function(err, connection) {

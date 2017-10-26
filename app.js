@@ -68,11 +68,8 @@ app.use(function(req, res, next) {
 app.use('/post', require('./routes/post'));
 app.use('/', require('./routes/feed'));
 
-app.use('/me', function(req, res) {
-	res.redirect('/user/' + req.decoded.userId);
-});
-
 app.use('/user', require('./routes/user'));
+app.use('/me', require('./routes/me'));
 app.use('/bubble', require('./routes/bubble'));
 app.use('/search', require('./routes/search'));
 
