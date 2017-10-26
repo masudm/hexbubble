@@ -79,10 +79,13 @@ body {
     color: #60AEFE;
 }
 
+.feed.container {
+    margin-left: 10vw;
+}
+
 .container {
     width: 90vw;
     margin: auto;
-    margin-left: 10vw;
 }
 
 .login {
