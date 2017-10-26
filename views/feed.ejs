@@ -5,18 +5,9 @@
 		<link href='/font-awesome.min.css' rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
-		<div class='logo'><img src='/hexlogo.png'></div>
-		<div class='header'>
-			<!--<div class='headerName'>HexBubble</div>-->
-			<input id='search' class='search' placeholder="Search">
-		</div>
+		<% include header %>
 		<div class='main'>
-			<div class='sidebar'>
-				<ul>
-					<li class='elem active'><i class="fa fa-user" aria-hidden="true"></i></li>
-					<li class='elem'><i class="fa fa-plus" aria-hidden="true"></i></li>
-				</ul>
-			</div>
+			<% include sidebar %>
 			<div class='container'>
 				<br>
 				<div class='newPost'>

@@ -67,7 +67,13 @@ app.use(function(req, res, next) {
 
 app.use('/post', require('./routes/post'));
 app.use('/', require('./routes/feed'));
+
+app.use('/me', function(req, res) {
+	res.redirect('/user/' + req.decoded.userId);
+});
+
 app.use('/user', require('./routes/user'));
+app.use('/bubble', require('./routes/bubble'));
 
 //finally, start the server on port 3000 within the local network.
 app.listen(3000, function() {
