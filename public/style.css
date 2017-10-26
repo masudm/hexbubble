@@ -5,7 +5,7 @@ body {
 	padding: 0;
 	background-color: #f5f6fb;
 	margin: auto;
-	text-align: center;
+    text-align: center;
 }
 
 .main {
@@ -55,6 +55,9 @@ body {
 .sidebar {
     width: 10vw;
     background-color: white;
+    height: 90%;
+    height: calc(100% - 2.2em - 20px);
+    position: absolute;
 }
 
 .sidebar ul {
@@ -78,7 +81,8 @@ body {
 
 .container {
     width: 90vw;
-	margin: auto;
+    margin: auto;
+    margin-left: 10vw;
 }
 
 .login {
