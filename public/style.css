@@ -25,6 +25,10 @@ body {
     width: 25vw;
 }
 
+.noDecorate {
+    text-decoration: none;
+}
+
 .search::-webkit-input-placeholder { /* Chrome/Opera/Safari */
     text-align: center;
 }

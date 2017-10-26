@@ -75,7 +75,8 @@ exports.getBubbles = function(userId, callback) {
 	let sql = `SELECT b.bubbleId, b.bubblePicture, b.bubbleName
 	FROM members AS m
 	INNER JOIN bubbles AS b ON m.bubbleId = b.bubbleId
-	WHERE m.userId = ${userId}`;
+	WHERE m.userId = ${userId}
+	ORDER BY m.dateCreated DESC`;
 	query(sql, callback);
 }
 

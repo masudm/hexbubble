@@ -38,7 +38,9 @@
 			    		addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId);
 			    	}
 			    	postsNum = i;
-			    }
+				}
+				
+				$("#bubbleIcon_" + bubbleId).addClass('active');
 			});
 
 			function newPost() {
