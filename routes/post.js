@@ -19,11 +19,11 @@ apiRoutes.post('/new', function(req, res) {
 	//insert the object into the post table if they are a member
 	db.isMember(parseInt(req.decoded.userId), bid, function(err, data) {
 		if (data.length > 0) {
-			db.insertData(post, 'posts', function(err, results) {
+			db.newPost(post, function(err, results) {
 				if (err) {
 					return res.json({success: false, error: err});
 				}
-				db.likePost(req.decoded.userId, results.insertId, moment(new Date()).format("YYYY-MM-DD HH:mm:ss"), function(err, data) {
+				db.likePost(req.decoded.userId, results.insertId, function(err, data) {
 					if (err) {
 						return res.json({success: false, error: err});
 					}

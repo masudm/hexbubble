@@ -1,175 +1,37 @@
-//all database functions go through here. this makes it easier to make mass changes to the database
-//such as the connection info or parametising the sql queries to prevent SQL injections
+//all database functions go through here. this contacts the raw database wrapper
 
 //dependencies
-var mysql = require('mysql'); //mysql wrapper for the mysql api
-var moment = require('moment'); //mysql wrapper for the mysql api
-
-//create a new pool of mysql connection. better for performance - especially Node which is highly async
-var pool = mysql.createPool({
-    connectionLimit: 10,
-    host: '127.0.0.1',
-    user: 'root',
-    password: 'root',
-    database: 'hexbubble'
-});
-
-//create a (public) function to export to other files that include this file
-//this is an async function so a 'callback' parameter needs to be passed
-//when the function is done, it calls the callback method with either the errors or the results
-exports.getData = function(columns, table, callback) {
-	//get a new connection from the pool
-	pool.getConnection(function(err, connection) {
-		//if there is an error
-		if (err) {
-			//return the error via the callback to the function that callled it
-        	console.log(err);
-        	return callback("Server error.");
-        }
-	    // Use the connection
-	    connection.query('SELECT ' + columns + ' FROM ' + table, function(error, results, fields) {
-	        //finished with the connection - send it back to the pool
-	        connection.release();
-	        //Handle error after the release.
-	        if (error) {
-	        	console.log(error);
-	        	return callback("Server error.");
-	        }
-
-	        return callback(null, results)
-	        //Don't use the connection here, it has been returned to the pool.
-	    });
-	});
-}
-
-//async function to get data where a specific query is met
-exports.getDataWhere = function(columns, table, where, callback) {
-	//get a new connection from the pool
-	pool.getConnection(function(err, connection) {
-		//if there is an error
-		if (err) {
-			//return the error via the callback to the function that callled it
-        	console.log(err);
-        	return callback("Server error.");
-        }
-	    // Use the connection
-	    connection.query('SELECT ' + columns + ' FROM ' + table + ' WHERE ' + where, function(error, results, fields) {
-	        //finished with the connection - send it back to the pool
-	        connection.release();
-	        //Handle error after the release.
-	        if (error) {
-	        	console.log(error);
-	        	return callback("Server error.");
-	        }
-
-	        return callback(null, results)
-	        //Don't use the connection here, it has been returned to the pool.
-	    });
-	});
-}
+var moment = require('moment'); //get time/format times
+var rawdb = require('./rawdb');
 
 //an async function to login
 //pass an email, password and a callback function as parameters
 exports.login = function(email, password, callback) {
-	//get a new connection from the pool
-	pool.getConnection(function(err, connection) {
-		//if there is an error
+	rawdb.getDataWhere('*', 'users', `email = '${email}' and password = '${password}'`, function(err, results) {
 		if (err) {
-			//return the error via the callback to the function that callled it
-        	console.log(err);
-        	return callback("Server error.");
-        }
-	    // Use the connection
-	    //login by finding users where the email and password match the database.
-	    //use '?' to make sure the query is parameterised to prevent sql injections
-	    connection.query('SELECT * from users WHERE email = ? and password = ?', [email, password], function(error, results, fields) {
-	        //finished with the connection - send it back to the pool
-	        connection.release();
-	        //Handle error after the release.
-	        if (error) {
-	        	console.log(error);
-	        	return callback("Server error.");
-	        }
+			console.log(err);
+			return callback("Server error.");
+		}
 
-	        //if there is a result (i.e. it found a match to the email and password)
-	        if (results.length == 1) {
-	        	//return true
-	        	return callback(null, true, results)
-	        } else {
-	        	//otherwise return false
-	        	return callback(null, false)
-	        }
-	        //Don't use the connection here, it has been returned to the pool.
-	    });
+		//if there is a result (i.e. it found a match to the email and password)
+		if (results.length == 1) {
+			//return true
+			return callback(null, true, results)
+		} else {
+			//otherwise return false
+			return callback(null, false)
+		}
 	});
 }
 
-//insert data using a data object into a table
-exports.insertData = function(data, table, callback) {
-	//get a new connection from the pool
-	pool.getConnection(function(err, connection) {
-		//if there is an error
-		if (err) {
-			//return the error via the callback to the function that callled it
-        	console.log(err);
-        	return callback("Server error.");
-        }
-	    // Use the connection
-	    //insert into a table and use the SET MySQL command to easily insert an object of data
-	    //rather than the typical columns...values... SQL command
-	    //this also allows the data to be parsed to prevent SQL injections
-	    connection.query('INSERT INTO '+ table +' SET ?', data, function(error, results, fields) {
-	        //finished with the connection - send it back to the pool
-	        connection.release();
-	        //Handle error after the release.
-	        if (error) {
-	        	console.log(error);
-	        	return callback("Server error.");
-	        }
-
-	        //return the results of the command
-	        return callback(null, results)
-	        //Don't use the connection here, it has been returned to the pool.
-	    });
-	});
-}
-
-//get posts
+//get posts using the bubbleid, how many posts to skip (pagination) and current user
 exports.getPosts = function(bubbleId, skip, userId, callback) {
-	//get a new connection from the pool
-	pool.getConnection(function(err, connection) {
-		//if there is an error
-		if (err) {
-			//return the error via the callback to the function that callled it
-        	console.log(err);
-        	return callback("Server error.");
-        }
-	    // Use the connection
-	    var sql = `
-	    SELECT p.postId, p.post, p.dateCreated, b.bubbleName, u.name AS username, 
-	    COUNT(l.likeId) as likes, COUNT(lu.likeId) as likeId
-	    FROM posts AS p
-		INNER JOIN bubbles AS b ON p.bubbleId = b.bubbleId
-		INNER JOIN users AS u ON p.userId = u.userId
-		LEFT JOIN likes AS l ON p.postId = l.postId
-		LEFT JOIN likes AS lu on p.postId = lu.postId AND lu.userId = ${userId}
-		WHERE p.bubbleId = ${bubbleId}
-		GROUP BY postId
-		ORDER BY p.dateCreated DESC
-		LIMIT ${skip}, ${skip+10}`;
-	    connection.query(sql, function(error, results, fields) {
-	        //finished with the connection - send it back to the pool
-	        connection.release();
-	        //Handle error after the release.
-	        if (error) {
-	        	console.log(error);
-	        	return callback("Server error.");
-	        }
+	rawdb.getPosts(bubbleId, skip, userId, callback);
+}
 
-	        return callback(null, results)
-	        //Don't use the connection here, it has been returned to the pool.
-	    });
-	});
+//insert a new pos
+exports.newPost = function(post, callback) {
+	rawdb.insertData(post, 'posts', callback);
 }
 
 //like the post using the insert id function
@@ -187,7 +49,7 @@ exports.likePost = function(userId, postId, callback) {
 	};
 	//using the insert data function, the like object is 
 	//inserted into the like table
-	exports.insertData(like, 'likes', function(err, results) {
+	rawdb.insertData(like, 'likes', function(err, results) {
 		//if there is an error, return the error
 		if (err) {
 			//if the error is a duplicate entry, that means the user has
@@ -203,6 +65,7 @@ exports.likePost = function(userId, postId, callback) {
 	});
 }
 
+//add a comment using their userid and current postid
 exports.addComment = function(userId, postId, comment, callback) {
 	var comment = {
 		userId,
@@ -211,7 +74,7 @@ exports.addComment = function(userId, postId, comment, callback) {
 		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
 	}
 
-	exports.insertData(comment, 'comments', function(err, data) {
+	rawdb.insertData(comment, 'comments', function(err, data) {
 		//if there is an error
 		if (err) {
 			//send back a false success message
@@ -223,41 +86,14 @@ exports.addComment = function(userId, postId, comment, callback) {
 	});
 }
 
+//get x number of comments on the current post(id)
 exports.getComments = function(postId, skip, callback) {
-	//get a new connection from the pool
-	pool.getConnection(function(err, connection) {
-		//if there is an error
-		if (err) {
-			//return the error via the callback to the function that callled it
-        	console.log(err);
-        	return callback("Server error.");
-        }
-	    // Use the connection
-	    connection.query(`
-	    	SELECT c.comment as comment, c.dateCreated as dateCreated, u.name as username
-	    	FROM comments as c
-	    	INNER JOIN users AS u ON c.userId = u.userId
-	    	WHERE postId = "${postId}" 
-	    	ORDER BY dateCreated DESC 
-	    	LIMIT ${skip}, ${skip+10}`, 
-	    function(error, results, fields) {
-	        //finished with the connection - send it back to the pool
-	        connection.release();
-	        //Handle error after the release.
-	        if (error) {
-	        	console.log(error);
-	        	return callback("Server error.");
-	        }
-
-	        return callback(null, results)
-	        //Don't use the connection here, it has been returned to the pool.
-	    });
-	});
+	rawdb.getComments(postId, parseInt(skip), callback);
 }
 
 //verify if they are a member by checking that userid against that bubbleid in the member table
 exports.isMember = function(userId, bubbleId, callback) {
-	exports.getDataWhere('memberId', 'members', ('userId = ' + userId + ' and bubbleId = ' + bubbleId), function(err, data) {
+	rawdb.getDataWhere('memberId', 'members', ('userId = ' + userId + ' and bubbleId = ' + bubbleId), function(err, data) {
 		//if there is an error
 		if (err) {
 			//send back a false success message
@@ -269,7 +105,35 @@ exports.isMember = function(userId, bubbleId, callback) {
 	});
 }
 
-//a signup function 
+//get bubbleId using the name
+exports.getBubble = function(name, callback) {
+	rawdb.getDataWhere("bubbleId", "bubbles", "bubbleName = '" + name + "'", function(err, data) {
+		//if there is an error
+		if (err) {
+			//send back a false success message
+			callback(err);
+			//and throw an error so it can be debugged
+			throw err;
+		};
+		callback(err, data); //return the data
+	});
+}
+
+//get first bubbleid
+exports.getFirstBubble = function(userId, callback) {
+	rawdb.getDataWhere('bubbleId', 'members', 'userId = ' + userId, function(err, data) {
+		//if there is an error
+		if (err) {
+			//send back a false success message
+			callback(err);
+			//and throw an error so it can be debugged
+			throw err;
+		};
+		callback(err, data); //return the data
+	});
+}
+
+//a signup function - convert the details into an object and insert
 exports.signup = function(email, password, name, profilePicture, bio, callback) {
 	//create a new object (or associative array) using property value shorthand
 	//https://github.com/airbnb/javascript#es6-object-concise
@@ -284,7 +148,7 @@ exports.signup = function(email, password, name, profilePicture, bio, callback) 
 	};
 
 	//inset the user object into the user table
-	exports.insertData(user, 'users', function(err, userResults) {
+	rawdb.insertData(user, 'users', function(err, userResults) {
 		//if there is an error
 		if (err) {
 			//send back a false success message
@@ -308,7 +172,7 @@ exports.newMember = function(userId, bubbleId, admin, callback) {
 	};
 
 	//insert the member object into the member table
-	exports.insertData(member, 'members', function(err, results) {
+	rawdb.insertData(member, 'members', function(err, results) {
 		//if there is an error
 		if (err) {
 			//send back a false success message
@@ -331,7 +195,7 @@ exports.createBubble = function(name, bio, pic, callback) {
 	};
 
 	//use the insertData function to insert the user object into the user table
-	exports.insertData(bubble, 'bubbles', function(err, results) {
+	rawdb.insertData(bubble, 'bubbles', function(err, results) {
 		//if there is an error
 		if (err) {
 			//send back a false success message
@@ -343,8 +207,9 @@ exports.createBubble = function(name, bio, pic, callback) {
 	});
 }
 
+//get a user using their userid
 exports.getUser = function(userId, callback) {
-	db.getDataWhere('*', 'users', 'userId = "' + userId + '"', function(err, data) {
+	rawdb.getDataWhere('*', 'users', 'userId = "' + userId + '"', function(err, data) {
 		callback(err, data);
 	});
 }

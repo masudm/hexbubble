@@ -8,7 +8,7 @@ var db = require('./db'); //a reference to the database functions so they can be
 //this is the main page and requests to here
 apiRoutes.get('/feed', function(req, res) {
 	//get the first bubble id
-	db.getDataWhere('bubbleId', 'members', 'userId = ' + req.decoded.userId, function(err, data) {
+	db.getFirstBubble(req.decoded.userId, function(err, data) {
 		if (data.length > 0) {
 			//redirect to their actual feed
 			res.redirect('/feed/' + (data[0].bubbleId)); //go to the first bubble the user is signed up for

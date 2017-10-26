@@ -28,7 +28,7 @@ apiRoutes.post('/', function(req, res) {
 	let bio = req.body.bio;
 
 	//check if the bubble already exists
-	db.getDataWhere("bubbleId", "bubbles", "bubbleName = '" + req.body.bubble + "'", function(err, data) {
+	db.getBubble(req.body.bubble, function(err, data) {
 		if (data.length > 0) {
 			//a bubble already exists
 			let bubbleId = (data[0].bubbleId); //get it's bubbleid
