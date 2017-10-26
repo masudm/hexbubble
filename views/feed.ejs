@@ -33,9 +33,9 @@
 			    posts = JSON.parse('<%- (posts) %>');
 			    for (i in posts) {
 			    	if (posts[i].likeId != null && posts[i].likeId != 0) {
-			    		addPost(posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId);
+			    		addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId);
 			    	} else {
-			    		addPost(posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId);
+			    		addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId);
 			    	}
 			    	postsNum = i;
 			    }
@@ -53,10 +53,10 @@
 				    function(data, status){
 				        console.log(data);
 				    });
-				addPost(me.username, Date(), p, 1, true, postsNum, 0);
+				addPost('/me', me.username, Date(), p, 1, true, postsNum, 0);
 			}
 
-			function addPost(username, date, post, likes, isLiked, newP, id, comments) {
+			function addPost(userlink, username, date, post, likes, isLiked, newP, id, comments) {
 				var heart = "";
 				var heartAction = `onclick='love("${id}")'`;
 				if (isLiked) {
@@ -67,7 +67,7 @@
 				<div class='post'>
 					<div class='postUser'>
 						<!-- <img class='postProfilePic'> -->
-						<div class='postUserName'><a href='#'>${username}</a></div>
+						<div class='postUserName'><a href='${userlink}'>${username}</a></div>
 						<div class='postUserDate' title='${date}'>${moment(date).fromNow()}</div>
 					</div>
 					<div class='postData'>${post}</div>
