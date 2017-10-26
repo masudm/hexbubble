@@ -43,12 +43,13 @@ body {
 }
 
 .logo {
-    width: 8.7vw;
-    width: calc(10vw - 21px);
+    width: 8.1vw;
+    width: calc(10vw - 20px);
     float: left;
     background-color: #72C1FD;
     height: 2.2em;
     padding: 10px;
+    position: fixed;
 }
 
 .logo img {
@@ -61,7 +62,7 @@ body {
     background-color: white;
     height: 90%;
     height: calc(100% - 2.2em - 20px);
-    position: absolute;
+    position: fixed;
 }
 
 .sidebar ul {
