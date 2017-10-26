@@ -70,7 +70,7 @@
 				    function(data, status){
 				        console.log(data);
 				    });
-				addPost('/me', me.username, Date(), p, 1, true, postsNum, 0);
+				addPost('/me', me.username, moment(), p, 1, true, postsNum, 0);
 			}
 
 			function addPost(userlink, username, date, post, likes, isLiked, newP, id, comments) {
