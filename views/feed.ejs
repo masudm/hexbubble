@@ -43,9 +43,24 @@
 				$("#bubbleIcon_" + bubbleId).addClass('active');
 			});
 
+			$("#post").keyup(function(ev) {
+				if (ev.which === 13) {
+					newPost();
+				}
+			});
+
+			$('#posts').on('keyup', '.commenter', function(ev) {
+				if (ev.which === 13) {
+					let id = (ev.currentTarget.id);
+					id = id.substr(id.indexOf("_") + 1);
+					addComment(id);
+				}
+			});
+
 			function newPost() {
 				postsNum += 1;
-				var p = $("#post").val();
+				var p = $("#post").val().replace(/\s/g, '');
+				$("#post").val("");
 				$.post("/post/new",
 				    {
 				        token: localStorage.getItem('token'),
@@ -84,7 +99,7 @@
 					<div class='postComments'>
 						<ul id='comments_${id}'>
 						</ul>
-						<input type='text' placeholder='Comment....' class='commenter' id='commenter'>
+						<input type='text' placeholder='Comment....' class='commenter' id='commenter_${id}'>
 						<div class='submitComment button' onclick='addComment("${id}")'>Submit</div>
 					</div>
 				</div>
@@ -122,17 +137,13 @@
 							$("#loader_" + id).prop('onclick', null).off('click');
 						}
 						
-						if (commentsSkip[id]) {
-							commentsSkip[id] = parseInt(data.length);
-						} else {
-							commentsSkip[id] += parseInt(data.length);
-						}
+						commentsSkip[id] += parseInt(data.length);
 				    });
 			}
 
 			function addComment(id) {
-				let comment = $("#commenter").val();
-				$("#commenter").val("");
+				let comment = $("#commenter_" + id).val();
+				$("#commenter_" + id).val("");
 
 				insertComment(id, comment, me.username, Date(), true);	
 				postComment(id, comment);			
