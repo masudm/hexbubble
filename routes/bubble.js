@@ -16,6 +16,19 @@ apiRoutes.post('/new', function(req, res) {
             });
         }
         db.newMember(req.decoded.userId, data[0].bubbleId, 0, function(err, data) {
+            if (err) {
+                if (err == "User already in this bubble.") {
+                    return res.json({
+                        success: false,
+                        error: "User already in this bubble."
+                    }); 
+                }
+                return res.json({
+                    success: false,
+                    error: "Server error"
+                });
+            } 
+            
             res.json({success: true});
         });
     });

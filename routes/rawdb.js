@@ -39,22 +39,19 @@ exports.insertData = function(data, table, callback) {
 	pool.getConnection(function(err, connection) {
 		//if there is an error
 		if (err) {
-			//return the error via the callback to the function that callled it
-        	console.log(err);
-        	return callback("Server error.");
+        	return callback(err);
         }
 	    // Use the connection
 	    //insert into a table and use the SET MySQL command to easily insert an object of data
 	    //rather than the typical columns...values... SQL command
 	    //this also allows the data to be parsed to prevent SQL injections
-	    connection.query('INSERT INTO '+ table +' SET ?', data, function(error, results, fields) {
+	    connection.query('INSERT INTO '+ table +' SET ?', data, function(err, results, fields) {
 	        //finished with the connection - send it back to the pool
 	        connection.release();
-	        //Handle error after the release.
-	        if (error) {
-	        	console.log(error);
-	        	return callback("Server error.");
-	        }
+	        //if there is an error
+			if (err) {
+				return callback(err);
+			}
 
 	        //return the results of the command
 	        return callback(null, results)
@@ -87,9 +84,7 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
 	pool.getConnection(function(err, connection) {
 		//if there is an error
 		if (err) {
-			//return the error via the callback to the function that callled it
-        	console.log(err);
-        	return callback("Server error.");
+        	return callback(err);
         }
 	    // Use the connection
 	    var sql = `
@@ -104,14 +99,13 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
 		GROUP BY postId
 		ORDER BY p.dateCreated DESC
 		LIMIT ${skip}, ${skip+10}`;
-	    connection.query(sql, function(error, results, fields) {
+	    connection.query(sql, function(err, results, fields) {
 	        //finished with the connection - send it back to the pool
 	        connection.release();
-	        //Handle error after the release.
-	        if (error) {
-	        	console.log(error);
-	        	return callback("Server error.");
-	        }
+	        //if there is an error
+			if (err) {
+				return callback(err);
+			}
 
 	        return callback(null, results)
 	        //Don't use the connection here, it has been returned to the pool.
@@ -123,10 +117,8 @@ exports.getComments = function(postId, skip, callback) {
     //get a new connection from the pool
     pool.getConnection(function(err, connection) {
         //if there is an error
-        if (err) {
-            //return the error via the callback to the function that callled it
-            console.log(err);
-            return callback("Server error.");
+		if (err) {
+        	return callback(err);
         }
         // Use the connection
         connection.query(`
@@ -136,14 +128,13 @@ exports.getComments = function(postId, skip, callback) {
             WHERE postId = "${postId}" 
             ORDER BY dateCreated DESC 
             LIMIT ${skip}, ${skip+10}`, 
-        function(error, results, fields) {
+        function(err, results, fields) {
             //finished with the connection - send it back to the pool
             connection.release();
-            //Handle error after the release.
-            if (error) {
-                console.log(error);
-                return callback("Server error.");
-            }
+            //if there is an error
+			if (err) {
+				return callback(err);
+			}
 
             return callback(null, results)
             //Don't use the connection here, it has been returned to the pool.
@@ -156,19 +147,16 @@ function query(sql, callback) {
 	pool.getConnection(function(err, connection) {
 		//if there is an error
 		if (err) {
-			//return the error via the callback to the function that callled it
-        	console.log(err);
-        	return callback("Server error.");
+        	return callback(err);
         }
 	    // Use the connection
-	    connection.query(sql, function(error, results, fields) {
+	    connection.query(sql, function(err, results, fields) {
 	        //finished with the connection - send it back to the pool
 	        connection.release();
-	        //Handle error after the release.
-	        if (error) {
-	        	console.log(error);
-	        	return callback("Server error.");
-	        }
+	        //if there is an error
+			if (err) {
+				return callback(err);
+			}
 
 	        return callback(null, results)
 	        //Don't use the connection here, it has been returned to the pool.

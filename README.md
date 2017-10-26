@@ -40,7 +40,7 @@ The project utilises MySQL as a backend.
 
 ## Members Table ##
 	CREATE TABLE `hexbubble`.`members` (
-	  `memberId` INT NOT NULL AUTO_INCREMENT,
+	  `memberId` INT NOT NULL,
 	  `userId` INT NOT NULL,
 	  `bubbleId` INT NOT NULL,
 	  `admin` TINYINT NOT NULL,

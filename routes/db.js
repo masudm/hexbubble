@@ -9,7 +9,6 @@ var rawdb = require('./rawdb');
 exports.login = function(email, password, callback) {
 	rawdb.getDataWhere('*', 'users', `email = '${email}' and password = '${password}'`, function(err, results) {
 		if (err) {
-			console.log(err);
 			return callback("Server error.");
 		}
 
@@ -58,7 +57,6 @@ exports.likePost = function(userId, postId, callback) {
 			if (err.errno == 1062) {
 				return callback("Post already liked by this user.");
 			}
-			console.log(err);
 			return callback("Server error.");
 		} 
 		return callback(null, results);
@@ -169,6 +167,7 @@ exports.signup = function(email, password, name, profilePicture, bio, callback) 
 exports.newMember = function(userId, bubbleId, admin, callback) {
 	//create a new member object
 	member = {
+		memberId: parseInt(String(userId) + String(bubbleId)),
 		userId,
 		bubbleId,
 		admin,
@@ -177,14 +176,18 @@ exports.newMember = function(userId, bubbleId, admin, callback) {
 
 	//insert the member object into the member table
 	rawdb.insertData(member, 'members', function(err, results) {
-		//if there is an error
+		//if there is an error, return the error
 		if (err) {
-			//send back a false success message
-			callback(err);
-			//and throw an error so it can be debugged
-			throw err;
-		};
-		callback(null, results);
+			//if the error is a duplicate entry, that means the user has
+			//already liked the post. return an error that displays 
+			//that rather than the long and complicated mysql error.
+			console.log(err);
+			if (err.errno == 1062) {
+				return callback("User already in this bubble.");
+			}
+			return callback("Server error.");
+		} 
+		return callback(null, results);
 	});
 }
 
