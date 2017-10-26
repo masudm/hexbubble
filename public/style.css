@@ -58,11 +58,12 @@ body {
 }
 
 .sidebar {
-    width: 10vw;
+    width: 11.7vw;
     background-color: white;
     height: 90%;
     height: calc(100% - 2.2em - 20px);
     position: fixed;
+    overflow-y: scroll;
 }
 
 .sidebar ul {
