@@ -58,7 +58,8 @@ body {
 }
 
 .sidebar {
-    width: 11.7vw;
+    width: 11.5vw;
+    width: calc(10.1vw + 1em);
     background-color: white;
     height: 90%;
     height: calc(100% - 2.2em - 20px);
