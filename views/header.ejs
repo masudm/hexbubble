@@ -1,7 +1,12 @@
 <a href='/'><div class='logo'><img src='/hexlogo.png'></div></a>
 <div class='header'>
     <!--<div class='headerName'>HexBubble</div>-->
+    <div>
     <input id='search' class='search' placeholder="Search">
+    <ul class='searchResults' id='searchResults'>
+        
+    </ul>
+    </div>
 </div>
 <script src="/jquery.js"></script>
 <script>
@@ -10,19 +15,30 @@
     $("#search").on('change keyup paste', function() {
         let term = $('#search').val();
         if (term.length > 2) {
+            $("#searchResults").html("Loading...");
             window.clearTimeout(searchTimeout);
             searchTimeout = window.setTimeout(function() {
                 search(term);
-            }, 2 * 1000);
+            }, 1 * 1000);
         }
     });
 
+    $('#search').focusout(function() {
+        $("#searchResults").html("");
+    });
+
     function search(term) {
-        console.log('now');
         $.post('/search/users', {
             term: term
         }, function(data, status) {
-            console.log(data);
+            result = "";
+            for (i in data) {
+                result += `<a href='/user/${data[i].userId}'><li class='button'>${data[i].name}</li></a>`;
+            }
+            $("#searchResults").html(result);
+            if (data.length == 0) {
+                $("#searchResults").html("No results.");
+            }
         });
     }
 </script>

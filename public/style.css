@@ -23,6 +23,43 @@ body {
     border-radius: 10px;
     border: 0;
     width: 25vw;
+    position: absolute;
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
+    z-index: 2;
+}
+
+.searchResults {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    background-color: #f5f6fb;
+    border: 1px solid #60AEFE;
+    border-radius: 10px;
+    width: 27vw;
+    width: calc(25vw + 20px);
+    padding: 0;
+    list-style: none;
+    padding-top: 4vw;
+    padding-top: calc(1em + 16px);
+}
+
+.searchResults a {
+    text-decoration: none;
+    color: black;
+}
+
+.searchResults li {
+    z-index: 5;
+    background-color: white;
+    border: 1px solid #60AEFE;
+    padding: 5px;
+    border-radius: 10px;
+    margin: 2px;
+    display: block;
 }
 
 .noDecorate {
