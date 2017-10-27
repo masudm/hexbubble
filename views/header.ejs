@@ -24,7 +24,9 @@
     });
 
     $('#search').focusout(function() {
-        $("#searchResults").html("");
+        window.setTimeout(function() {
+            $("#searchResults").html("");
+        }, 100);
     });
 
     function search(term) {

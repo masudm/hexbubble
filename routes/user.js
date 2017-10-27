@@ -5,7 +5,7 @@ var db = require('./db'); //a reference to the database functions so they can be
 
 apiRoutes.get('/:userid', function(req, res) {
 	db.getUser(req.params.userid, function(err, data) {
-		res.send(data);
+		res.render('user', {user: data});
 	});
 });
 
