@@ -61,7 +61,7 @@ exports.insertData = function(data, table, callback) {
 }
 
 exports.searchUsers = function(term, callback) {
-	let sql = `SELECT *
+	let sql = `SELECT userId, name
 	FROM users
 	WHERE
 	(

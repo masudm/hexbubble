@@ -3,3 +3,26 @@
     <!--<div class='headerName'>HexBubble</div>-->
     <input id='search' class='search' placeholder="Search">
 </div>
+<script src="/jquery.js"></script>
+<script>
+    var searchTimeout;
+
+    $("#search").on('change keyup paste', function() {
+        let term = $('#search').val();
+        if (term.length > 2) {
+            window.clearTimeout(searchTimeout);
+            searchTimeout = window.setTimeout(function() {
+                search(term);
+            }, 2 * 1000);
+        }
+    });
+
+    function search(term) {
+        console.log('now');
+        $.post('/search/users', {
+            term: term
+        }, function(data, status) {
+            console.log(data);
+        });
+    }
+</script>
