@@ -391,3 +391,43 @@ body {
         transform: scale( 1.2);
     }
 }
+
+@media screen and (max-width: 800px) {
+    .sidebar {
+        display: none;
+    }
+
+    .feed.container {
+        margin-left: auto;
+    }
+
+    .newPost {
+        width: 100%;
+    }
+
+    .post {
+        width: 100%;
+    }
+
+    .postComments input {
+        max-width: 200px;
+    }
+
+    .logo {
+        position: relative;
+    }
+
+    .logo img {
+        top: 50%;
+        margin-top: 50%;
+    }
+
+    .search {
+        width: 50vw;
+    }
+
+    .searchResults {
+        width: 52vw;
+        width: calc(50vw + 20px);
+    }
+}
