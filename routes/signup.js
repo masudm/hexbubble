@@ -5,6 +5,15 @@ var moment = require('moment'); //a library for time and date functions
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var db = require('./db'); //a reference to the database functions so they can be used
 
+apiRoutes.get('/2', function(req, res) {
+	res.render('signup2');
+});
+
+apiRoutes.post('/2', function(req, res) {
+	console.log(req.files);
+	console.log(req.body);
+});
+
 //after the base route (in this case, '/signup', go to the next route):
 //full route: /signup/
 apiRoutes.get('/', function(req, res) {
@@ -15,6 +24,7 @@ apiRoutes.get('/', function(req, res) {
 	//as a response, render the signup view
 	res.render("signup");
 });
+
 
 //full route: /signup/
 //post to this route
