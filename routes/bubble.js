@@ -8,7 +8,7 @@ var path = require('path');
 //multer variables for file storage
 var storage = multer.diskStorage({
 	destination: function (req, file, callback) {
-		callback(null, './uploads/');
+		callback(null, './uploads/bubblePictures/');
 	},
 	filename: function (req, file, callback) {
 		var ext = "";
