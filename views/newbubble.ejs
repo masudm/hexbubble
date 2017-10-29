@@ -14,13 +14,27 @@
                 <input placeholder="Bubble name" class='newbubble' id='bubbleName'>
                 <div class='button' onclick='joinBubble()'>Join</div>
                 <br>
+                <br>
+                <br>
+                <br>
                 <h1>Create a new bubble: </h1>
-                <input type="file" id='bubblePicture'>
+                <input placeholder="Bubble name" class='newbubble' id='bubbleNameNew'>
+                <br>
+                <textarea placeholder="Bubble Description..." class='newbubble' ></textarea>
+                <br>
+                <div class='bubblePictureInfo'>
+                    <h4>Bubble Picture:</h4>
+                    <input type="file" id='bubblePicture'>
+                </div>
+                <div class='bubblePicturePreview' id='preview'>
+
+                </div>
                 <div class='button' onclick='createBubble()'>Create</div>
             </div>
         </div>
         <script src="/jquery.js"></script>
-		<script src='/moment.js'></script>
+        <script src='/moment.js'></script>
+        <script src="/load-image.js"></script>
         <script>
             $("#newIcon").addClass("active");
             
@@ -34,14 +48,26 @@
                 });
             }
 
+            document.getElementById('bubblePicture').onchange = function (e) {
+                loadImage(e.target.files[0], function (img) {
+                        $("#preview").html(img);
+                    }, { // Options
+                        maxWidth: 150,
+                        maxHeight: 150
+                    } 
+                );
+            };
+
             function createBubble() {
+
+                /*
                 $.post("/bubble/new",
                 {
                     bubblePicture: $("#bubblePicture")
                 },
                 function(data, status){
                     console.log(data);
-                });
+                });*/
             }
         </script>
     </body>

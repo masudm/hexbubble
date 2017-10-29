@@ -317,6 +317,16 @@ body {
     width: 75%;
 }
 
+.bubblePictureInfo {
+    margin-top: 10px;
+}
+
+.bubblePictureInfo h4 {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
 .heart {
     position: relative;
     width: 2.5vw;
