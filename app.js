@@ -16,6 +16,7 @@ app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 //set the publicly accessible folder (available on the client side)
 app.use(express.static('public'));
+app.use(express.static('uploads'));
 //get and set cookies using the cookie parser. useful for auth
 app.use(cookieParser());
 
