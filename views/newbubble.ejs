@@ -78,7 +78,8 @@
                     data: formData,
                     async: true,
                     success: function (data) {
-                        console.log(data);
+                        //console.log(data);
+                        window.location.href = "/feed/" + data.feedId;
                     },
                     cache: false,
                     contentType: false,

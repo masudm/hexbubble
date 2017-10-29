@@ -45,8 +45,13 @@ apiRoutes.get('/new', function(req, res) {
 apiRoutes.post('/new', upload.single('bubblePicture'), function (req, res, next) {
     //create a bubble
     db.createBubble(req.body.bubbleName, req.body.bubbleName, req.file.filename, function(err, bubble) {
-        //sign the user up and use the bubble id from that inserted id
-        res.json(bubble);
+        //create a new admin in the newly created bubble
+        db.newMember(req.decoded.userId, bubble.insertId, 1, function(err, data) {
+            res.json({
+                success: true,
+                feedId: bubble.insertId
+            });
+        });
     });
 });
 
