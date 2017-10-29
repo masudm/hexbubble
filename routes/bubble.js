@@ -63,7 +63,7 @@ apiRoutes.post('/join', function(req, res) {
                 error: "Bubble does not exist"
             });
         }
-        db.newMember(req.decoded.userId, data[0].bubbleId, 0, function(err, data) {
+        db.newMember(req.decoded.userId, data[0].bubbleId, 0, function(err, member) {
             if (err) {
                 if (err == "User already in this bubble.") {
                     return res.json({
@@ -77,7 +77,10 @@ apiRoutes.post('/join', function(req, res) {
                 });
             } 
             
-            res.json({success: true});
+            res.json({
+                success: true,
+                feedId: data[0].bubbleId
+            });
         });
     });
 });

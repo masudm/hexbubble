@@ -45,7 +45,11 @@
                     name: $('#bubbleName').val()
                 },
                 function(data, status){
-                    console.log(data);
+                    if (data.success) {
+                        window.location.href = "/feed/" + data.feedId;
+                    } else {
+                        console.log(data);
+                    }
                 });
             }
 
@@ -78,8 +82,11 @@
                     data: formData,
                     async: true,
                     success: function (data) {
-                        //console.log(data);
-                        window.location.href = "/feed/" + data.feedId;
+                        if (data.success) {
+                            window.location.href = "/feed/" + data.feedId;
+                        } else {
+                            console.log(data);
+                        }
                     },
                     cache: false,
                     contentType: false,
