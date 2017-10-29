@@ -19,9 +19,9 @@
                 <br>
                 <h1>Create a new bubble: </h1>
                 <form id='newBubble'>
-                    <input placeholder="Bubble name" class='newbubble' id='bubbleNameNew'>
+                    <input placeholder="Bubble name" class='newbubble' id='bubbleNameNew' name='bubbleName'>
                     <br>
-                    <textarea placeholder="Bubble Description..." class='newbubble' ></textarea>
+                    <textarea placeholder="Bubble Description..." class='newbubble' name='bubbleDesc'></textarea>
                     <br>
                     <div class='bubblePictureInfo'>
                         <h4>Bubble Picture:</h4>
@@ -35,6 +35,7 @@
         <script src="/jquery.js"></script>
         <script src='/moment.js'></script>
         <script src="/load-image.js"></script>
+        <script src="/jq-progress.js"></script>
         <script>
             $("#newIcon").addClass("active");
             
@@ -59,15 +60,35 @@
             };
 
             function createBubble() {
+                let files = $('#bubblePicture')[0].files;
+                let file = files[0];
+                if (files.length < 1) {
+                    alert("No files chosen to upload");
+                    return false;
+                }
+                if (file.size > (1024 * 1024 * 2)) {
+                    alert("Max total file size of 2mb reached");
+                    return false;
+                }
+
+                var formData = new FormData($("#newBubble")[0]);
                 $.ajax({
-                    type: "POST",
-                    url: '/bubble/new',
-                    data: $("#newBubble").serialize(), // serializes the form's elements.
-                    success: function(data)
-                    {
-                        console.log(data); // show response from the php script.
+                    url: "/bubble/new",
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                }).uploadProgress(function (e) {
+                    if (e.lengthComputable) {
+                        var percentage = Math.round((e.loaded * 100) / e.total);
+                        console.log(percentage);
                     }
-                  });
+                });
             }
         </script>
     </body>

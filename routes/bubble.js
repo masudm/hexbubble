@@ -3,6 +3,7 @@ var apiRoutes = express.Router(); //use the router function within express to de
 var bodyParser = require('body-parser'); //use the body parser to parse the body request from the client
 var db = require('./db'); //a reference to the database functions so they can be used
 var multer = require('multer');
+var path = require('path');
 
 //multer variables for file storage
 var storage = multer.diskStorage({
@@ -42,8 +43,11 @@ apiRoutes.get('/new', function(req, res) {
 });
 
 apiRoutes.post('/new', upload.single('bubblePicture'), function (req, res, next) {
-    console.log(req.file);
-    console.log(req.body);
+    //create a bubble
+    db.createBubble(req.body.bubbleName, req.body.bubbleName, req.file.filename, function(err, bubble) {
+        //sign the user up and use the bubble id from that inserted id
+        res.json(bubble);
+    });
 });
 
 apiRoutes.post('/join', function(req, res) {
