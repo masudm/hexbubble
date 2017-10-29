@@ -4,14 +4,23 @@ var bodyParser = require('body-parser'); //use the body parser to parse the body
 var moment = require('moment'); //a library for time and date functions
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var db = require('./db'); //a reference to the database functions so they can be used
+var multer = require('multer');
+var st = require('./storage');
+
+//multer variables for file storage
+var upload = multer({
+	storage: st.storage('profilePictures/'),
+	fileFilter: st.fileFilter,
+	limits: st.limits
+});
 
 apiRoutes.get('/2', function(req, res) {
 	res.render('signup2');
 });
 
-apiRoutes.post('/2', function(req, res) {
-	console.log(req.files);
-	console.log(req.body);
+apiRoutes.post('/2', upload.single('profilePic'), function(req, res) {
+	console.log(req.file);
+	console.log(req.body.bio);
 });
 
 //after the base route (in this case, '/signup', go to the next route):

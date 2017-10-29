@@ -3,39 +3,13 @@ var apiRoutes = express.Router(); //use the router function within express to de
 var bodyParser = require('body-parser'); //use the body parser to parse the body request from the client
 var db = require('./db'); //a reference to the database functions so they can be used
 var multer = require('multer');
-var path = require('path');
+var st = require('./storage');
 
 //multer variables for file storage
-var storage = multer.diskStorage({
-	destination: function (req, file, callback) {
-		callback(null, './uploads/bubblePictures/');
-	},
-	filename: function (req, file, callback) {
-		var ext = "";
-		var fileName = file.originalname;
-		if (fileName.indexOf(".") > 0) {
-			ext = fileName.substr(fileName.lastIndexOf(".") + 1).toLowerCase(); //get everything after last dot (extension)
-			fileName = db.makeid() + "." + ext; //concatenate with a few random characters
-		} else {
-			fileName = db.makeid();
-		}
-
-		callback(null, fileName);
-	}
-});
-
 var upload = multer({
-	storage: storage,
-	fileFilter: function (req, file, callback) {
-        var ext = path.extname(file.originalname);
-        if(ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
-            return callback(new Error('Only png, jpg and gif are allowed'))
-        }
-        callback(null, true);
-    },
-	limits: {
-		fileSize: 2 * 1024 * 1024 //2mb limit
-	}
+	storage: st.storage('bubblePictures/'),
+	fileFilter: st.fileFilter,
+	limits: st.limits
 });
 
 apiRoutes.get('/new', function(req, res) {
