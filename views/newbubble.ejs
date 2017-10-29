@@ -13,6 +13,10 @@
                 <h1>Join a new bubble: </h1>
                 <input placeholder="Bubble name" class='newbubble' id='bubbleName'>
                 <div class='button' onclick='joinBubble()'>Join</div>
+                <br>
+                <h1>Create a new bubble: </h1>
+                <input type="file" id='bubblePicture'>
+                <div class='button' onclick='createBubble()'>Create</div>
             </div>
         </div>
         <script src="/jquery.js"></script>
@@ -21,9 +25,19 @@
             $("#newIcon").addClass("active");
             
             function joinBubble() {
-                $.post("/bubble/new",
+                $.post("/bubble/join",
                 {
                     name: $('#bubbleName').val()
+                },
+                function(data, status){
+                    console.log(data);
+                });
+            }
+
+            function createBubble() {
+                $.post("/bubble/new",
+                {
+                    bubblePicture: $("#bubblePicture")
                 },
                 function(data, status){
                     console.log(data);

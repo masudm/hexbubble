@@ -3,6 +3,7 @@
 //dependencies
 var moment = require('moment'); //get time/format times
 var rawdb = require('./rawdb');
+var crypto = require('crypto');
 
 //an async function to login
 //pass an email, password and a callback function as parameters
@@ -233,4 +234,9 @@ exports.me = function(decoded) {
 		email: decoded.email,
 		username: decoded.name
 	}
+}
+
+//create a random id
+exports.makeid = function() {
+	return crypto.randomBytes(20).toString('hex');
 }
