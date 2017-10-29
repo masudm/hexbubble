@@ -25,7 +25,7 @@ apiRoutes.post('/', function(req, res) {
 	let password = req.body.password;
 	let name = req.body.name;
 	let profilePicture = ""; //save this as null for now
-	let bio = req.body.bio;
+	let bio = "";
 
 	//check if the bubble already exists
 	db.getBubble(req.body.bubble, function(err, data) {

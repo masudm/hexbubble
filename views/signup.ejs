@@ -18,7 +18,6 @@
             <br>
             <input placeholder="Bubble" id='bubble'>
             <br>
-            <textarea placeholder="Bio" id='bio'></textarea>
             <div class='button' onclick="signup()">Signup</div>
         </div>
         <br>
@@ -32,8 +31,7 @@
     	        name: $("#name").val(),
     	        email: $("#email").val(),
                 password: $("#password").val(),
-    	        bubble: $("#bubble").val(),
-    	        bio: $("#bio").val()
+    	        bubble: $("#bubble").val()
     	    },
     	    function(data, status){
                 localStorage.setItem('token', data.token);
