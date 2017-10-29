@@ -18,17 +18,17 @@
                 <br>
                 <br>
                 <h1>Create a new bubble: </h1>
-                <input placeholder="Bubble name" class='newbubble' id='bubbleNameNew'>
-                <br>
-                <textarea placeholder="Bubble Description..." class='newbubble' ></textarea>
-                <br>
-                <div class='bubblePictureInfo'>
-                    <h4>Bubble Picture:</h4>
-                    <input type="file" id='bubblePicture'>
-                </div>
-                <div class='bubblePicturePreview' id='preview'>
-
-                </div>
+                <form id='newBubble'>
+                    <input placeholder="Bubble name" class='newbubble' id='bubbleNameNew'>
+                    <br>
+                    <textarea placeholder="Bubble Description..." class='newbubble' ></textarea>
+                    <br>
+                    <div class='bubblePictureInfo'>
+                        <h4>Bubble Picture:</h4>
+                        <input type="file" id='bubblePicture' name='bubblePicture'>
+                    </div>
+                </form>
+                <div class='bubblePicturePreview' id='preview'></div>
                 <div class='button' onclick='createBubble()'>Create</div>
             </div>
         </div>
@@ -59,15 +59,15 @@
             };
 
             function createBubble() {
-
-                /*
-                $.post("/bubble/new",
-                {
-                    bubblePicture: $("#bubblePicture")
-                },
-                function(data, status){
-                    console.log(data);
-                });*/
+                $.ajax({
+                    type: "POST",
+                    url: '/bubble/new',
+                    data: $("#newBubble").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        console.log(data); // show response from the php script.
+                    }
+                  });
             }
         </script>
     </body>
