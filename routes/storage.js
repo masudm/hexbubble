@@ -28,7 +28,7 @@ exports.limits = {
 }
 
 exports.fileFilter = function (req, file, callback) {
-    var ext = path.extname(file.originalname);
+    var ext = path.extname(file.originalname).toLowerCase();
     if(ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
         return callback(new Error('Only png, jpg and gif are allowed'))
     }
