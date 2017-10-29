@@ -7,12 +7,8 @@ apiRoutes.get('/', function(req, res) {
 		res.redirect('/feed');
 		return false;
 	}
-	//as a response, render the login view
-	res.render("login");
-});
-
-apiRoutes.get('/', function(req, res) {
-    res.render('homepage');
+	//as a response, render the homepage view
+	res.render('homepage');
 });
 
 module.exports = apiRoutes;
