@@ -7,6 +7,8 @@ var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 //after the base route (in this case, '/login', go to the next route):
 //full route: /login/
 apiRoutes.get('/', function(req, res) {
+	//if they have a req.decoded object, that means they are logged in so redirect them
+	//to their feed.
 	if (req.decoded) {
 		res.redirect('/feed');
 		return false;

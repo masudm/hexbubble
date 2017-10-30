@@ -5,12 +5,12 @@ var moment = require('moment'); //a library for time and date functions
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var db = require('../helpers/db'); //a reference to the database functions so they can be used
 
-//this is the main page and requests to here
+//this is the main feed page and requests to here
 apiRoutes.get('/feed', function(req, res) {
-	//get the first bubble id
+	//get the first bubble id of the user
 	db.getFirstBubble(req.decoded.userId, function(err, data) {
 		if (data.length > 0) {
-			//redirect to their actual feed
+			//redirect to their actual feed from their first bubble id
 			res.redirect('/feed/' + (data[0].bubbleId)); //go to the first bubble the user is signed up for
 		} else {
 			//if they do not have one, redirect them because they are breaking something or not logged in.
@@ -21,7 +21,7 @@ apiRoutes.get('/feed', function(req, res) {
 
 //the actual feed
 apiRoutes.get('/feed/:bubbleId', function(req, res) {
-	let bid = parseInt(req.params.bubbleId); //a bubble id
+	let bid = parseInt(req.params.bubbleId); //from the string bubble id parse it into an integer
 	//verify if they're a member
 	db.isMember(parseInt(req.decoded.userId), bid, function(err, data) {
 		if (data.length > 0) { //if they are a member

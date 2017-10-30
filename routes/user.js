@@ -3,8 +3,11 @@ var apiRoutes = express.Router(); //use the router function within express to de
 var bodyParser = require('body-parser'); //use the body parser to parse the body request from the client
 var db = require('../helpers/db'); //a reference to the database functions so they can be used
 
+//the user route - render the user using the query in the url
 apiRoutes.get('/:userid', function(req, res) {
+	//get the user using that query
 	db.getUser(req.params.userid, function(err, data) {
+		//render the user page using that data.
 		res.render('user', {user: data});
 	});
 });

@@ -6,23 +6,27 @@ var db = require('../helpers/db'); //a reference to the database functions so th
 
 //post to the /post/new route
 apiRoutes.post('/new', function(req, res) {
-	bid = req.body.bubbleId
+	bid = parseInt(req.body.bubbleId);
 	//create a new post object to insert
 	//include everything needed for the database such as userId, bubbleId, etc
 	post = {
-		userId: req.decoded.userId,
-		bubbleId: bid,
-		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
-		post: req.body.post
+		userId: req.decoded.userId, //userid from decoding
+		bubbleId: bid, //bubble id from passed post request
+		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"), //current date in needed format
+		post: req.body.post //the actual post
 	};
 
 	//insert the object into the post table if they are a member
 	db.isMember(parseInt(req.decoded.userId), bid, function(err, data) {
-		if (data.length > 0) {
+		//if there is no data, they are not a member
+		if (data.length > 0) { 
+			//they are a member, so insert their post
 			db.newPost(post, function(err, results) {
+				//if there is an error, return the error
 				if (err) {
 					return res.json({success: false, error: err});
 				}
+				//also like the just inserted post (user likes be default)
 				db.likePost(req.decoded.userId, results.insertId, function(err, data) {
 					if (err) {
 						return res.json({success: false, error: err});
@@ -31,6 +35,7 @@ apiRoutes.post('/new', function(req, res) {
 				});
 			});
 		} else {
+			//they are not a member so send back a message
 			res.send('You are not allowed in this bubble.'); //TODO: change this to error message
 		}
 	});
@@ -54,13 +59,16 @@ apiRoutes.post('/like', function(req, res) {
 
 //get comments on a post
 apiRoutes.post('/comments', function(req, res) {
+	//get skip number of comments on postId post
 	db.getComments(req.body.postId, req.body.skip, function(err, data) {
+		//send back the data as json
 		res.json(data);
 	});
 });
 
 //comment on a post
 apiRoutes.post('/comment', function(req, res) {
+	//add a new comment using their id, the post id and the actual comment
 	db.addComment(req.decoded.userId, req.body.postId, req.body.comment, function(err, data) {
 		//if there is an error, return a success: false message along with the error
 		if (err) {
