@@ -7,6 +7,12 @@ var db = require('../helpers/db'); //a reference to the database functions so th
 apiRoutes.get('/:userid', function(req, res) {
 	//get the user using that query
 	db.getUser(req.params.userid, function(err, data) {
+		if (err) {
+            return res.json({
+                success: false,
+                error: err
+            });
+        }
 		//render the user page using that data.
 		res.render('user', {user: data});
 	});

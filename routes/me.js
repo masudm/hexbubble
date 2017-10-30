@@ -12,8 +12,18 @@ apiRoutes.get('/', function(req, res) {
 apiRoutes.get('/bubbles', function(req, res) {
     //get their bubbles using their userId
     db.getBubbles(req.decoded.userId, function(err, data) {
+        //if there was an error, return it as json to the front-end
+        if (err) {
+            return res.json({
+                success: false,
+                error: err
+            });
+        }
         //send back the data as json to format on the front-end
-        res.json(data);
+        res.json({
+            success: true,
+            data: data
+        });
     });
 });
 

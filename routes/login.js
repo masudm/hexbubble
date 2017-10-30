@@ -26,6 +26,12 @@ apiRoutes.post('/', function(req, res) {
 
 	//login with the passed email and password
 	db.login(email, password, function(err, valid, results) {
+		if (err) {
+            return res.json({
+                success: false,
+                error: err
+            });
+        }
 		//it returns a valid boolean if the email and password match a
 		//user in the database.
 		//if it is true, send back a true success token
@@ -46,13 +52,13 @@ apiRoutes.post('/', function(req, res) {
 			res.cookie('token', token, { maxAge: 31622400});
 
 			//send back a success true message along with the token
-			res.json({
+			return res.json({
 				success: true,
 				token
 			});
 		} else {
 			//otherwise send back a success false token
-			res.json({
+			return res.json({
 				success: false
 			});
 		}

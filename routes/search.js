@@ -22,8 +22,11 @@ apiRoutes.post('/users', function(req, res) {
     db.searchUsers(term, function(err, data) {
         //if there is an error, return a success: false message along with the error
 		if (err) {
-			return res.json({success: false, error: err});
-		}
+            return res.json({
+                success: false,
+                error: err
+            });
+        }
         //return the json
         res.json(data);
     });

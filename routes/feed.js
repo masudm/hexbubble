@@ -9,6 +9,13 @@ var db = require('../helpers/db'); //a reference to the database functions so th
 apiRoutes.get('/feed', function(req, res) {
 	//get the first bubble id of the user
 	db.getFirstBubble(req.decoded.userId, function(err, data) {
+		//if there was an error, return it as json to the front-end
+        if (err) {
+            return res.json({
+                success: false,
+                error: err
+            });
+        }
 		if (data.length > 0) {
 			//redirect to their actual feed from their first bubble id
 			res.redirect('/feed/' + (data[0].bubbleId)); //go to the first bubble the user is signed up for
@@ -24,22 +31,32 @@ apiRoutes.get('/feed/:bubbleId', function(req, res) {
 	let bid = parseInt(req.params.bubbleId); //from the string bubble id parse it into an integer
 	//verify if they're a member
 	db.isMember(parseInt(req.decoded.userId), bid, function(err, data) {
+		//if there was an error, return it as json to the front-end
+        if (err) {
+            return res.json({
+                success: false,
+                error: err
+            });
+        }
 		if (data.length > 0) { //if they are a member
 			//get their posts
 			db.getPosts(bid, 0, req.decoded.userId, function(err, results) {
+				//if there was an error, return it as json to the front-end
 				if (err) {
-					//if there is an error, just render the error
-					res.render(err);
-				} else {
-					//render the feed page
-					//send the posts in a json format
-					//and send the user object as json too
-					res.render('feed', {
-						posts: JSON.stringify(results), 
-						me: JSON.stringify(db.me(req.decoded)),
-						bubbleId: bid
+					return res.json({
+						success: false,
+						error: err
 					});
 				}
+				//render the feed page
+				//send the posts in a json format
+				//and send the user object as json too
+				res.render('feed', {
+					success: true,
+					posts: JSON.stringify(results), 
+					me: JSON.stringify(db.me(req.decoded)),
+					bubbleId: bid
+				});
 			});
 		} else { 
 			//they are a not a member so send them a message

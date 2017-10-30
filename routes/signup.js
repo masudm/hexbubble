@@ -48,6 +48,13 @@ apiRoutes.post('/', function(req, res) {
 
 	//check if the bubble already exists
 	db.getBubble(req.body.bubble, function(err, data) {
+		if (err) {
+            return res.json({
+                success: false,
+                error: err
+            });
+		}
+		
 		if (data.length > 0) {
 			//a bubble already exists
 			let bubbleId = (data[0].bubbleId); //get it's bubbleid
@@ -55,6 +62,13 @@ apiRoutes.post('/', function(req, res) {
 		} else {
 			//no bubble, create it too
 			db.createBubble(req.body.bubble, "", "", function(err, bubble) {
+				if (err) {
+					return res.json({
+						success: false,
+						error: err
+					});
+				}
+
 				//sign the user up and use the bubble id from that inserted id
 				signUserUp(res, email, password, name, profilePicture, bio, bubble.insertId);
 			});
@@ -66,9 +80,20 @@ apiRoutes.post('/', function(req, res) {
 function signUserUp(res, email, password, name, profilePicture, bio, bubbleId) {
 	//use the db function
 	db.signup(email, password, name, profilePicture, bio, function(err, user) {
+		if (err) {
+            return res.json({
+                success: false,
+                error: err
+            });
+        }
 		//create a new member
 		db.newMember(user.insertId, bubbleId, 0, function(err, member) {
-
+			if (err) {
+				return res.json({
+					success: false,
+					error: err
+				});
+			}
 			//create a new token for auth
 			var token = jwt.sign({email, name, profilePicture, userId: user.insertId}, 'hexbubblesecret', {
 				expiresIn: '1y' // expires in 24 hours
