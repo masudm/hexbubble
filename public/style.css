@@ -170,8 +170,11 @@ body {
     max-width: 400px;
 }
 
+.shadow {
+	box-shadow: 5px 5px 15px 0 #e9ecef;
+}
+
 .newPost {
-    box-shadow: 5px 5px 15px 0 #e9ecef;
     display: inline-block;
     width: 40vw;
     background-color: white;

@@ -10,7 +10,7 @@
 			<% include sidebar %>
 			<div class='container feed'>
 				<br>
-				<div class='newPost'>
+				<div class='newPost shadow'>
 					<textarea id='post' placeholder='Say something!'></textarea>
 					<div class='button' onclick="newPost()">Post!</div>
 				</div>
@@ -81,7 +81,7 @@
 					heartAction = "";
 				}
 				var postStructure = `
-				<div class='post'>
+				<div class='post shadow'>
 					<div class='postUser'>
 						<!-- <img class='postProfilePic'> -->
 						<div class='postUserName'><a href='${userlink}'>${username}</a></div>
