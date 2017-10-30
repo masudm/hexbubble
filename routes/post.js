@@ -2,7 +2,7 @@ var express = require('express'); //the express web server dependency
 var apiRoutes = express.Router(); //use the router function within express to define the routes
 var bodyParser = require('body-parser'); //use the body parser to parse the body request from the client
 var moment = require('moment'); //a library for time and date functions
-var db = require('./db'); //a reference to the database functions so they can be used
+var db = require('../helpers/db'); //a reference to the database functions so they can be used
 
 //post to the /post/new route
 apiRoutes.post('/new', function(req, res) {

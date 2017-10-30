@@ -3,7 +3,7 @@ var apiRoutes = express.Router(); //use the router function within express to de
 var bodyParser = require('body-parser'); //use the body parser to parse the body request from the client
 var moment = require('moment'); //a library for time and date functions
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
-var db = require('./db'); //a reference to the database functions so they can be used
+var db = require('../helpers/db'); //a reference to the database functions so they can be used
 
 //this is the main page and requests to here
 apiRoutes.get('/feed', function(req, res) {
