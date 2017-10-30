@@ -40,7 +40,10 @@
 			    	postsNum = i;
 				}
 				
-				$("#bubbleIcon_" + bubbleId).addClass('active');
+				var sidebarIcon = $("#bubbleIcon_" + bubbleId);
+				sidebarIcon.addClass('active');
+				$("#meIcon").after(sidebarIcon.clone());
+				sidebarIcon.remove();
 			});
 
 			$("#post").keyup(function(ev) {

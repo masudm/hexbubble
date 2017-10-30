@@ -1,8 +1,12 @@
 <div class='sidebar'>
     <ul>
-        <a href='/me' class='noDecorate'><li class='elem' id='meIcon'><i class="fa fa-user" aria-hidden="true"></i></li></a>
+        <li class='elem' id='meIcon' onclick="window.location.href = '/me'">
+            <i class="fa fa-user" aria-hidden="true"></i>
+        </li>
         <li class='elem bubbleName' id='sidebarLoading'>Loading...</li>
-        <a href='/bubble/new' class='noDecorate'><li class='elem' id='newIcon'><i class="fa fa-plus" aria-hidden="true"></i></li></a>
+        <li class='elem' id='newIcon' onclick="window.location.href = '/bubble/new'">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </li>
     </ul>
 </div>
 <script src="/jquery.js"></script>
@@ -12,14 +16,11 @@
         data = data.data;
         for (bubble in data) {
             b = data[bubble];
-            $('.sidebar ul a:eq(0)').after(`
-            <a href='/feed/${b.bubbleId}' class='noDecorate'>
-                <li class='elem bubbleIcon' id='bubbleIcon_${b.bubbleId}'>
-                    <img src='/bubblePictures/${b.bubblePicture}'>
-                    <div class='bubbleName'>${b.bubbleName}</div>
-                </li>
-            </a>
-            `);
+            $('#meIcon').after(`
+            <li class='elem bubbleIcon' id='bubbleIcon_${b.bubbleId}' onclick="window.location.href = '/feed/${b.bubbleId}'">
+                <img src='/bubblePictures/${b.bubblePicture}'>
+                <div class='bubbleName'>${b.bubbleName}</div>
+            </li>`);
         }
     });
 </script>
