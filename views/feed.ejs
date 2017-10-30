@@ -59,7 +59,7 @@
 
 			function newPost() {
 				postsNum += 1;
-				var p = $("#post").val().replace(/\s/g, '');
+				var p = $("#post").val();//.replace(/\s/g, '');
 				$("#post").val("");
 				$.post("/post/new",
 				    {
