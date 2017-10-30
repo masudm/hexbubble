@@ -1,4 +1,5 @@
 //all database functions go through here. this contacts the raw database wrapper
+//it is also where all the errors are handled
 
 //dependencies
 var moment = require('moment'); //get time/format times
@@ -26,12 +27,22 @@ exports.login = function(email, password, callback) {
 
 //get posts using the bubbleid, how many posts to skip (pagination) and current user
 exports.getPosts = function(bubbleId, skip, userId, callback) {
-	rawdb.getPosts(bubbleId, skip, userId, callback);
+	rawdb.getPosts(bubbleId, skip, userId, function(err, data) {
+		if (err) {
+			return callback("Server error.");
+		}
+		return callback(null, data);
+	});
 }
 
 //insert a new pos
 exports.newPost = function(post, callback) {
-	rawdb.insertData(post, 'posts', callback);
+	rawdb.insertData(post, 'posts', function(err, data) {
+		if (err) {
+			return callback("Server error.");
+		}
+		return callback(null, data);
+	});
 }
 
 //like the post using the insert id function
@@ -74,65 +85,59 @@ exports.addComment = function(userId, postId, comment, callback) {
 	}
 
 	rawdb.insertData(comment, 'comments', function(err, data) {
-		//if there is an error
 		if (err) {
-			//send back a false success message
-			callback(err);
-			//and throw an error so it can be debugged
-			throw err;
-		};
-		callback(null, data);
+			return callback("Server error.");
+		}
+		return callback(null, data);
 	});
 }
 
 //get x number of comments on the current post(id)
 exports.getComments = function(postId, skip, callback) {
-	rawdb.getComments(postId, parseInt(skip), callback);
+	rawdb.getComments(postId, parseInt(skip), function(err, data) {
+		if (err) {
+			return callback("Server error.");
+		}
+		return callback(null, data);
+	});
 }
 
 //verify if they are a member by checking that userid against that bubbleid in the member table
 exports.isMember = function(userId, bubbleId, callback) {
 	rawdb.getDataWhere('memberId', 'members', ('userId = ' + userId + ' and bubbleId = ' + bubbleId), function(err, data) {
-		//if there is an error
 		if (err) {
-			//send back a false success message
-			callback(err);
-			//and throw an error so it can be debugged
-			throw err;
-		};
-		callback(err, data); //return the data
+			return callback("Server error.");
+		}
+		return callback(null, data);
 	});
 }
 
 //get bubbleId using the name
 exports.getBubble = function(name, callback) {
 	rawdb.getDataWhereLimit("bubbleId", "bubbles", "bubbleName = '" + name + "'", 1, function(err, data) {
-		//if there is an error
 		if (err) {
-			//send back a false success message
-			callback(err);
-			//and throw an error so it can be debugged
-			throw err;
-		};
-		callback(err, data); //return the data
+			return callback("Server error.");
+		}
+		return callback(null, data);
 	});
 }
 
 exports.getBubbles = function(userId, callback) {
-	rawdb.getBubbles(userId, callback);
+	rawdb.getBubbles(userId, function(err, data) {
+		if (err) {
+			return callback("Server error.");
+		}
+		return callback(null, data);
+	});
 }
 
 //get first bubbleid
 exports.getFirstBubble = function(userId, callback) {
 	rawdb.getDataWhere('bubbleId', 'members', 'userId = ' + userId, function(err, data) {
-		//if there is an error
 		if (err) {
-			//send back a false success message
-			callback(err);
-			//and throw an error so it can be debugged
-			throw err;
-		};
-		callback(err, data); //return the data
+			return callback("Server error.");
+		}
+		return callback(null, data);
 	});
 }
 
@@ -151,16 +156,11 @@ exports.signup = function(email, password, name, profilePicture, bio, callback) 
 	};
 
 	//inset the user object into the user table
-	rawdb.insertData(user, 'users', function(err, userResults) {
-		//if there is an error
+	rawdb.insertData(user, 'users', function(err, data) {
 		if (err) {
-			//send back a false success message
-			callback(err);
-			//and throw an error so it can be debugged
-			throw err;
-		};
-		//send the data back
-		callback(null, userResults);
+			return callback("Server error.");
+		}
+		return callback(null, data);
 	});
 }
 
@@ -182,7 +182,6 @@ exports.newMember = function(userId, bubbleId, admin, callback) {
 			//if the error is a duplicate entry, that means the user has
 			//already liked the post. return an error that displays 
 			//that rather than the long and complicated mysql error.
-			console.log(err);
 			if (err.errno == 1062) {
 				return callback("User already in this bubble.");
 			}
@@ -204,26 +203,30 @@ exports.createBubble = function(name, bio, pic, callback) {
 
 	//use the insertData function to insert the user object into the user table
 	rawdb.insertData(bubble, 'bubbles', function(err, results) {
-		//if there is an error
 		if (err) {
-			//send back a false success message
-			callback(err);
-			//and throw an error so it can be debugged
-			throw err;
-		};
-		callback(null, results); //send the data back
+			return callback("Server error.");
+		}
+		return callback(null, data);
 	});
 }
 
 //get a user using their userid
 exports.getUser = function(userId, callback) {
 	rawdb.getDataWhere('*', 'users', 'userId = "' + userId + '"', function(err, data) {
-		callback(err, data);
+		if (err) {
+			return callback("Server error.");
+		}
+		return callback(null, data);
 	});
 }
 
 exports.searchUsers = function(term, callback) {
-	rawdb.searchUsers(term, callback);
+	rawdb.searchUsers(term, function(err, data) {
+		if (err) {
+			return callback("Server error.");
+		}
+		return callback(null, data);
+	});
 }
 
 //using the decoded id, return the email and username
