@@ -18,18 +18,30 @@ apiRoutes.post('/new', function(req, res) {
 
 	//insert the object into the post table if they are a member
 	db.isMember(parseInt(req.decoded.userId), bid, function(err, data) {
+		if (err) {
+            return res.json({
+                success: false,
+                error: err
+            });
+        }
 		//if there is no data, they are not a member
 		if (data.length > 0) { 
 			//they are a member, so insert their post
 			db.newPost(post, function(err, results) {
 				//if there is an error, return the error
 				if (err) {
-					return res.json({success: false, error: err});
+					return res.json({
+						success: false,
+						error: err
+					});
 				}
 				//also like the just inserted post (user likes be default)
 				db.likePost(req.decoded.userId, results.insertId, function(err, data) {
 					if (err) {
-						return res.json({success: false, error: err});
+						return res.json({
+							success: false,
+							error: err
+						});
 					}
 					return res.json({success: true});
 				});
@@ -50,8 +62,11 @@ apiRoutes.post('/like', function(req, res) {
 	db.likePost(req.decoded.userId, req.body.postId, function(err, data) {
 		//if there is an error, return a success: false message along with the error
 		if (err) {
-			return res.json({success: false, error: err});
-		}
+            return res.json({
+                success: false,
+                error: err
+            });
+        }
 		//otherwise, return a success true message
 		return res.json({success: true});
 	});
@@ -61,8 +76,14 @@ apiRoutes.post('/like', function(req, res) {
 apiRoutes.post('/comments', function(req, res) {
 	//get skip number of comments on postId post
 	db.getComments(req.body.postId, req.body.skip, function(err, data) {
+		if (err) {
+            return res.json({
+                success: false,
+                error: err
+            });
+        }
 		//send back the data as json
-		res.json(data);
+		return res.json(data);
 	});
 });
 
@@ -72,8 +93,11 @@ apiRoutes.post('/comment', function(req, res) {
 	db.addComment(req.decoded.userId, req.body.postId, req.body.comment, function(err, data) {
 		//if there is an error, return a success: false message along with the error
 		if (err) {
-			return res.json({success: false, error: err});
-		}
+            return res.json({
+                success: false,
+                error: err
+            });
+        }
 		//otherwise, return a success true message
 		return res.json({success: true});
 	});

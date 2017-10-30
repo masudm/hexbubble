@@ -53,6 +53,12 @@ apiRoutes.post('/new', upload.single('bubblePicture'), function (req, res, next)
 apiRoutes.post('/join', function(req, res) {
     //get the bubbleid using the name provided
     db.getBubble(req.body.name, function(err, data) {
+        if (err) {
+            return res.json({
+                success: false,
+                error: err
+            });
+        }
         //if there is no data i.e. it is undefined, return a false with message
         if (data[0] == undefined) {
             return res.json({
