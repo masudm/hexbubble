@@ -2,10 +2,12 @@
 //dependencies
 const express = require('express'); //the express web server dependency
 const app = express(); //create a web server using express
+const http = require('http').Server(app);
 const mysql = require('mysql'); //mysql api connection wrapper to connect to mysql server
 const bodyParser = require('body-parser'); //middleware for parsing body requests
 const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 const cookieParser = require('cookie-parser');
+const io = require('socket.io')(http);
 
 //config
 //parse application/x-www-form-urlencoded
@@ -74,8 +76,14 @@ app.use('/me', require('./routes/me'));
 app.use('/bubble', require('./routes/bubble'));
 app.use('/search', require('./routes/search'));
 
-//finally, start the server on port 3000 within the local network.
-app.listen(3000, function() {
-	//display a message to state the server has started
-    console.log('Started on port 3000!');
+//socket.io real time connections
+io.on('connection', function(socket){
+	console.log('a user connected');
 });
+
+//finally, start the server on port 3000 within the local network.
+http.listen(3000, function(){
+	//display a message to state the server has started
+	console.log('Started on port 3000!');
+});
+

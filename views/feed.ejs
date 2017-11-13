@@ -23,11 +23,15 @@
 		</div>
 		<script src="/jquery.js"></script>
 		<script src='/moment.js'></script>
+		<script src="/socket.io/socket.io.js"></script>
 		<script>
 			var me = JSON.parse('<%- me %>');
 			var bubbleId = <%- bubbleId %>;
 			var postsNum = 0;
 			var commentsSkip = {};
+
+			//socket io real time connections
+			var socket = io();
 
 			$(document).ready(function() {
 			    posts = JSON.parse('<%- (posts) %>');
