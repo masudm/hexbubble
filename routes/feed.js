@@ -4,6 +4,7 @@ var bodyParser = require('body-parser'); //use the body parser to parse the body
 var moment = require('moment'); //a library for time and date functions
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var db = require('../helpers/db'); //a reference to the database functions so they can be used
+var io; //create a temp variable in the global scope
 
 //this is the main feed page and requests to here
 apiRoutes.get('/feed', function(req, res) {
@@ -66,4 +67,26 @@ apiRoutes.get('/feed/:bubbleId', function(req, res) {
 	
 });
 
-module.exports = apiRoutes;
+
+
+module.exports = function(http) {
+	io = require('socket.io')(http);
+	//join the socket
+	io.on('connection', function(socket){
+		socket.on('disconnect', function(){
+			//console.log('user disconnected');
+		});
+		
+		socket.on('joinBubble', function(bid){
+			socket.join(bid);
+			console.log(bid);
+		});
+
+		socket.on('newPost', function(data) {
+			io.to(data[0]).emit('newPost', data[1]);
+		});
+	});
+
+	//provide the main app with the routes
+	return apiRoutes;
+};

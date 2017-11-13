@@ -31,9 +31,16 @@
 			var commentsSkip = {};
 
 			//socket io real time connections
-			var socket = io();
+			var socket = io({reconnection:false});
+
+			socket.on('newPost', function(post) {
+				console.log(post);
+			});
 
 			$(document).ready(function() {
+				//join socket bubble
+				socket.emit('joinBubble', bubbleId);
+
 			    posts = JSON.parse('<%- (posts) %>');
 			    for (i in posts) {
 			    	if (posts[i].likeId != null && posts[i].likeId != 0) {
@@ -78,6 +85,7 @@
 				        console.log(data);
 				    });
 				addPost('/me', me.username, moment(), p, 1, true, postsNum, 0);
+				socket.emit("newPost", [bubbleId, p]);
 			}
 
 			function addPost(userlink, username, date, post, likes, isLiked, newP, id, comments) {
