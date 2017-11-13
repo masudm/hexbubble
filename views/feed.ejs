@@ -34,7 +34,11 @@
 			var socket = io({reconnection:false});
 
 			socket.on('newPost', function(post) {
-				console.log(post);
+				var isMe = false;
+				if (post.userId == me.userId) {
+					isMe = true;
+				}
+				addPost("/user/" + post.userId, post.username, post.date, post.post, 1, isMe, true, post.postId, 0)
 			});
 
 			$(document).ready(function() {
@@ -82,10 +86,18 @@
 						bubbleId: bubbleId
 				    },
 				    function(data, status){
-				        console.log(data);
-				    });
-				addPost('/me', me.username, moment(), p, 1, true, postsNum, 0);
-				socket.emit("newPost", [bubbleId, p]);
+						//TODO: check if data corerct
+						var fullPost = {
+							userId: me.userId,
+							username: me.username, 
+							time: moment(),
+							post: p,
+							likes: 1,
+							postId: data.postId
+						};
+
+						socket.emit("newPost", [bubbleId, fullPost]);
+					});
 			}
 
 			function addPost(userlink, username, date, post, likes, isLiked, newP, id, comments) {

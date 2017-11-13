@@ -43,7 +43,7 @@ apiRoutes.post('/new', function(req, res) {
 							error: err
 						});
 					}
-					return res.json({success: true});
+					return res.json({success: true, postId: results.insertId});
 				});
 			});
 		} else {
