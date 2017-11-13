@@ -206,7 +206,7 @@ exports.createBubble = function(name, bio, pic, callback) {
 		if (err) {
 			return callback("Server error.");
 		}
-		return callback(null, data);
+		return callback(null, results);
 	});
 }
 
