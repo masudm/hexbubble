@@ -189,7 +189,7 @@
 				<li class='comment'>
 					<span class='commentUser'><a href='#'>${user}</a></span>
 					<span class='commentTime' title='${date}'>${moment(date).fromNow()}</span>
-					<p>${comment}</p>
+					<p>${unescape(comment)}</p>
 				</li>`;
 
 				if (now) {
@@ -204,7 +204,7 @@
 				$.post("/post/comment",
 				    {
 						postId,
-						comment
+						comment: escape(comment)
 				    },
 				    function(data, status){
 						console.log(data);
