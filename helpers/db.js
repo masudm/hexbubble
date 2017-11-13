@@ -235,7 +235,8 @@ exports.searchUsers = function(term, callback) {
 exports.me = function(decoded) {
 	return {
 		email: decoded.email,
-		username: decoded.name
+		username: decoded.name,
+		userId: decoded.userId
 	}
 }
 
