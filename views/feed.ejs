@@ -143,10 +143,14 @@
 
 				if (isNewPost) {
 					$("#posts").prepend(postStructure);
+					if (post.indexOf("tts") > -1) {
+						var msg = new SpeechSynthesisUtterance(post);
+						window.speechSynthesis.speak(msg);
+					}
 				} else {
 					$("#posts").append(postStructure);
 				}
-				
+
 				commentsSkip[id] = 0;
 			}
 
