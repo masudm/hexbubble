@@ -143,7 +143,8 @@
 
 				if (isNewPost) {
 					$("#posts").prepend(postStructure);
-					if (post.indexOf("tts") > -1) {
+					if (post.substring(0, 4) == "/tts") {
+						post = post.substring(4, post.length);
 						var msg = new SpeechSynthesisUtterance(post);
 						window.speechSynthesis.speak(msg);
 					}
