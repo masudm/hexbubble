@@ -14,15 +14,6 @@ var upload = multer({
 	limits: st.limits
 });
 
-apiRoutes.get('/2', function(req, res) {
-	res.render('signup2');
-});
-
-apiRoutes.post('/2', upload.single('profilePic'), function(req, res) {
-	console.log(req.file);
-	console.log(req.body.bio);
-});
-
 //after the base route (in this case, '/signup', go to the next route):
 //full route: /signup/
 apiRoutes.get('/', function(req, res) {
@@ -32,6 +23,15 @@ apiRoutes.get('/', function(req, res) {
 	}
 	//as a response, render the signup view
 	res.render("signup");
+});
+
+apiRoutes.get('/2', function(req, res) {
+	res.render('signup2');
+});
+
+apiRoutes.post('/2', upload.single('profilePic'), function(req, res) {
+	console.log(req.file);
+	console.log(req.body.bio);
 });
 
 
@@ -94,21 +94,25 @@ function signUserUp(res, email, password, name, profilePicture, bio, bubbleId) {
 					error: err
 				});
 			}
-			//create a new token for auth
-			var token = jwt.sign({email, name, profilePicture, userId: user.insertId}, 'hexbubblesecret', {
-				expiresIn: '1y' // expires in 24 hours
-			});				
-	
-			//set a cookie with the auth token
-			//res.cookie('token', token, { maxAge: 31622400, httpOnly: true });
-			res.cookie('token', token, { maxAge: 31622400});
-	
-			//otherwise, send back a success true message
-			res.json({
-				success: true,
-				token
-			});
+			sendToken(res);
 		});
+	});
+}
+
+function sendToken(res) {
+	//create a new token for auth
+	var token = jwt.sign({email, name, profilePicture, userId: user.insertId}, 'hexbubblesecret', {
+		expiresIn: '1y' // expires in 24 hours
+	});				
+
+	//set a cookie with the auth token
+	//res.cookie('token', token, { maxAge: 31622400, httpOnly: true });
+	res.cookie('token', token, { maxAge: 31622400});
+
+	//otherwise, send back a success true message
+	return res.json({
+		success: true,
+		token
 	});
 }
 
