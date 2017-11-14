@@ -151,7 +151,7 @@ function insertComment(id, comment, user, date, now) {
 function postComment(postId, comment) {
     $.post("/post/comment",
         {
-            postId,
+            postId: postId,
             comment: escape(comment)
         },
         function(data, status){
