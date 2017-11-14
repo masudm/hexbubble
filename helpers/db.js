@@ -11,6 +11,7 @@ var crypto = require('crypto');
 exports.login = function(email, password, callback) {
 	rawdb.getDataWhere('*', 'users', `email = '${email}' and password = '${password}'`, function(err, results) {
 		if (err) {
+			console.log(err);
 			return callback("Server error.");
 		}
 
@@ -29,6 +30,7 @@ exports.login = function(email, password, callback) {
 exports.getPosts = function(bubbleId, skip, userId, callback) {
 	rawdb.getPosts(bubbleId, skip, userId, function(err, data) {
 		if (err) {
+			console.log(err);
 			return callback("Server error.");
 		}
 		return callback(null, data);
@@ -39,6 +41,7 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
 exports.newPost = function(post, callback) {
 	rawdb.insertData(post, 'posts', function(err, data) {
 		if (err) {
+			console.log(err);
 			return callback("Server error.");
 		}
 		return callback(null, data);
@@ -63,6 +66,7 @@ exports.likePost = function(userId, postId, callback) {
 	rawdb.insertData(like, 'likes', function(err, results) {
 		//if there is an error, return the error
 		if (err) {
+			console.log(err);
 			//if the error is a duplicate entry, that means the user has
 			//already liked the post. return an error that displays 
 			//that rather than the long and complicated mysql error.
@@ -86,6 +90,7 @@ exports.addComment = function(userId, postId, comment, callback) {
 
 	rawdb.insertData(comment, 'comments', function(err, data) {
 		if (err) {
+			console.log(err);
 			return callback("Server error.");
 		}
 		return callback(null, data);
@@ -96,6 +101,7 @@ exports.addComment = function(userId, postId, comment, callback) {
 exports.getComments = function(postId, skip, callback) {
 	rawdb.getComments(postId, parseInt(skip), function(err, data) {
 		if (err) {
+			console.log(err);
 			return callback("Server error.");
 		}
 		return callback(null, data);
@@ -106,6 +112,7 @@ exports.getComments = function(postId, skip, callback) {
 exports.isMember = function(userId, bubbleId, callback) {
 	rawdb.getDataWhere('memberId', 'members', ('userId = ' + userId + ' and bubbleId = ' + bubbleId), function(err, data) {
 		if (err) {
+			console.log(err);
 			return callback("Server error.");
 		}
 		return callback(null, data);
@@ -116,6 +123,7 @@ exports.isMember = function(userId, bubbleId, callback) {
 exports.getBubble = function(name, callback) {
 	rawdb.getDataWhereLimit("bubbleId", "bubbles", "bubbleName = '" + name + "'", 1, function(err, data) {
 		if (err) {
+			console.log(err);
 			return callback("Server error.");
 		}
 		return callback(null, data);
@@ -125,6 +133,7 @@ exports.getBubble = function(name, callback) {
 exports.getBubbles = function(userId, callback) {
 	rawdb.getBubbles(userId, function(err, data) {
 		if (err) {
+			console.log(err);
 			return callback("Server error.");
 		}
 		return callback(null, data);
@@ -135,6 +144,7 @@ exports.getBubbles = function(userId, callback) {
 exports.getFirstBubble = function(userId, callback) {
 	rawdb.getDataWhere('bubbleId', 'members', 'userId = ' + userId, function(err, data) {
 		if (err) {
+			console.log(err);
 			return callback("Server error.");
 		}
 		return callback(null, data);
@@ -158,6 +168,7 @@ exports.signup = function(email, password, name, callback) {
 	//inset the user object into the user table
 	rawdb.insertData(user, 'users', function(err, data) {
 		if (err) {
+			console.log(err);
 			return callback("Server error.");
 		}
 		return callback(null, data);
@@ -190,6 +201,7 @@ exports.newMember = function(userId, bubbleId, admin, callback) {
 	rawdb.insertData(member, 'members', function(err, results) {
 		//if there is an error, return the error
 		if (err) {
+			console.log(err);
 			//if the error is a duplicate entry, that means the user has
 			//already liked the post. return an error that displays 
 			//that rather than the long and complicated mysql error.
@@ -215,6 +227,7 @@ exports.createBubble = function(name, bio, pic, callback) {
 	//use the insertData function to insert the user object into the user table
 	rawdb.insertData(bubble, 'bubbles', function(err, results) {
 		if (err) {
+			console.log(err);
 			return callback("Server error.");
 		}
 		return callback(null, results);
@@ -225,6 +238,7 @@ exports.createBubble = function(name, bio, pic, callback) {
 exports.getUser = function(userId, callback) {
 	rawdb.getDataWhere('name, profilePicture, bio', 'users', 'userId = "' + userId + '"', function(err, data) {
 		if (err) {
+			console.log(err);
 			return callback("Server error.");
 		}
 		return callback(null, data);
@@ -234,6 +248,7 @@ exports.getUser = function(userId, callback) {
 exports.searchUsers = function(term, callback) {
 	rawdb.searchUsers(term, function(err, data) {
 		if (err) {
+			console.log(err);
 			return callback("Server error.");
 		}
 		return callback(null, data);
