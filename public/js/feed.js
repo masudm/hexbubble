@@ -44,7 +44,7 @@ $(document).ready(function() {
 
 $('#posts').on('keyup', '.commenter', function(ev) {
     if (ev.which === 13) {
-        let id = (ev.currentTarget.id);
+        var id = (ev.currentTarget.id);
         id = id.substr(id.indexOf("_") + 1);
         addComment(id);
     }
@@ -130,7 +130,7 @@ function getComments(id) {
 }
 
 function addComment(id) {
-    let comment = $("#commenter_" + id).val();
+    var comment = $("#commenter_" + id).val();
     $("#commenter_" + id).val("");
 
     insertComment(id, comment, me.username, new Date(), true);	
@@ -138,7 +138,7 @@ function addComment(id) {
 }
 
 function insertComment(id, comment, user, date, now) {
-    let commentTemplate = "<li class='comment'>    <span class='commentUser'><a href='#'>" + user + "</a></span>    <span class='commentTime' title='" + date + "'>" + moment(date).fromNow() + "</span>    <p>" + unescape(comment) + "</p></li>";;
+    var commentTemplate = "<li class='comment'>    <span class='commentUser'><a href='#'>" + user + "</a></span>    <span class='commentTime' title='" + date + "'>" + moment(date).fromNow() + "</span>    <p>" + unescape(comment) + "</p></li>";;
 
     if (now) {
         $("#comments_" + id).append(commentTemplate);

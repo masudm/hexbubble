@@ -1,7 +1,7 @@
 var searchTimeout;
 
 $("#search").on('change keyup paste', function() {
-    let term = $('#search').val();
+    var term = $('#search').val();
     if (term.length > 2) {
         $("#searchResults").html("Loading...");
         window.clearTimeout(searchTimeout);
