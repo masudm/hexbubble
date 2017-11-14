@@ -23,7 +23,7 @@ function search(term) {
     }, function(data, status) {
         result = "";
         for (i in data) {
-            result += `<a href='/user/${data[i].userId}'><li class='button'>${data[i].name}</li></a>`;
+            result += "<a href='/user/" + data[i].userId + "'><li class='button'>" + data[i].name + "</li></a>";
         }
         $("#searchResults").html(result);
         if (data.length == 0) {

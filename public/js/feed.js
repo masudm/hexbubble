@@ -81,37 +81,12 @@ function newPost() {
 
 function addPost(userlink, username, date, post, likes, isLiked, isNewPost, id, comments) {
     var heart = "";
-    var heartAction = `onclick='love("${id}")'`;
+    var heartAction = "onclick='love(\"" + id + "\")'";
     if (isLiked) {
         heart = "activeHeart";
         heartAction = "";
     }
-    var postStructure = `
-    <div class='post shadow'>
-        <div class='postUser'>
-            <!-- <img class='postProfilePic'> -->
-            <div class='postUserName'><a href='${userlink}'>${username}</a></div>
-            <div class='postUserDate' title='${date}'>${moment(date).fromNow()}</div>
-        </div>
-        <div class='postData'>${unescape(post)}</div>
-        <div class='postLikes'>
-            <div>
-            <div class='heart ${heart}' id='heart.${id}' ${heartAction}></div>
-            <span class='likeNum'>Likes: <span id='like.${id}'>${likes}</span></span>
-            </div>
-            <div class='postCommentsInfo button' onclick='getComments("${id}")' id='loader_${id}'>Load more comments...</div>
-        </div>
-        
-        <div class='postComments'>
-            <ul id='comments_${id}'>
-            </ul>
-            <input type='text' placeholder='Comment....' class='commenter' id='commenter_${id}'>
-            <div class='submitComment button' onclick='addComment("${id}")'>Submit</div>
-        </div>
-    </div>
-    <br>
-    <br>`;
-
+    var postStructure = "<div class='post shadow'><div class='postUser'>    <!-- <img class='postProfilePic'> -->    <div class='postUserName'><a href='" + userlink + "'>" + username + "</a></div>    <div class='postUserDate' title='" + date + "'>" + moment(date).fromNow() + "</div></div><div class='postData'>" + unescape(post) + "</div><div class='postLikes'>    <div>    <div class='heart " + heart + "' id='heart." + id + "' " + heartAction + "></div>    <span class='likeNum'>Likes: <span id='like." + id + "'>" + likes + "</span></span>    </div>    <div class='postCommentsInfo button' onclick='getComments(\"" + id + "\")' id='loader_" + id + "'>Load more comments...</div></div><div class='postComments'>    <ul id='comments_" + id + "'>    </ul>    <input type='text' placeholder='Comment....' class='commenter' id='commenter_" + id + "'>    <div class='submitComment button' onclick='addComment(\"" + id + "\")'>Submit</div></div>    </div>    <br>    <br>";    
     if (isNewPost) {
         $("#posts").prepend(postStructure);
         post = unescape(post);
@@ -158,17 +133,12 @@ function addComment(id) {
     let comment = $("#commenter_" + id).val();
     $("#commenter_" + id).val("");
 
-    insertComment(id, comment, me.username, Date(), true);	
+    insertComment(id, comment, me.username, new Date(), true);	
     postComment(id, comment);			
 }
 
 function insertComment(id, comment, user, date, now) {
-    let commentTemplate = `
-    <li class='comment'>
-        <span class='commentUser'><a href='#'>${user}</a></span>
-        <span class='commentTime' title='${date}'>${moment(date).fromNow()}</span>
-        <p>${unescape(comment)}</p>
-    </li>`;
+    let commentTemplate = "<li class='comment'>    <span class='commentUser'><a href='#'>" + user + "</a></span>    <span class='commentTime' title='" + date + "'>" + moment(date).fromNow() + "</span>    <p>" + unescape(comment) + "</p></li>";;
 
     if (now) {
         $("#comments_" + id).append(commentTemplate);
