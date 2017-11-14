@@ -223,7 +223,7 @@ exports.createBubble = function(name, bio, pic, callback) {
 
 //get a user using their userid
 exports.getUser = function(userId, callback) {
-	rawdb.getDataWhere('*', 'users', 'userId = "' + userId + '"', function(err, data) {
+	rawdb.getDataWhere('name, profilePicture, bio', 'users', 'userId = "' + userId + '"', function(err, data) {
 		if (err) {
 			return callback("Server error.");
 		}

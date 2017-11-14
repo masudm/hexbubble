@@ -332,6 +332,12 @@ body {
     padding: 0;
 }
 
+.userProfilePicture {
+    max-width: 25vw;
+    max-height: 50vw;
+    border-radius: 10px;
+}
+
 .heart {
     position: relative;
     width: 2.5vw;
