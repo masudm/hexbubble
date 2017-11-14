@@ -22,7 +22,7 @@ apiRoutes.get('/feed', function(req, res) {
 			res.redirect('/feed/' + (data[0].bubbleId)); //go to the first bubble the user is signed up for
 		} else {
 			//if they do not have one, redirect them because they are breaking something or not logged in.
-			res.redirect('/');
+			res.redirect('/bubble/new');
 		}
 	});
 });

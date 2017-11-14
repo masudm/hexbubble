@@ -46,38 +46,11 @@ apiRoutes.post('/', function(req, res) {
 	let profilePicture = ""; //save this as null for now
 	let bio = "";
 
-	//check if the bubble already exists
-	db.getBubble(req.body.bubble, function(err, data) {
-		if (err) {
-            return res.json({
-                success: false,
-                error: err
-            });
-		}
-		
-		if (data.length > 0) {
-			//a bubble already exists
-			let bubbleId = (data[0].bubbleId); //get it's bubbleid
-			signUserUp(res, email, password, name, profilePicture, bio, bubbleId); //sign the user up with that bubbleid
-		} else {
-			//no bubble, create it too
-			db.createBubble(req.body.bubble, "", "", function(err, bubble) {
-				if (err) {
-					return res.json({
-						success: false,
-						error: err
-					});
-				}
-
-				//sign the user up and use the bubble id from that inserted id
-				signUserUp(res, email, password, name, profilePicture, bio, bubble.insertId);
-			});
-		}
-	});
+	signUserUp(res, email, password, name, profilePicture, bio);
 });
 
 //sign the user up and add member
-function signUserUp(res, email, password, name, profilePicture, bio, bubbleId) {
+function signUserUp(res, email, password, name, profilePicture, bio) {
 	//use the db function
 	db.signup(email, password, name, profilePicture, bio, function(err, user) {
 		if (err) {
@@ -86,34 +59,25 @@ function signUserUp(res, email, password, name, profilePicture, bio, bubbleId) {
                 error: err
             });
         }
-		//create a new member
-		db.newMember(user.insertId, bubbleId, 0, function(err, member) {
-			if (err) {
-				return res.json({
-					success: false,
-					error: err
-				});
-			}
-			sendToken(res);
+		//create a new token for auth
+		var token = jwt.sign({email, name, profilePicture, userId: user.insertId}, 'hexbubblesecret', {
+			expiresIn: '1y' // expires in 24 hours
+		});				
+
+		//set a cookie with the auth token
+		//res.cookie('token', token, { maxAge: 31622400, httpOnly: true });
+		res.cookie('token', token, { maxAge: 31622400});
+
+		//otherwise, send back a success true message
+		return res.json({
+			success: true,
+			token
 		});
 	});
 }
 
 function sendToken(res) {
-	//create a new token for auth
-	var token = jwt.sign({email, name, profilePicture, userId: user.insertId}, 'hexbubblesecret', {
-		expiresIn: '1y' // expires in 24 hours
-	});				
-
-	//set a cookie with the auth token
-	//res.cookie('token', token, { maxAge: 31622400, httpOnly: true });
-	res.cookie('token', token, { maxAge: 31622400});
-
-	//otherwise, send back a success true message
-	return res.json({
-		success: true,
-		token
-	});
+	console.log("TODO");
 }
 
 //export the apiRoutes variable (which defines all the routes) so it can be used elsewhere
