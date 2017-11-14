@@ -142,15 +142,15 @@ exports.getFirstBubble = function(userId, callback) {
 }
 
 //a signup function - convert the details into an object and insert
-exports.signup = function(email, password, name, profilePicture, bio, callback) {
+exports.signup = function(email, password, name, callback) {
 	//create a new object (or associative array) using property value shorthand
 	//https://github.com/airbnb/javascript#es6-object-concise
 	var user = {
 		email,
 		password,
 		name,
-		profilePicture,
-		bio,
+		profilePicture: "",
+		bio: "",
 		//create a new MySQL formatted date using the moment library
 		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss") 
 	};
@@ -158,6 +158,17 @@ exports.signup = function(email, password, name, profilePicture, bio, callback) 
 	//inset the user object into the user table
 	rawdb.insertData(user, 'users', function(err, data) {
 		if (err) {
+			return callback("Server error.");
+		}
+		return callback(null, data);
+	});
+}
+
+//update user and their profile pic
+exports.updateUser = function(bio, profilePicture, userId, callback) {
+	rawdb.updateRow("users", `bio='${bio}', profilePicture='${profilePicture}'`, `userId=${userId}`, function(err, data) {
+		if (err) {
+			console.log(err);
 			return callback("Server error.");
 		}
 		return callback(null, data);

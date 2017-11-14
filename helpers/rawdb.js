@@ -33,6 +33,12 @@ exports.getDataWhereLimit = function(columns, table, where, limit, callback) {
     query(sql, callback);
 }
 
+//async function to update row
+exports.updateRow = function(table, update, where, callback) {
+	let sql = `UPDATE ${table} SET ${update} WHERE ${where}`;
+	query(sql, callback);
+}
+
 //insert data using a data object into a table
 exports.insertData = function(data, table, callback) {
 	//get a new connection from the pool

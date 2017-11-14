@@ -30,8 +30,18 @@ apiRoutes.get('/2', function(req, res) {
 });
 
 apiRoutes.post('/2', upload.single('profilePic'), function(req, res) {
-	console.log(req.file);
-	console.log(req.body.bio);
+	db.updateUser(req.body.bio, req.file.filename, req.decoded.userId, function(err, data) {
+		if (err) {
+            return res.json({
+                success: false,
+                error: err
+            });
+        }
+		return res.json({
+			success: true
+		});
+	});
+	
 });
 
 
@@ -43,16 +53,14 @@ apiRoutes.post('/', function(req, res) {
 	let email = req.body.email;
 	let password = req.body.password;
 	let name = req.body.name;
-	let profilePicture = ""; //save this as null for now
-	let bio = "";
 
-	signUserUp(res, email, password, name, profilePicture, bio);
+	signUserUp(res, email, password, name);
 });
 
 //sign the user up and add member
-function signUserUp(res, email, password, name, profilePicture, bio) {
+function signUserUp(res, email, password, name) {
 	//use the db function
-	db.signup(email, password, name, profilePicture, bio, function(err, user) {
+	db.signup(email, password, name, function(err, user) {
 		if (err) {
             return res.json({
                 success: false,
@@ -60,7 +68,7 @@ function signUserUp(res, email, password, name, profilePicture, bio) {
             });
         }
 		//create a new token for auth
-		var token = jwt.sign({email, name, profilePicture, userId: user.insertId}, 'hexbubblesecret', {
+		var token = jwt.sign({email, name, userId: user.insertId}, 'hexbubblesecret', {
 			expiresIn: '1y' // expires in 24 hours
 		});				
 
