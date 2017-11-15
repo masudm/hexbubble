@@ -21,8 +21,24 @@ apiRoutes.get('/new', function(req, res) {
 //posting to the new bubble page
 //it requires a 'bubblePicture' file (middleware)
 apiRoutes.post('/new', upload.single('bubblePicture'), function (req, res, next) {
+    let name = req.body.bubbleName;
+    let desc = req.body.bubbleDesc;
+    let filename = req.file.filename;
+
+    if (name == null || name == "" || name == undefined) {
+		return res.json(db.makeError("Please enter a name."));
+    }
+    
+    if (desc == null || desc == "" || desc == undefined) {
+		return res.json(db.makeError("Please enter a name."));
+    }
+    
+    if (filename == null || filename == "" || filename == undefined) {
+		return res.json(db.makeError("Please upload a file."));
+	}
+
     //create a bubble with the provided name, bio, and the new filename of the photo
-    db.createBubble(req.body.bubbleName, req.body.bubbleDesc, req.file.filename, function(err, bubble) {
+    db.createBubble(name, desc, filename, function(err, bubble) {
         //if there was an error, return it as json to the front-end
         if (err) {
             return res.json({
@@ -52,7 +68,13 @@ apiRoutes.post('/new', upload.single('bubblePicture'), function (req, res, next)
 //post to the join new bubble route
 apiRoutes.post('/join', function(req, res) {
     //get the bubbleid using the name provided
-    db.getBubble(req.body.name, function(err, data) {
+    let name = req.body.name;
+
+    if (name == null || name == "" || name == undefined) {
+		return res.json(db.makeError("Please enter a name."));
+	}
+
+    db.getBubble(name, function(err, data) {
         if (err) {
             return res.json({
                 success: false,
