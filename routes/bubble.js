@@ -30,7 +30,7 @@ apiRoutes.post('/new', upload.single('bubblePicture'), function (req, res, next)
     }
     
     if (desc == null || desc == "" || desc == undefined) {
-		return res.json(db.makeError("Please enter a name."));
+		return res.json(db.makeError("Please enter a description."));
     }
     
     if (filename == null || filename == "" || filename == undefined) {
