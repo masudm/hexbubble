@@ -30,6 +30,11 @@ apiRoutes.get('/feed', function(req, res) {
 //the actual feed
 apiRoutes.get('/feed/:bubbleId', function(req, res) {
 	let bid = parseInt(req.params.bubbleId); //from the string bubble id parse it into an integer
+
+	if (bid == null || bid == "" || bid == undefined) {
+		return res.json(db.makeError("No bubble id."));
+	}
+
 	//verify if they're a member
 	db.isMember(parseInt(req.decoded.userId), bid, function(err, data) {
 		//if there was an error, return it as json to the front-end

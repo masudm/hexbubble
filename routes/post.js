@@ -6,14 +6,25 @@ var db = require('../helpers/db'); //a reference to the database functions so th
 
 //post to the /post/new route
 apiRoutes.post('/new', function(req, res) {
-	bid = parseInt(req.body.bubbleId);
+	let bid = parseInt(req.body.bubbleId);
+	let userId = req.decoded.userId;
+	let post = req.body.post;
+
+	if (post == null || post == "" || post == undefined) {
+		return res.json(db.makeError("Please enter a post."));
+	}
+
+	if (bid == null || bid == "" || bid == undefined) {
+		return res.json(db.makeError("No bubble id."));
+	}
+
 	//create a new post object to insert
 	//include everything needed for the database such as userId, bubbleId, etc
 	post = {
-		userId: req.decoded.userId, //userid from decoding
+		userId: userId, //userid from decoding
 		bubbleId: bid, //bubble id from passed post request
 		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"), //current date in needed format
-		post: req.body.post //the actual post
+		post: post //the actual post
 	};
 
 	//insert the object into the post table if they are a member
