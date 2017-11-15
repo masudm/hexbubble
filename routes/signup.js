@@ -30,7 +30,18 @@ apiRoutes.get('/2', function(req, res) {
 });
 
 apiRoutes.post('/2', upload.single('profilePic'), function(req, res) {
-	db.updateUser(req.body.bio, req.file.filename, req.decoded.userId, function(err, data) {
+	let bio = req.body.bio;
+	let filename = req.file.filename;
+
+	if (bio == null || bio == "" || bio == undefined) {
+		return res.json(db.makeError("Please enter a bio."));
+	}
+
+	if (filename == null || filename == "" || filename == undefined) {
+		return res.json(db.makeError("Please upload a file"));
+	}
+
+	db.updateUser(bio, filename, req.decoded.userId, function(err, data) {
 		if (err) {
             return res.json({
                 success: false,
@@ -53,6 +64,18 @@ apiRoutes.post('/', function(req, res) {
 	let email = req.body.email;
 	let password = req.body.password;
 	let name = req.body.name;
+
+	if (email == null || email == "" || email == undefined) {
+		return res.json(db.makeError("Please enter an email."));
+	}
+
+	if (password == null || password == "" || password == undefined) {
+		return res.json(db.makeError("Please enter a password."));
+	}
+
+	if (name == null || name == "" || name == undefined) {
+		return res.json(db.makeError("Please enter a name."));
+	}
 
 	signUserUp(res, email, password, name);
 });
@@ -82,10 +105,6 @@ function signUserUp(res, email, password, name) {
 			token
 		});
 	});
-}
-
-function sendToken(res) {
-	console.log("TODO");
 }
 
 //export the apiRoutes variable (which defines all the routes) so it can be used elsewhere

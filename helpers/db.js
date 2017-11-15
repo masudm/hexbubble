@@ -270,3 +270,10 @@ exports.me = function(decoded) {
 exports.makeid = function() {
 	return crypto.randomBytes(20).toString('hex');
 }
+
+exports.makeError = function(err) {
+	return ({
+		success: false,
+		err: err
+	});
+}
