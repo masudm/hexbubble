@@ -28,7 +28,7 @@
 				        if (data.success == true) {
 				        	window.location = '/feed';
 				        } else {
-				        	alert("Login failed.");
+				        	alert(data.err);
 				        }
 				    });
 			}
