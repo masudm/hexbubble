@@ -9,6 +9,7 @@ apiRoutes.post('/new', function(req, res) {
 	let bid = parseInt(req.body.bubbleId);
 	let userId = req.decoded.userId;
 	let post = req.body.post;
+	console.log(req.body);
 
 	if (post == null || post == "" || post == undefined) {
 		return res.json(db.makeError("Please enter a post."));
@@ -28,6 +29,7 @@ apiRoutes.post('/new', function(req, res) {
 	};
 
 	uploadPost(parseInt(req.decoded.userId), bid, post, function(json) {
+		console.log(json);
 		res.json(json);
 	});
 });

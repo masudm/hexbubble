@@ -93,79 +93,66 @@ function newPost() {
     postsNum += 1;
     var p = escape($("#post").val());//.replace(/\s/g, '');
     $("#post").val("");
-    /*$.post("/post/new",
+    
+    var files = $('#postPicture')[0].files;
+    var file = files[0];
+
+    if (file) {
+        if (file.size > (1024 * 1024 * 2)) {
+            alert("Max total file size of 2mb reached");
+            return false;
+        }
+
+        var formData = new FormData($("#postForm")[0]);
+        formData.append('token', localStorage.getItem('token'));
+        formData.append('bubbleId', bubbleId);
+
+        $.ajax({
+            url: '/post/new/upload',
+            type: 'POST',
+            data: formData,
+            async: true,
+            success: function (data) {
+                onUpload(data, p);
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        }).uploadProgress(function (e) {
+            if (e.lengthComputable) {
+                var percentage = Math.round((e.loaded * 100) / e.total);
+                console.log(percentage);
+            }
+        });
+    } else {
+        $.post("/post/new",
         {
             token: localStorage.getItem('token'),
             post: p,
             bubbleId: bubbleId
         },
-        function(data, status){
-            if (data.success == true) {
-                var fullPost = {
-                    userId: me.userId,
-                    username: me.username, 
-                    time: moment(),
-                    post: p,
-                    likes: 1,
-                    postId: data.postId
-                };
-
-                socket.emit("newPost", [bubbleId, fullPost]);
-            } else {
-                alert("Error posting.");
-            }
-            
-        });*/
-    var url = "/post/new";
-
-    var files = $('#postPicture')[0].files;
-    var file = files[0];
-
-    if (file) {
-        if (files.length < 1) {
-            url = "/post/new/upload";
-        }
-    
-        if (file.size > (1024 * 1024 * 2)) {
-            alert("Max total file size of 2mb reached");
-            return false;
-        }
+        function(data){
+            onUpload(data, p);
+        });
     }
-    
-    var formData = new FormData($("#postForm")[0]);
-    formData.append('token', localStorage.getItem('token'));
-    formData.append('bubbleId', bubbleId);
+}
 
-    $.ajax({
-        url: url,
-        type: 'POST',
-        data: formData,
-        async: true,
-        success: function (data) {
-            if (data.success == true) {
-                var fullPost = {
-                    userId: me.userId,
-                    username: me.username, 
-                    time: moment(),
-                    post: p,
-                    likes: 0,
-                    postId: data.postId
-                };
+function onUpload(data, post) {
+    if (data.success == true) {
+        var fullPost = {
+            userId: me.userId,
+            username: me.username, 
+            time: moment(),
+            post: post,
+            likes: 0,
+            postId: data.postId
+        };
 
-                socket.emit("newPost", [bubbleId, fullPost]);
-            } else {
-                alert("Error posting.");
-            }
-        },
-        cache: false,
-        contentType: false,
-        processData: false
-    }).uploadProgress(function (e) {
-        if (e.lengthComputable) {
-            var percentage = Math.round((e.loaded * 100) / e.total);
-            console.log(percentage);
-        }
-    });
+        socket.emit("newPost", [bubbleId, fullPost]);
+    } else {
+        alert("Error posting.");
+        console.log(data);
+    }
 }
 
 function addPost(userlink, username, date, post, likes, isLiked, isNewPost, id, comments) {
