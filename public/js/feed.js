@@ -1,5 +1,6 @@
 var postsNum = 0;
 var commentsSkip = {};
+var skip = 0;
 
 //socket io real time connections
 var socket = io();
@@ -10,25 +11,59 @@ socket.on('newPost', function(post) {
     addPost("/user/" + post.userId, post.username, post.date, post.post, 0, false, true, post.postId, 0)
 });
 
+//preload
+var hasPreloaded = false;
+$(window).scroll(function() {
+    if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+        if (!hasPreloaded) {
+            hasPreloaded = true;
+            preload();
+        }
+    }
+ });
+
 $(document).ready(function() {
     //join socket bubble when the document is ready.
     socket.emit('joinBubble', bubbleId);
-
-    
-    for (i in posts) {
-        if (posts[i].likeId != null && posts[i].likeId != 0) {
-            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId);
-        } else {
-            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId);
-        }
-        postsNum = i;
-    }
+    addAllPosts(posts);
     
     var sidebarIcon = $("#bubbleIcon_" + bubbleId);
     sidebarIcon.addClass('active');
     $("#meIcon").after(sidebarIcon.clone());
     sidebarIcon.remove();
 });
+
+function preload() {
+    console.log('preloading....');
+    skip += 10;
+    $.post("/feed",
+    {
+        token: localStorage.getItem('token'),
+        skip: skip,
+        bubbleId: bubbleId
+    },
+    function(data, status){
+        if (data.success) {
+            if (data.data.posts != "[]") {
+                addAllPosts(JSON.parse(data.data.posts));
+                hasPreloaded = false;
+            }
+        } else {
+            console.log(data.err);
+        }
+    });
+}
+
+function addAllPosts(posts) {
+    for (i in posts) {
+        if (posts[i].likeId != null && posts[i].likeId != 0) {
+            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId);
+        } else {
+            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId);
+        }
+        postsNum += i;
+    }
+}
 
 /*$("#post").keyup(function(ev) {
     if (ev.which === 13) {

@@ -35,21 +35,43 @@ apiRoutes.get('/feed/:bubbleId', function(req, res) {
 		return res.json(db.makeError("No bubble id."));
 	}
 
+	getPosts(req.decoded.userId, bid, 0, req.decoded, function(json) {
+		res.render('feed', json);
+	});
+});
+
+apiRoutes.post('/feed', function(req, res) {
+	let bid = parseInt(req.body.bubbleId); //from the string bubble id parse it into an integer
+	let skip = parseInt(req.body.skip);
+	
+	if (bid == null || bid == "" || bid == undefined) {
+		return res.json(db.makeError("No bubble id."));
+	}
+
+	getPosts(req.decoded.userId, bid, skip, req.decoded, function(json) {
+		res.json({
+			success: true,
+			data: json
+		});
+	});
+});
+
+function getPosts(userId, bid, skip, user, callback) {
 	//verify if they're a member
-	db.isMember(parseInt(req.decoded.userId), bid, function(err, data) {
+	db.isMember(parseInt(userId), bid, function(err, data) {
 		//if there was an error, return it as json to the front-end
         if (err) {
-            return res.json({
+            return callback({
                 success: false,
                 error: err
             });
         }
 		if (data.length > 0) { //if they are a member
 			//get their posts
-			db.getPosts(bid, 0, req.decoded.userId, function(err, results) {
+			db.getPosts(bid, skip, userId, function(err, results) {
 				//if there was an error, return it as json to the front-end
 				if (err) {
-					return res.json({
+					return callback({
 						success: false,
 						error: err
 					});
@@ -57,20 +79,22 @@ apiRoutes.get('/feed/:bubbleId', function(req, res) {
 				//render the feed page
 				//send the posts in a json format
 				//and send the user object as json too
-				res.render('feed', {
+				return callback({
 					success: true,
 					posts: JSON.stringify(results), 
-					me: JSON.stringify(db.me(req.decoded)),
+					me: JSON.stringify(db.me(user)),
 					bubbleId: bid
 				});
 			});
 		} else { 
 			//they are a not a member so send them a message
-			res.send('You are not allowed in this bubble.'); //TODO: change this to error message
+			return callback({
+				success: false,
+				error: "Not allowed here."
+			}); //TODO: change this to error message
 		}
 	});
-	
-});
+}
 
 
 
