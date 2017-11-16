@@ -73,7 +73,6 @@ apiRoutes.post('/new/upload', upload.single('postPicture'), function(req, res) {
 	};
 
 	uploadPost(parseInt(req.decoded.userId), bid, post, function(json) {
-		console.log(json);
 		res.json(json);
 	});
 });
