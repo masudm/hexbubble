@@ -217,6 +217,7 @@ body {
 }
 
 .postData {
+    word-break: break-all;
     font-size: 1.4em;
     text-align: left;
     padding: 10px;
