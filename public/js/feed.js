@@ -92,12 +92,9 @@ $('#posts').on('keyup', '.commenter', function(ev) {
 function newPost() {
     postsNum += 1;
     var p = escape($("#post").val());//.replace(/\s/g, '');
-    $("#post").val("");
     
     var files = $('#postPicture')[0].files;
     var file = files[0];
-    document.getElementById("postPicture").value = "";
-    $("#postPicturePreview").html("");
 
     if (file) {
         if (file.size > (1024 * 1024 * 2)) {
@@ -124,7 +121,7 @@ function newPost() {
         }).uploadProgress(function (e) {
             if (e.lengthComputable) {
                 var percentage = Math.round((e.loaded * 100) / e.total);
-                console.log(percentage);
+                $("#postUploading").html("Uploading: " + percentage + "%");
             }
         });
     } else {
@@ -141,6 +138,11 @@ function newPost() {
 }
 
 function onUpload(data) {
+    $("#post").val("");
+    document.getElementById("postPicture").value = "";
+    $("#postPicturePreview").html("");
+    $("#postUploading").html("");
+
     if (data.success == true) {
         var fullPost = {
             userId: me.userId,
