@@ -29,6 +29,7 @@
                     </div>
                 </form>
                 <div class='bubblePicturePreview' id='preview'></div>
+                <h6 id='picUploading'></h6>
                 <div class='button' onclick='createBubble()'>Create</div>
             </div>
         </div>
@@ -94,7 +95,7 @@
                 }).uploadProgress(function (e) {
                     if (e.lengthComputable) {
                         var percentage = Math.round((e.loaded * 100) / e.total);
-                        console.log(percentage);
+                        $("#picUploading").html("Uploading: " + percentage + "%");
                     }
                 });
             }
