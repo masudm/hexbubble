@@ -33,6 +33,11 @@ exports.getDataWhereLimit = function(columns, table, where, limit, callback) {
     query(sql, callback);
 }
 
+exports.deleteRow = function(table, where, callback) {
+	let sql = `DELETE FROM ${table} WHERE ${where}`;
+	query(sql, callback);
+}
+
 //async function to update row
 exports.updateRow = function(table, update, where, callback) {
 	let sql = `UPDATE ${table} SET ${update} WHERE ${where}`;

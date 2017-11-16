@@ -373,7 +373,7 @@ body {
     background: #60AEFE;
 }
 .activeHeart:after, .activeHeart:before {
-    cursor: not-allowed;
+    /*cursor: not-allowed;*/
 }
 .animateHeart {
     animation: heartbeat 1s;

@@ -86,6 +86,20 @@ apiRoutes.post('/like', function(req, res) {
 	});
 });
 
+apiRoutes.post('/dislike', function(req, res) {
+	db.dislikePost(req.decoded.userId, req.body.postId, function(err, data) {
+		//if there is an error, return a success: false message along with the error
+		if (err) {
+            return res.json({
+                success: false,
+                error: err
+            });
+        }
+		//otherwise, return a success true message
+		return res.json({success: true});
+	});
+});
+
 //get comments on a post
 apiRoutes.post('/comments', function(req, res) {
 	//get skip number of comments on postId post

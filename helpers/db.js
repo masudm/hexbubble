@@ -79,6 +79,17 @@ exports.likePost = function(userId, postId, callback) {
 	});
 }
 
+exports.dislikePost = function(userId, postId, callback) {
+	likeId = parseInt(String(userId) + String(postId));
+	rawdb.deleteRow('likes', `likeId = '${likeId}'`, function(err, data){
+		if (err) {
+			console.log(err);
+			return callback("Server error.");
+		}
+		return callback(null, data);
+	});
+}
+
 //add a comment using their userid and current postid
 exports.addComment = function(userId, postId, comment, callback) {
 	var comment = {
