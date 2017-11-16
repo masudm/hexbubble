@@ -100,7 +100,8 @@ function uploadPost(userId, bid, post, callback) {
 				}
 				return callback({
 					success: true, 
-					postId: results.insertId
+					postId: results.insertId,
+					post: post
 				});
 			});
 		} else {

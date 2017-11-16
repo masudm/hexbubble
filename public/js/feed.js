@@ -114,7 +114,7 @@ function newPost() {
             data: formData,
             async: true,
             success: function (data) {
-                onUpload(data, p);
+                onUpload(data);
             },
             cache: false,
             contentType: false,
@@ -133,18 +133,18 @@ function newPost() {
             bubbleId: bubbleId
         },
         function(data){
-            onUpload(data, p);
+            onUpload(data);
         });
     }
 }
 
-function onUpload(data, post) {
+function onUpload(data) {
     if (data.success == true) {
         var fullPost = {
             userId: me.userId,
             username: me.username, 
             time: moment(),
-            post: post,
+            post: data.post.post,
             likes: 0,
             postId: data.postId
         };
