@@ -27,10 +27,16 @@ apiRoutes.post('/new', function(req, res) {
 		post: post //the actual post
 	};
 
+	uploadPost(parseInt(req.decoded.userId), bid, post, function(json) {
+		res.json(json);
+	});
+});
+
+function uploadPost(userId, bid, post, callback) {
 	//insert the object into the post table if they are a member
-	db.isMember(parseInt(req.decoded.userId), bid, function(err, data) {
+	db.isMember(userId, bid, function(err, data) {
 		if (err) {
-            return res.json({
+            return callback({
                 success: false,
                 error: err
             });
@@ -41,22 +47,25 @@ apiRoutes.post('/new', function(req, res) {
 			db.newPost(post, function(err, results) {
 				//if there is an error, return the error
 				if (err) {
-					return res.json({
+					return callback({
 						success: false,
 						error: err
 					});
 				}
-				return res.json({
+				return callback({
 					success: true, 
 					postId: results.insertId
 				});
 			});
 		} else {
 			//they are not a member so send back a message
-			res.send('You are not allowed in this bubble.'); //TODO: change this to error message
+			return callback({
+				success: false,
+				error: 'You are not allowed in this bubble.'
+			}); //TODO: change this to error message
 		}
 	});
-});
+}
 
 //likes are posted to this route
 apiRoutes.post('/like', function(req, res) {

@@ -11,8 +11,12 @@
 			<div class='container feed'>
 				<br>
 				<div class='newPost shadow'>
-					<textarea id='post' placeholder='Say something!'></textarea>
-					<div class='button' onclick="newPost()">Post!</div>
+					<form id='postForm'>
+						<textarea id='post' placeholder='Say something!' name='post'></textarea>
+						<input type="file" id='postPicture' name='postPicture'>
+						<div class='postPicturePreview' id='postPicturePreview'></div>
+						<div class='button' onclick="newPost()">Post!</div>
+					</form>
 				</div>
 				<br>
 				<br>
@@ -23,6 +27,8 @@
 		</div>
 		<script src="/jquery.js"></script>
 		<script src='/moment.js'></script>
+		<script src="/load-image.js"></script>
+		<script src="/jq-progress.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
 			var me = JSON.parse('<%- me %>');
