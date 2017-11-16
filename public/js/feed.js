@@ -6,14 +6,8 @@ var socket = io();
 
 //when you get a new post, add the new post
 socket.on('newPost', function(post) {
-    //check if the post is by yourself (ie if the ids match)
-    var isMe = false;
-    if (post.userId == me.userId) {
-        isMe = true;
-    }
-
     //add the post
-    addPost("/user/" + post.userId, post.username, post.date, post.post, 1, isMe, true, post.postId, 0)
+    addPost("/user/" + post.userId, post.username, post.date, post.post, 0, false, true, post.postId, 0)
 });
 
 $(document).ready(function() {

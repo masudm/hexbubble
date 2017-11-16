@@ -46,18 +46,9 @@ apiRoutes.post('/new', function(req, res) {
 						error: err
 					});
 				}
-				//also like the just inserted post (user likes be default)
-				db.likePost(req.decoded.userId, results.insertId, function(err, data) {
-					if (err) {
-						return res.json({
-							success: false,
-							error: err
-						});
-					}
-					return res.json({
-						success: true, 
-						postId: results.insertId
-					});
+				return res.json({
+					success: true, 
+					postId: results.insertId
 				});
 			});
 		} else {
