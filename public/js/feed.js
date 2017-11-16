@@ -96,6 +96,8 @@ function newPost() {
     
     var files = $('#postPicture')[0].files;
     var file = files[0];
+    document.getElementById("postPicture").value = "";
+    $("#postPicturePreview").html("");
 
     if (file) {
         if (file.size > (1024 * 1024 * 2)) {
@@ -167,7 +169,7 @@ function addPost(userlink, username, date, post, likes, isLiked, isNewPost, id, 
     if (post.indexOf("|img|") > -1) {
         post = (post.split("|img|"));
         var img = '<img class="postPicture" src="/postPictures/'+post[1]+'"/>';
-        post = post[0] + img;
+        post = post[0] + "<br>" + img;
     }
 
     var postStructure = "<div class='post shadow'><div class='postUser'>    <!-- <img class='postProfilePic'> -->    <div class='postUserName'><a href='" + userlink + "'>" + username + "</a></div>    <div class='postUserDate' title='" + date + "'>" + moment(date).fromNow() + "</div></div><div class='postData'>" + unescape(post) + "</div><div class='postLikes'>    <div>    <div class='heart " + heart + "' id='heart." + id + "' " + heartAction + "></div>    <span class='likeNum'>Likes: <span id='like." + id + "'>" + likes + "</span></span>    </div>    <div class='postCommentsInfo button' onclick='getComments(\"" + id + "\")' id='loader_" + id + "'>Load more comments...</div></div><div class='postComments'>    <ul id='comments_" + id + "'>    </ul>    <input type='text' placeholder='Comment....' class='commenter' id='commenter_" + id + "'>    <div class='submitComment button' onclick='addComment(\"" + id + "\")'>Submit</div></div>    </div>    <br>    <br>";    

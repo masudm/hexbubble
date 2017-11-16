@@ -45,7 +45,8 @@ apiRoutes.post('/new/upload', upload.single('postPicture'), function(req, res) {
 	let bid = parseInt(req.body.bubbleId);
 	let userId = req.decoded.userId;
 	let post = req.body.post;
-	let filename = req.file.filename;
+	let file = req.file;
+	let filename = file.filename;
 
 	if (post == null || post == "" || post == undefined) {
 		return res.json(db.makeError("Please enter a post."));
@@ -55,7 +56,7 @@ apiRoutes.post('/new/upload', upload.single('postPicture'), function(req, res) {
 		return res.json(db.makeError("No bubble id."));
 	}
 
-	if (filename == null || filename == "" || filename == undefined) {
+	if (file == null || file == "" || file == undefined) {
 		return res.json(db.makeError("Please upload a file"));
 	}
 
