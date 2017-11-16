@@ -106,6 +106,7 @@ function newPost() {
         var formData = new FormData($("#postForm")[0]);
         formData.append('token', localStorage.getItem('token'));
         formData.append('bubbleId', bubbleId);
+        formData.append('post', p);
 
         $.ajax({
             url: '/post/new/upload',

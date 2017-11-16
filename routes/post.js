@@ -3,13 +3,21 @@ var apiRoutes = express.Router(); //use the router function within express to de
 var bodyParser = require('body-parser'); //use the body parser to parse the body request from the client
 var moment = require('moment'); //a library for time and date functions
 var db = require('../helpers/db'); //a reference to the database functions so they can be used
+var multer = require('multer');
+var st = require('../helpers/storage');
+
+//multer variables for file storage
+var upload = multer({
+	storage: st.storage('postPictures/'),
+	fileFilter: st.fileFilter,
+	limits: st.limits
+});
 
 //post to the /post/new route
 apiRoutes.post('/new', function(req, res) {
 	let bid = parseInt(req.body.bubbleId);
 	let userId = req.decoded.userId;
 	let post = req.body.post;
-	console.log(req.body);
 
 	if (post == null || post == "" || post == undefined) {
 		return res.json(db.makeError("Please enter a post."));
@@ -18,6 +26,42 @@ apiRoutes.post('/new', function(req, res) {
 	if (bid == null || bid == "" || bid == undefined) {
 		return res.json(db.makeError("No bubble id."));
 	}
+
+	//create a new post object to insert
+	//include everything needed for the database such as userId, bubbleId, etc
+	post = {
+		userId: userId, //userid from decoding
+		bubbleId: bid, //bubble id from passed post request
+		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"), //current date in needed format
+		post: post //the actual post
+	};
+
+	uploadPost(parseInt(req.decoded.userId), bid, post, function(json) {
+		console.log(json);
+		res.json(json);
+	});
+});
+
+apiRoutes.post('/new/upload', upload.single('postPicture'), function(req, res) {
+	let bid = parseInt(req.body.bubbleId);
+	let userId = req.decoded.userId;
+	let post = req.body.post;
+	let filename = req.file.filename;
+
+	if (post == null || post == "" || post == undefined) {
+		return res.json(db.makeError("Please enter a post."));
+	}
+
+	if (bid == null || bid == "" || bid == undefined) {
+		return res.json(db.makeError("No bubble id."));
+	}
+
+	if (filename == null || filename == "" || filename == undefined) {
+		return res.json(db.makeError("Please upload a file"));
+	}
+
+	//make a post string
+	post += "|img|" + filename;
 
 	//create a new post object to insert
 	//include everything needed for the database such as userId, bubbleId, etc
