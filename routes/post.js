@@ -37,7 +37,6 @@ apiRoutes.post('/new', function(req, res) {
 	};
 
 	uploadPost(parseInt(req.decoded.userId), bid, post, function(json) {
-		console.log(json);
 		res.json(json);
 	});
 });
