@@ -339,6 +339,10 @@ body {
     border-radius: 10px;
 }
 
+.postPicture {
+    max-width: 100%;
+}
+
 .heart {
     position: relative;
     width: 2.5vw;
