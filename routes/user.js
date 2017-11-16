@@ -14,7 +14,12 @@ apiRoutes.get('/:userid', function(req, res) {
             });
         }
 		//render the user page using that data.
-		res.render('user', {user: data});
+		if (data[0]) {
+			res.render('user', {user: data});
+		} else {
+			res.render('error', {err: "No user found."});
+		}
+		
 	});
 });
 
