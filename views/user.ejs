@@ -20,6 +20,7 @@
         <script>
             function logout() {
                 deleteAllCookies();
+                localStorage.clear();
                 window.location.href = '/login';
             }
             
