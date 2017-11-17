@@ -25,15 +25,15 @@ apiRoutes.post('/new', upload.single('bubblePicture'), function (req, res, next)
     let desc = req.body.bubbleDesc;
     let filename = req.file.filename;
 
-    if (name == null || name == "" || name == undefined) {
+    if (db.nullCheck(name)) {
 		return res.json(db.makeError("Please enter a name."));
     }
     
-    if (desc == null || desc == "" || desc == undefined) {
+    if (db.nullCheck(desc)) {
 		return res.json(db.makeError("Please enter a description."));
     }
     
-    if (filename == null || filename == "" || filename == undefined) {
+    if (db.nullCheck(filename)) {
 		return res.json(db.makeError("Please upload a file."));
 	}
 
@@ -70,7 +70,7 @@ apiRoutes.post('/join', function(req, res) {
     //get the bubbleid using the name provided
     let name = req.body.name;
 
-    if (name == null || name == "" || name == undefined) {
+    if (db.nullCheck(name)) {
 		return res.json(db.makeError("Please enter a name."));
 	}
 

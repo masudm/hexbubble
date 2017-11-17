@@ -24,11 +24,11 @@ apiRoutes.post('/', function(req, res) {
 	let email = req.body.email;
 	let password = req.body.password;
 
-	if (email == null || email == "" || email == undefined) {
+	if (db.nullCheck(email)) {
 		return res.json(db.makeError("Please enter an email."));
 	}
 
-	if (password == null || password == "" || password == undefined) {
+	if (db.nullCheck(password)) {
 		return res.json(db.makeError("Please enter a password."));
 	}
 

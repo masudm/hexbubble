@@ -19,7 +19,7 @@ apiRoutes.post('/new', function(req, res) {
 	let userId = req.decoded.userId;
 	let post = req.body.post;
 
-	if (post == null || post == "" || post == undefined) {
+	if (db.nullCheck(post)) {
 		return res.json(db.makeError("Please enter a post."));
 	}
 
@@ -27,7 +27,7 @@ apiRoutes.post('/new', function(req, res) {
 		return res.json(db.makeError("Max post length is 2500."));
 	}
 
-	if (bid == null || bid == "" || bid == undefined) {
+	if (db.nullCheck(bid)) {
 		return res.json(db.makeError("No bubble id."));
 	}
 
@@ -40,7 +40,7 @@ apiRoutes.post('/new', function(req, res) {
 		post: post //the actual post
 	};
 
-	uploadPost(parseInt(req.decoded.userId), bid, post, function(json) {
+	uploadPost(parseInt(userId), bid, post, function(json) {
 		res.json(json);
 	});
 });
@@ -52,15 +52,15 @@ apiRoutes.post('/new/upload', upload.single('postPicture'), function(req, res) {
 	let file = req.file;
 	let filename = file.filename;
 
-	if (post == null || post == "" || post == undefined) {
+	if (db.nullCheck(post)) {
 		return res.json(db.makeError("Please enter a post."));
 	}
 
-	if (bid == null || bid == "" || bid == undefined) {
+	if (db.nullCheck(bid)) {
 		return res.json(db.makeError("No bubble id."));
 	}
 
-	if (file == null || file == "" || file == undefined) {
+	if (db.nullCheck(file)) {
 		return res.json(db.makeError("Please upload a file"));
 	}
 
@@ -119,11 +119,17 @@ function uploadPost(userId, bid, post, callback) {
 
 //likes are posted to this route
 apiRoutes.post('/like', function(req, res) {
+	let postId = req.body.postId;
+
+	if (db.nullCheck(postId)) {
+		return res.json(db.makeError("Please enter a post id."));
+	}
+
 	//after the like is posted, it goes here
 	//like the post using the database method
 	//send the request's user id and the post id that they are sending
 	//also format a new date for mysql
-	db.likePost(req.decoded.userId, req.body.postId, function(err, data) {
+	db.likePost(req.decoded.userId, postId, function(err, data) {
 		//if there is an error, return a success: false message along with the error
 		if (err) {
             return res.json({
@@ -137,7 +143,13 @@ apiRoutes.post('/like', function(req, res) {
 });
 
 apiRoutes.post('/dislike', function(req, res) {
-	db.dislikePost(req.decoded.userId, req.body.postId, function(err, data) {
+	let postId = req.body.postId;
+	
+	if (db.nullCheck(postId)) {
+		return res.json(db.makeError("Please enter a post id."));
+	}
+
+	db.dislikePost(req.decoded.userId, postId, function(err, data) {
 		//if there is an error, return a success: false message along with the error
 		if (err) {
             return res.json({
@@ -152,8 +164,19 @@ apiRoutes.post('/dislike', function(req, res) {
 
 //get comments on a post
 apiRoutes.post('/comments', function(req, res) {
+	let postId = req.body.postId;
+	let skip = req.body.skip;
+	
+	if (db.nullCheck(postId)) {
+		return res.json(db.makeError("Please enter a post id."));
+	}
+
+	if (db.nullCheck(skip)) {
+		return res.json(db.makeError("Please enter a skip value."));
+	}
+
 	//get skip number of comments on postId post
-	db.getComments(req.body.postId, req.body.skip, function(err, data) {
+	db.getComments(postId, skip, function(err, data) {
 		if (err) {
             return res.json({
                 success: false,
@@ -169,6 +192,15 @@ apiRoutes.post('/comments', function(req, res) {
 apiRoutes.post('/comment', function(req, res) {
 	let comment = req.body.comment;
 	let postId = req.body.postId;
+
+	if (db.nullCheck(postId)) {
+		return res.json(db.makeError("Please enter a post id."));
+	}
+
+	if (db.nullCheck(comment)) {
+		return res.json(db.makeError("Please enter a comment."));
+	}
+
 	//add a new comment using their id, the post id and the actual comment
 	db.addComment(req.decoded.userId, postId, comment, function(err, data) {
 		//if there is an error, return a success: false message along with the error

@@ -31,7 +31,7 @@ apiRoutes.get('/feed', function(req, res) {
 apiRoutes.get('/feed/:bubbleId', function(req, res) {
 	let bid = parseInt(req.params.bubbleId); //from the string bubble id parse it into an integer
 
-	if (bid == null || bid == "" || bid == undefined) {
+	if (db.nullCheck(bid)) {
 		return res.json(db.makeError("No bubble id."));
 	}
 
@@ -44,8 +44,12 @@ apiRoutes.post('/feed', function(req, res) {
 	let bid = parseInt(req.body.bubbleId); //from the string bubble id parse it into an integer
 	let skip = parseInt(req.body.skip);
 	
-	if (bid == null || bid == "" || bid == undefined) {
+	if (db.nullCheck(bid)) {
 		return res.json(db.makeError("No bubble id."));
+	}
+
+	if (db.nullCheck(skip)) {
+		return res.json(db.makeError("No skip value."));
 	}
 
 	getPosts(req.decoded.userId, bid, skip, req.decoded, function(json) {

@@ -8,6 +8,10 @@ apiRoutes.post('/users', function(req, res) {
     //get the term used to search for
     var term = req.body.term;
 
+    if (db.nullCheck(term)) {
+		return res.json(db.makeError("Please enter a term."));
+	}
+
     //if it is less than 3 characters, do not execute the query
     //because it probably spam and will return too many results
     if (term < 3) {

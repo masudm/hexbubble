@@ -6,9 +6,20 @@ var moment = require('moment'); //get time/format times
 var rawdb = require('./rawdb');
 var crypto = require('crypto');
 
+exports.nullCheck = function(variable) {
+	if (variable == null || variable == "" || variable == undefined) {
+		return true;
+	} else {
+		return false;
+	}
+} 
+
 //an async function to login
 //pass an email, password and a callback function as parameters
 exports.login = function(email, password, callback) {
+	email = rawdb.parse(email);
+	password = rawdb.parse(password);
+
 	rawdb.getDataWhere('*', 'users', `email = '${email}' and password = '${password}'`, function(err, results) {
 		if (err) {
 			console.log(err);

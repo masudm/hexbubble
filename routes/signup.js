@@ -33,11 +33,11 @@ apiRoutes.post('/2', upload.single('profilePic'), function(req, res) {
 	let bio = req.body.bio;
 	let filename = req.file.filename;
 
-	if (bio == null || bio == "" || bio == undefined) {
+	if (db.nullCheck(bio)) {
 		return res.json(db.makeError("Please enter a bio."));
 	}
 
-	if (filename == null || filename == "" || filename == undefined) {
+	if (db.nullCheck(filename)) {
 		return res.json(db.makeError("Please upload a file"));
 	}
 
@@ -52,7 +52,6 @@ apiRoutes.post('/2', upload.single('profilePic'), function(req, res) {
 			success: true
 		});
 	});
-	
 });
 
 
@@ -65,15 +64,15 @@ apiRoutes.post('/', function(req, res) {
 	let password = req.body.password;
 	let name = req.body.name;
 
-	if (email == null || email == "" || email == undefined) {
+	if (db.nullCheck(email)) {
 		return res.json(db.makeError("Please enter an email."));
 	}
 
-	if (password == null || password == "" || password == undefined) {
+	if (db.nullCheck(password)) {
 		return res.json(db.makeError("Please enter a password."));
 	}
 
-	if (name == null || name == "" || name == undefined) {
+	if (db.nullCheck(name)) {
 		return res.json(db.makeError("Please enter a name."));
 	}
 

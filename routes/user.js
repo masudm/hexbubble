@@ -5,8 +5,9 @@ var db = require('../helpers/db'); //a reference to the database functions so th
 
 //the user route - render the user using the query in the url
 apiRoutes.get('/:userid', function(req, res) {
+	let userId = req.params.userid;
 	//get the user using that query
-	db.getUser(req.params.userid, function(err, data) {
+	db.getUser(userId, function(err, data) {
 		if (err) {
             return res.json({
                 success: false,

@@ -13,6 +13,10 @@ var pool = mysql.createPool({
     database: 'hexbubble'
 });
 
+exports.parse = function(string) {
+	return pool.escape(string);
+}
+
 //create a (public) function to export to other files that include this file
 //this is an async function so a 'callback' parameter needs to be passed
 //when the function is done, it calls the callback method with either the errors or the results
