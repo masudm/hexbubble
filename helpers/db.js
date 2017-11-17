@@ -198,6 +198,9 @@ exports.signup = function(email, password, name, callback) {
 	//inset the user object into the user table
 	rawdb.insertData(user, 'users', function(err, data) {
 		if (err) {
+			if (err.errno == 1062) {
+				return callback("User with this email already exists.");
+			}
 			console.log(err);
 			return callback("Server error.");
 		}
