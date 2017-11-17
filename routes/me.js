@@ -8,6 +8,12 @@ apiRoutes.get('/', function(req, res) {
 	res.redirect('/user/' + req.decoded.userId);
 });
 
+apiRoutes.get('/logout', function(req, res) {
+    req.decoded = null;
+    res.clearCookie("token");
+    res.redirect('/');
+});
+
 //get a user's memberships to bubbles
 apiRoutes.get('/bubbles', function(req, res) {
     //get their bubbles using their userId
