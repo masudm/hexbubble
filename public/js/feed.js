@@ -11,6 +11,11 @@ socket.on('newPost', function(post) {
     addPost("/user/" + post.userId, post.username, post.date, post.post, 0, false, true, post.postId, 0)
 });
 
+socket.on('newComment', function(comment) {
+    //add the comment
+    insertComment(comment.postId, comment.comment, comment.username, comment.userId, comment.date, true)
+});
+
 //preload
 var hasPreloaded = false;
 $(window).scroll(function() {
@@ -216,7 +221,7 @@ function getComments(id) {
         function(data, status){
             $("#loader_" + id).html("Load more comments");
             for (comment in data) {
-                insertComment(id, data[comment].comment, data[comment].username, data[comment].dateCreated, false);
+                insertComment(id, data[comment].comment, data[comment].username, data[comment].userId, data[comment].dateCreated, false);
             }
 
 
@@ -233,13 +238,12 @@ function getComments(id) {
 function addComment(id) {
     var comment = $("#commenter_" + id).val();
     $("#commenter_" + id).val("");
-
-    insertComment(id, comment, me.username, new Date(), true);	
-    postComment(id, comment);			
+	
+    postComment(id, comment);		
 }
 
-function insertComment(id, comment, user, date, now) {
-    var commentTemplate = "<li class='comment'>    <span class='commentUser'><a href='#'>" + user + "</a></span>    <span class='commentTime' title='" + date + "'>" + moment(date).fromNow() + "</span>    <p>" + unescape(comment) + "</p></li>";;
+function insertComment(id, comment, user, userId, date, now) {
+    var commentTemplate = "<li class='comment'>    <span class='commentUser'><a href='/user/"+userId+"'>" + user + "</a></span>    <span class='commentTime' title='" + date + "'>" + moment(date).fromNow() + "</span>    <p>" + unescape(comment) + "</p></li>";;
 
     if (now) {
         $("#comments_" + id).append(commentTemplate);
@@ -250,13 +254,19 @@ function insertComment(id, comment, user, date, now) {
 }
 
 function postComment(postId, comment) {
+    var fullComment = {
+        postId: postId,
+        comment: escape(comment)
+    };
     $.post("/post/comment",
-        {
-            postId: postId,
-            comment: escape(comment)
-        },
+        fullComment,
         function(data, status){
-            console.log(data);
+            if (data.success) {
+                fullComment.userId = me.userId;
+                fullComment.username = me.username;
+                fullComment.date = new Date();
+                socket.emit("newComment", [bubbleId, fullComment]);
+            }
         });
 }
 

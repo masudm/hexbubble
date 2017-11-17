@@ -135,7 +135,7 @@ exports.getComments = function(postId, skip, callback) {
         }
         // Use the connection
         connection.query(`
-            SELECT c.comment as comment, c.dateCreated as dateCreated, u.name as username
+            SELECT c.comment as comment, c.dateCreated as dateCreated, u.name as username, u.userId as userId
             FROM comments as c
             INNER JOIN users AS u ON c.userId = u.userId
             WHERE postId = "${postId}" 

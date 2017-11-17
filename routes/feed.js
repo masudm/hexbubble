@@ -98,29 +98,4 @@ function getPosts(userId, bid, skip, user, callback) {
 
 
 
-module.exports = function(http) {
-	//use the passed in http module to start the io server
-	io = require('socket.io')(http);
-	//join the socket
-	io.on('connection', function(socket){
-		//when user disconnects
-		socket.on('disconnect', function(){
-			//console.log('user disconnected');
-		});
-		
-		//join a bubble method
-		socket.on('joinBubble', function(bid){
-			//run the method
-			socket.join(bid);
-		});
-
-		//when you get a new post, emit it to everyone in the room
-		socket.on('newPost', function(data) {
-			//emit to the bubble id (first in array). send the post (second in array)
-			io.to(data[0]).emit('newPost', data[1]);
-		});
-	});
-
-	//provide the main app with the routes
-	return apiRoutes;
-};
+module.exports = apiRoutes;

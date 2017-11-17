@@ -7,6 +7,7 @@ const mysql = require('mysql'); //mysql api connection wrapper to connect to mys
 const bodyParser = require('body-parser'); //middleware for parsing body requests
 const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 const cookieParser = require('cookie-parser');
+const realtime = require('./helpers/io')(http);
 
 //config
 //parse application/x-www-form-urlencoded
@@ -68,7 +69,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('/post', require('./routes/post'));
-app.use('/', require('./routes/feed')(http));
+app.use('/', require('./routes/feed'));
 
 app.use('/user', require('./routes/user'));
 app.use('/me', require('./routes/me'));
