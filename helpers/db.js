@@ -20,7 +20,7 @@ exports.login = function(email, password, callback) {
 	email = rawdb.parse(email);
 	password = rawdb.parse(password);
 
-	rawdb.getDataWhere('*', 'users', `email = '${email}' and password = '${password}'`, function(err, results) {
+	rawdb.getDataWhere('*', 'users', `email = ${email} and password = ${password}`, function(err, results) {
 		if (err) {
 			console.log(err);
 			return callback("Server error.");
@@ -39,6 +39,10 @@ exports.login = function(email, password, callback) {
 
 //get posts using the bubbleid, how many posts to skip (pagination) and current user
 exports.getPosts = function(bubbleId, skip, userId, callback) {
+	bubbleId = rawdb.parse(bubbleId);
+	skip = rawdb.parse(skip);
+	userId = rawdb.parse(userId);
+	
 	rawdb.getPosts(bubbleId, skip, userId, function(err, data) {
 		if (err) {
 			console.log(err);
@@ -48,7 +52,7 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
 	});
 }
 
-//insert a new pos
+//insert a new post
 exports.newPost = function(post, callback) {
 	rawdb.insertData(post, 'posts', function(err, data) {
 		if (err) {
@@ -91,8 +95,8 @@ exports.likePost = function(userId, postId, callback) {
 }
 
 exports.dislikePost = function(userId, postId, callback) {
-	likeId = parseInt(String(userId) + String(postId));
-	rawdb.deleteRow('likes', `likeId = '${likeId}'`, function(err, data){
+	let likeId = parseInt(String(userId) + String(postId));
+	rawdb.deleteRow('likes', `likeId = ${likeId}`, function(err, data){
 		if (err) {
 			console.log(err);
 			return callback("Server error.");
@@ -121,7 +125,7 @@ exports.addComment = function(userId, postId, comment, callback) {
 
 //get x number of comments on the current post(id)
 exports.getComments = function(postId, skip, callback) {
-	rawdb.getComments(postId, parseInt(skip), function(err, data) {
+	rawdb.getComments(parseInt(postId), parseInt(skip), function(err, data) {
 		if (err) {
 			console.log(err);
 			return callback("Server error.");
@@ -132,6 +136,9 @@ exports.getComments = function(postId, skip, callback) {
 
 //verify if they are a member by checking that userid against that bubbleid in the member table
 exports.isMember = function(userId, bubbleId, callback) {
+	userId = rawdb.parse(userId);
+	bubbleId = rawdb.parse(bubbleId);
+
 	rawdb.getDataWhere('memberId', 'members', ('userId = ' + userId + ' and bubbleId = ' + bubbleId), function(err, data) {
 		if (err) {
 			console.log(err);
@@ -143,7 +150,8 @@ exports.isMember = function(userId, bubbleId, callback) {
 
 //get bubbleId using the name
 exports.getBubble = function(name, callback) {
-	rawdb.getDataWhereLimit("bubbleId", "bubbles", "bubbleName = '" + name + "'", 1, function(err, data) {
+	name = rawdb.parse(name);
+	rawdb.getDataWhereLimit("bubbleId", "bubbles", "bubbleName = " + name, 1, function(err, data) {
 		if (err) {
 			console.log(err);
 			return callback("Server error.");
@@ -153,7 +161,7 @@ exports.getBubble = function(name, callback) {
 }
 
 exports.getBubbles = function(userId, callback) {
-	rawdb.getBubbles(userId, function(err, data) {
+	rawdb.getBubbles(parseInt(userId), function(err, data) {
 		if (err) {
 			console.log(err);
 			return callback("Server error.");
@@ -164,7 +172,7 @@ exports.getBubbles = function(userId, callback) {
 
 //get first bubbleid
 exports.getFirstBubble = function(userId, callback) {
-	rawdb.getDataWhere('bubbleId', 'members', 'userId = ' + userId, function(err, data) {
+	rawdb.getDataWhere('bubbleId', 'members', 'userId = ' + parseInt(userId), function(err, data) {
 		if (err) {
 			console.log(err);
 			return callback("Server error.");
@@ -199,7 +207,7 @@ exports.signup = function(email, password, name, callback) {
 
 //update user and their profile pic
 exports.updateUser = function(bio, profilePicture, userId, callback) {
-	rawdb.updateRow("users", `bio='${bio}', profilePicture='${profilePicture}'`, `userId=${userId}`, function(err, data) {
+	rawdb.updateRow("users", `bio='${bio}', profilePicture='${profilePicture}'`, `userId=${parseInt(userId)}`, function(err, data) {
 		if (err) {
 			console.log(err);
 			return callback("Server error.");
