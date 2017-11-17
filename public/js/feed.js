@@ -180,7 +180,7 @@ function addPost(userlink, username, date, post, likes, isLiked, isNewPost, id, 
         post = post[0] + "<br>" + img;
     }
 
-    commentStructure = "<div class='postCommentsInfo button' onclick='getComments(\"" + id + "\")' id='loader_" + id + "'>Load  " + comments + " more comments...</div>";
+    commentStructure = "<div class='postCommentsInfo button' onclick='getComments(\"" + id + "\")' id='loader_" + id + "'>Load  " + comments + " comments...</div>";
 
     if (comments < 1) {
         commentStructure = "";
@@ -214,6 +214,7 @@ function getComments(id) {
             skip: skip
         },
         function(data, status){
+            $("#loader_" + id).html("Load more comments");
             for (comment in data) {
                 insertComment(id, data[comment].comment, data[comment].username, data[comment].dateCreated, false);
             }
@@ -221,7 +222,7 @@ function getComments(id) {
 
             if (data.length == 0) {
                 $("#loader_" + id).css('cursor', 'not-allowed');
-                $("#loader_" + id).html("No more comments.");
+                $("#loader_" + id).html("No more comments");
                 $("#loader_" + id).prop('onclick', null).off('click');
             }
             
