@@ -91,7 +91,13 @@ $('#posts').on('keyup', '.commenter', function(ev) {
 
 function newPost() {
     postsNum += 1;
-    var p = escape($("#post").val());//.replace(/\s/g, '');
+    var postText = $("#post").val()
+    var p = escape(postText);//.replace(/\s/g, '');
+
+    if (postText.length > 2500) {
+        alert('Too many characters. Max of 2500. You have used ' + postText.length);
+        return false;
+    }
     
     var files = $('#postPicture')[0].files;
     var file = files[0];

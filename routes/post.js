@@ -23,6 +23,10 @@ apiRoutes.post('/new', function(req, res) {
 		return res.json(db.makeError("Please enter a post."));
 	}
 
+	if (post.length > 2500) {
+		return res.json(db.makeError("Max post length is 2500."));
+	}
+
 	if (bid == null || bid == "" || bid == undefined) {
 		return res.json(db.makeError("No bubble id."));
 	}
@@ -163,8 +167,10 @@ apiRoutes.post('/comments', function(req, res) {
 
 //comment on a post
 apiRoutes.post('/comment', function(req, res) {
+	let comment = req.body.comment;
+	let postId = req.body.postId;
 	//add a new comment using their id, the post id and the actual comment
-	db.addComment(req.decoded.userId, req.body.postId, req.body.comment, function(err, data) {
+	db.addComment(req.decoded.userId, postId, comment, function(err, data) {
 		//if there is an error, return a success: false message along with the error
 		if (err) {
             return res.json({
