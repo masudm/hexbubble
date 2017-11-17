@@ -67,9 +67,9 @@ function preload() {
 function addAllPosts(posts) {
     for (i in posts) {
         if (posts[i].likeId != null && posts[i].likeId != 0) {
-            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId);
+            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId, posts[i].comments);
         } else {
-            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId);
+            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId, posts[i].comments);
         }
         postsNum += i;
     }
@@ -180,7 +180,13 @@ function addPost(userlink, username, date, post, likes, isLiked, isNewPost, id, 
         post = post[0] + "<br>" + img;
     }
 
-    var postStructure = "<div class='post shadow'><div class='postUser'>    <!-- <img class='postProfilePic'> -->    <div class='postUserName'><a href='" + userlink + "'>" + username + "</a></div>    <div class='postUserDate' title='" + date + "'>" + moment(date).fromNow() + "</div></div><div class='postData'>" + unescape(post) + "</div><div class='postLikes'>    <div>    <div class='heart " + heart + "' id='heart." + id + "' " + heartAction + "></div>    <span class='likeNum'>Likes: <span id='like." + id + "'>" + likes + "</span></span>    </div>    <div class='postCommentsInfo button' onclick='getComments(\"" + id + "\")' id='loader_" + id + "'>Load more comments...</div></div><div class='postComments'>    <ul id='comments_" + id + "'>    </ul>    <input type='text' placeholder='Comment....' class='commenter' id='commenter_" + id + "'>    <div class='submitComment button' onclick='addComment(\"" + id + "\")'>Submit</div></div>    </div>    <br>    <br>";    
+    commentStructure = "<div class='postCommentsInfo button' onclick='getComments(\"" + id + "\")' id='loader_" + id + "'>Load  " + comments + " more comments...</div>";
+
+    if (comments < 1) {
+        commentStructure = "";
+    }
+
+    var postStructure = "<div class='post shadow'><div class='postUser'>    <!-- <img class='postProfilePic'> -->    <div class='postUserName'><a href='" + userlink + "'>" + username + "</a></div>    <div class='postUserDate' title='" + date + "'>" + moment(date).fromNow() + "</div></div><div class='postData'>" + unescape(post) + "</div><div class='postLikes'>    <div>    <div class='heart " + heart + "' id='heart." + id + "' " + heartAction + "></div>    <span class='likeNum'>Likes: <span id='like." + id + "'>" + likes + "</span></span>    </div>    "+ commentStructure +"</div><div class='postComments'>    <ul id='comments_" + id + "'>    </ul>    <input type='text' placeholder='Comment....' class='commenter' id='commenter_" + id + "'>    <div class='submitComment button' onclick='addComment(\"" + id + "\")'>Submit</div></div>    </div>    <br>    <br>";    
     if (isNewPost) {
         $("#posts").prepend(postStructure);
         post = unescape(post);
