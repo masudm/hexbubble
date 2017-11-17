@@ -59,25 +59,25 @@ The project utilises MySQL as a backend.
 	  UNIQUE INDEX `postId_UNIQUE` (`postId` ASC));
 
 ## Likes Table ##
-CREATE TABLE `hexbubble`.`likes` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `likeId` BIGINT NOT NULL,
-  `userId` INT NOT NULL,
-  `postId` INT NOT NULL,
-  `dateCreated` DATETIME NOT NULL,
-  PRIMARY KEY (`likeId`),
-  UNIQUE INDEX `likeId_UNIQUE` (`likeId` ASC),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC));
+	CREATE TABLE `hexbubble`.`likes` (
+		`id` INT NOT NULL AUTO_INCREMENT,
+		`likeId` BIGINT NOT NULL,
+		`userId` INT NOT NULL,
+		`postId` INT NOT NULL,
+		`dateCreated` DATETIME NOT NULL,
+		PRIMARY KEY (`likeId`),
+		UNIQUE INDEX `likeId_UNIQUE` (`likeId` ASC),
+		UNIQUE INDEX `id_UNIQUE` (`id` ASC));
 
 ## Comments Table ##
-CREATE TABLE `hexbubble`.`comments` (
-  `commentId` INT NOT NULL AUTO_INCREMENT,
-  `userId` INT NOT NULL,
-  `comment` TEXT NOT NULL,
-  `dateCreated` DATETIME NOT NULL,
-  `postId` INT NOT NULL,
-  PRIMARY KEY (`commentId`),
-  UNIQUE INDEX `commentId_UNIQUE` (`commentId` ASC));
+	CREATE TABLE `hexbubble`.`comments` (
+		`commentId` INT NOT NULL AUTO_INCREMENT,
+		`userId` INT NOT NULL,
+		`comment` TEXT NOT NULL,
+		`dateCreated` DATETIME NOT NULL,
+		`postId` INT NOT NULL,
+		PRIMARY KEY (`commentId`),
+		UNIQUE INDEX `commentId_UNIQUE` (`commentId` ASC));
 
 
 
