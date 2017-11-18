@@ -8,7 +8,7 @@ var socket = io();
 //when you get a new post, add the new post
 socket.on('newPost', function(post) {
     //add the post
-    addPost("/user/" + post.userId, post.username, post.date, post.post, 0, false, true, post.postId, 0)
+    addPost("/user/" + post.userId, post.username, post.date, post.post, 0, false, true, post.postId)
 });
 
 socket.on('newComment', function(comment) {
@@ -72,9 +72,9 @@ function preload() {
 function addAllPosts(posts) {
     for (i in posts) {
         if (posts[i].likeId != null && posts[i].likeId != 0) {
-            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId, posts[i].comments);
+            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId);
         } else {
-            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId, posts[i].comments);
+            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId);
         }
         postsNum += i;
     }
@@ -171,7 +171,7 @@ function onUpload(data) {
     }
 }
 
-function addPost(userlink, username, date, post, likes, isLiked, isNewPost, id, comments) {
+function addPost(userlink, username, date, post, likes, isLiked, isNewPost, id) {
     var heart = "";
     var heartAction = "onclick='love(\"" + id + "\")'";
     if (isLiked) {
@@ -185,11 +185,7 @@ function addPost(userlink, username, date, post, likes, isLiked, isNewPost, id, 
         post = post[0] + "<br>" + img;
     }
 
-    commentStructure = "<div class='postCommentsInfo button' onclick='getComments(\"" + id + "\")' id='loader_" + id + "'>Load  " + comments + " comments...</div>";
-
-    if (comments < 1) {
-        commentStructure = "";
-    }
+    commentStructure = "<div class='postCommentsInfo button' onclick='getComments(\"" + id + "\")' id='loader_" + id + "'>Load comments...</div>";
 
     var postStructure = "<div class='post shadow'><div class='postUser'>    <!-- <img class='postProfilePic'> -->    <div class='postUserName'><a href='" + userlink + "'>" + username + "</a></div>    <div class='postUserDate' title='" + date + "'>" + moment(date).fromNow() + "</div></div><div class='postData'>" + unescape(post) + "</div><div class='postLikes'>    <div>    <div class='heart " + heart + "' id='heart." + id + "' " + heartAction + "></div>    <span class='likeNum'>Likes: <span id='like." + id + "'>" + likes + "</span></span>    </div>    "+ commentStructure +"</div><div class='postComments'>    <ul id='comments_" + id + "'>    </ul>    <input type='text' placeholder='Comment....' class='commenter' id='commenter_" + id + "'>    <div class='submitComment button' onclick='addComment(\"" + id + "\")'>Submit</div></div>    </div>    <br>    <br>";    
     if (isNewPost) {
