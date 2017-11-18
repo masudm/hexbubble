@@ -105,13 +105,13 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
 	    // Use the connection
 	    var sql = `
 	    SELECT p.postId, p.post, p.dateCreated, b.bubbleName, u.name AS username, u.userId, 
-	    COUNT(l.likeId) as likes, COUNT(lu.likeId) as likeId, COUNT(c.comment) as comments
+	    COUNT(l.likeId) as likes, COUNT(lu.likeId) as likeId, COUNT(c.commentId) as comments
 	    FROM posts AS p
 		INNER JOIN bubbles AS b ON p.bubbleId = b.bubbleId
 		INNER JOIN users AS u ON p.userId = u.userId
+		LEFT JOIN comments AS c ON p.postId = c.postId
 		LEFT JOIN likes AS l ON p.postId = l.postId
-		LEFT JOIN likes AS lu on p.postId = lu.postId AND lu.userId = ${userId}
-		LEFT JOIN comments as c on p.postId = c.postId
+		LEFT JOIN likes AS lu ON p.postId = lu.postId AND lu.userId = ${userId}
 		WHERE p.bubbleId = ${bubbleId}
 		GROUP BY postId
 		ORDER BY p.dateCreated DESC
