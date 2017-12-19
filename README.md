@@ -9,6 +9,14 @@ Each bubble is isolated and independent from each of the other bubbles.
 By default, when a user signs up he joins a bubble (during sign up). He can join other bubbles later on. 
 The person to create the bubble is also the admin - they control what goes on in the bubble: users, posts etc. 
 
+
+## RECOMMENDATION ENGINE ##
+Get all users in a single bubble - put into memory.
+Get bubbles where those users are in
+The weight is how many users are connected to each bubble
+It can then be sorted by weight
+
+
 ## Database ##
 The project utilises MySQL as a backend.
 
