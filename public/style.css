@@ -157,13 +157,53 @@ body {
 	border: 1px solid #5fead7;
 }
 
+.homepageContainer {
+    position: absolute;
+    bottom: 10%;
+    right: 10%;
+    text-align: right;
+}
+
+.homepageLogin {
+    font-size: 2em;
+    color: white;
+    display: inline-flex;
+    padding: 10px;
+    border: 0.15em solid #FF70A6;
+    background-color: #5fead7;
+    align-items: center;
+    cursor: pointer;
+}
+
+.homepageLogin:hover {
+    background-color: #FF70A6;
+    color: #5fead7;
+    transition: all 0.3s;
+}
+
+.homepageLogin .textLogin {
+    margin-right: 0.15em;
+}
+
 .login h1 {
     font-size: 2.2em;
     font-weight: 700;
 }
 
 #typed {
-    font-size: 48px !important;
+    color: white;
+    font-size: 10em !important;
+}
+
+#typedlittle {
+    color: white;
+    font-size: 3em;
+    padding: 0.2em;
+}
+
+.containerHomepage {
+    padding: 10%;
+    text-align: left;
 }
 
 .login input, .newbubble {
@@ -504,8 +544,9 @@ body {
 
   .typed-cursor {
     opacity: 1;
-    font-size: 48px;
+    font-size: 10em;
     animation: blink .7s infinite;
+    color: white;
 }
 
 @keyframes blink {
