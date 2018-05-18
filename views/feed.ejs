@@ -13,7 +13,9 @@
 				<div class='newPost shadow'>
 					<form id='postForm'>
 						<textarea id='post' placeholder='Say something!'></textarea>
-						Attach image: <input type="file" id='postPicture' name='postPicture'>
+						<input type="file" id='postPicture' name='postPicture'>
+						<label for="postPicture"><div class='button'>Attach Image</div></label>
+						<br/>
 						<div class='postPicturePreview' id='postPicturePreview'></div>
 						<div class='button' onclick="newPost()">Post!</div>
 						<h6 id='postUploading'></h6>
