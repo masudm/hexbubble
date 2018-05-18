@@ -4,16 +4,16 @@
 		<title>Hexbubble Login</title>
 		<% include head %>
 	</head>
-	<body>
+	<body class='pinkBack'>
 		<div class='container'>
-			<div class='login shadow'>
+			<div class='login'>
 				<h1>Login</h1>
 				<input placeholder="Email" type="email" id='email'><br>
 				<input placeholder="Password" type="password" id='password'><br>
 				<div class='button' onclick="login()">Login</div>
 			</div>
 			<br>
-			<div class='button shadow' onclick="window.location.href = '/signup'">Or Signup</div>
+			<div class='button' onclick="window.location.href = '/signup'">Or Signup</div>
 		</div>
 		<script src="/jquery.js"></script>
 		<script>

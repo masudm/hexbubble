@@ -9,6 +9,10 @@ body {
     font-weight: 300;
 }
 
+.pinkBack {
+    background-color: #FF70A6;
+}
+
 .main {
     display: flex;
 }
@@ -21,7 +25,7 @@ body {
 
 .search {
     padding: 8px 10px;
-    border-radius: 10px;
+    border-radius: 0px;
     border: 0;
     width: 25vw;
     position: absolute;
@@ -38,8 +42,8 @@ body {
     right: 0;
     margin: 0 auto;
     background-color: #f5f6fb;
-    border: 1px solid #5fead7;
-    border-radius: 10px;
+    border: 2px solid #5fead7;
+    border-radius: 0px;
     width: 27vw;
     width: calc(25vw + 20px);
     padding: 0;
@@ -56,9 +60,9 @@ body {
 .searchResults li {
     z-index: 5;
     background-color: white;
-    border: 1px solid #5fead7;
+    border: 2px solid #5fead7;
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 0px;
     margin: 2px;
     display: block;
 }
@@ -130,7 +134,7 @@ body {
 .bubbleIcon img {
     max-width: 100%;
     max-height: 1.5em;
-    border-radius: 10px;
+    border-radius: 0px;
 }
 
 .sidebar .elem.active, .sidebar .elem:hover {
@@ -150,11 +154,11 @@ body {
 .login {
 	background-color: white;
 	text-align: center;
-	border-radius: 10px;
+	border-radius: 0px;
 	display: inline-block;
 	padding: 10px;
 	margin-top: 15vh;
-	border: 1px solid #5fead7;
+	border: 2px solid #5fead7;
 }
 
 .homepageContainer {
@@ -187,7 +191,7 @@ body {
 
 .login h1 {
     font-size: 2.2em;
-    font-weight: 700;
+    font-weight: 300;
 }
 
 #typed {
@@ -207,11 +211,11 @@ body {
 }
 
 .login input, .newbubble {
-	border-radius: 10px;
+	border-radius: 0px;
 	font-size: 1.2em;
 	-webkit-appearance: none; 
     -moz-appearance: none; 
-    border: 1px solid #5fead7;
+    border: 2px solid #5fead7;
     margin-top: 10px;
     padding: 5px;
     width: 40vw;
@@ -227,12 +231,12 @@ body {
     width: 40vw;
     background-color: white;
     padding: 10px 0;
-    border-radius: 10px;
+    border-radius: 0px;
 }
 
 .newPost textarea {
     resize: vertical;
-    border-radius: 10px;
+    border-radius: 0px;
     padding: 10px;
     width: 90%;
     width: calc(100% - 40px);
@@ -245,7 +249,7 @@ body {
 	background-color: white;
 	display: inline-block;
 	border: 1px solid #ebebeb;
-	border-radius: 10px;
+	border-radius: 0px;
 	width: 40vw;
 }
 
@@ -282,11 +286,11 @@ body {
 }
 
 .postComments input {
-    border-radius: 10px;
+    border-radius: 0px;
     font-size: 1em;
     -webkit-appearance: none; 
     -moz-appearance: none; 
-    border: 1px solid #5fead7;
+    border: 2px solid #5fead7;
     margin-top: 10px;
     padding: 5px;
     max-width: 400px;
@@ -334,11 +338,11 @@ body {
 .button {
 	font-weight: 500;
 	display: inline-block;
-	border-radius: 10px;
+	border-radius: 0px;
 	font-size: 1.2em;
 	-webkit-appearance: none; 
     -moz-appearance: none; 
-    border: 1px solid #5fead7;
+    border: 2px solid #5fead7;
     margin-top: 10px;
     padding: 5px 50px;
     background-color: white;
@@ -382,7 +386,7 @@ body {
 .userProfilePicture {
     max-width: 25vw;
     max-height: 50vw;
-    border-radius: 10px;
+    border-radius: 0px;
 }
 
 .postPicture {
