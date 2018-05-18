@@ -5,12 +5,18 @@
         <% include head %>
     </head>
     <body>
-        <div class='homepage'>
-            <h1>Your own private social network</h1>
-            <h2>Independent, isolated groups.</h2>
-            <a href="/login">Login</a>
-            <br/>
-            <img style="max-height: 70vh" src="/deano.jpg"/>
-        </div>
+        <div class='container'>
+                <div class='login shadow'>
+                    <h1 class='homepageTitle'>Hexbubble</h1>
+                    <input placeholder="Email" type="email" id='email'><br>
+                    <input placeholder="Password" type="password" id='password'><br>
+                    <div class='button' onclick="login()">Login</div>
+                </div>
+                <br>
+                <div class='button shadow' onclick="window.location.href = '/signup'">Or Signup</div>
+            </div>
+        <!--<div id="particles-js"></div>-->
+        <script src='/js/particleslib.js'></script>
+        <script src='/js/particles.js'></script>
     </body>
 </html>
