@@ -6,6 +6,7 @@ body {
 	background-color: #f5f6fb;
 	margin: auto;
     text-align: center;
+    font-weight: 300;
 }
 
 .main {
@@ -157,7 +158,12 @@ body {
 }
 
 .login h1 {
-	font-size: 2.2em;
+    font-size: 2.2em;
+    font-weight: 700;
+}
+
+#typed {
+    font-size: 48px !important;
 }
 
 .login input, .newbubble {
@@ -217,7 +223,7 @@ body {
 }
 
 .postData {
-    word-break: break-all;
+    word-break: break-word;
     font-size: 1.4em;
     text-align: left;
     padding: 10px;
@@ -472,3 +478,44 @@ body {
     background-repeat: no-repeat;
     overflow: none;
   }
+
+  .typewriter h1 {
+    display: inline;
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    border-right: .15em solid orange; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+    animation: 
+      typing 3.5s steps(40, end),
+      blink-caret .75s step-end infinite;
+  }
+  
+  /* The typing effect */
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  /* The typewriter cursor effect */
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: orange; }
+  }
+
+  .typed-cursor {
+    opacity: 1;
+    font-size: 48px;
+    animation: blink .7s infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

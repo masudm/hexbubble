@@ -6,17 +6,27 @@
     </head>
     <body>
         <div class='container'>
-                <div class='login shadow'>
-                    <h1 class='homepageTitle'>Hexbubble</h1>
-                    <input placeholder="Email" type="email" id='email'><br>
-                    <input placeholder="Password" type="password" id='password'><br>
-                    <div class='button' onclick="login()">Login</div>
+                <div id="typed-strings" class='homepageTitle'>
+                    <h1 class='homepageTitle'>Hexbubble.</h1>
                 </div>
+                <span id="typed"></span>
                 <br>
                 <div class='button shadow' onclick="window.location.href = '/signup'">Or Signup</div>
             </div>
         <!--<div id="particles-js"></div>-->
+        <script src='/js/jquery.js'></script>
         <script src='/js/particleslib.js'></script>
         <script src='/js/particles.js'></script>
+        <script src='/js/typed.js'></script>
+        <script>
+            var typed = new Typed("#typed", {
+                stringsElement: '#typed-strings',
+                typeSpeed: 50,
+                backSpeed: 0,
+                backDelay: 500,
+                startDelay: 1000,
+                loop: false,
+            });
+        </script>
     </body>
 </html>
