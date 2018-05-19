@@ -4,18 +4,39 @@
 		<title>Hexbubble Login</title>
 		<% include head %>
 	</head>
-	<body class='pinkBack'>
+	<body class='blueBack'>
 		<div class='container'>
 			<div class='login'>
-				<h1>Login</h1>
-				<input placeholder="Email" type="email" id='email'><br>
-				<input placeholder="Password" type="password" id='password'><br>
-				<div class='button' onclick="login()">Login</div>
+				<div class='logininfo'>
+					<div>
+						<h1>Login to <span class='black'>Hexbubble</span></h1>
+						
+						<div class="field">
+							<label class="field__label" for="input-email">Email address</label>
+							<input class="field__input one-column-form__input--text" id="email" type="email" placeholder="Email address">
+						</div>
+
+						<div class="field">
+							<label class="field__label" for="input-email">Password</label>
+							<input class="field__input one-column-form__input--text" id="password" type="password" placeholder="Password">
+						</div>
+							  
+						<div class='loginButs'>
+							<div class='button loginBut' onclick="login()">Login</div>
+							<div class='button loginBut' onclick="window.location.href = '/signup'">Signup</div>
+						</div>
+					</div>
+					<div></div>
+				</div>
+				<div class='loginextra'>
+
+				</div>
 			</div>
 			<br>
-			<div class='button' onclick="window.location.href = '/signup'">Or Signup</div>
 		</div>
+		<div id="particles-js"></div>
 		<script src="/jquery.js"></script>
+		<script src="/js/particles.js"></script>
 		<script>
 			function login() {
 				$.post("/login",
@@ -32,6 +53,15 @@
 				        }
 				    });
 			}
+
+			$('.field__input').on('input', function() {
+				var $field = $(this).closest('.field');
+				if (this.value) {
+					$field.addClass('field--not-empty');
+				} else {
+					$field.removeClass('field--not-empty');
+				}
+			});
 		</script>
 	</body>
 </html>
