@@ -16,7 +16,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
 var head = document.getElementsByTagName('head')[0];
 var js = document.createElement("script");
 var js2 = document.createElement("script");
-if (getUrlParameter('particles') == "true") {
+if (getUrlParameter('particles') != "false") {
     js.src = "/js/particles.js";
     js2.src = "/js/particleslib.js";
     head.appendChild(js);
