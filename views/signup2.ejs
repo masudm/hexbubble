@@ -6,29 +6,39 @@
     <% include head %>
 </head>
 
-<body>
+<body class='blueBack'>
     <div class='container'>
         <div class='login'>
-            <h1>Configure...</h1>
-            <br>
-            <form id='signup'>
-                <textarea placeholder="Biography..." class='bio' name='bio'></textarea>
-                <br>
-                <div class='signupImg'>
-                    <h4>Profile Picture:</h4>
-                    <input type="file" id='profilePic' name='profilePic'>
+            <div class='logininfo'>
+                <div>
+                    <h1>Configure your <span class='pink'>Hexbubble</span> account</h1>
+                    
+                    <form id='signup'>
+                        <textarea placeholder="About me..." class='bio' name='bio'></textarea>
+                        <br>
+                        <div class='signupImg'>
+                            <input type="file" id='profilePic' name='profilePic'>
+						    <label for="profilePic"><div class='button'>Attach Profile Picture</div></label>
+                        </div>
+                    </form>
+                    <div class='profilePicPreview' id='profilePicPreview'></div>
+                    <h6 id='picUploading'></h6>
+                            
+                    <div class='loginButs'>
+                        <div class='button loginBut' onclick="signup2()">Upload and Continue</div>
+                        <div class='button loginBut' onclick="window.location.href = '/'">Or Skip</div>
+                    </div>
                 </div>
-            </form>
-            <div class='profilePicPreview' id='profilePicPreview'></div>
-            <h6 id='picUploading'></h6>
-            <div class='button' onclick="signup2()">Signup</div>
+                <div></div>
+            </div>
         </div>
         <br>
-        <div class='button' onclick="window.location.href = '/'">Or Skip...</div>
-    </div>
+        </div>
+        <div id="particles-js"></div>
     <script src="/jquery.js"></script>
     <script src="/load-image.js"></script>
     <script src="/jq-progress.js"></script>
+    <script src='/js/particlesloader.js'></script>
     <script>
     document.getElementById('profilePic').onchange = function (e) {
         loadImage(e.target.files[0], function (img) {
