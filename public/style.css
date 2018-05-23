@@ -156,8 +156,7 @@ body {
 }
 
 .login {
-    height: 70vh;
-    width: 60vw;
+    width: 40vw;
     max-width: 800px;
     max-height: 800px;
 	background-color: rgba(0,0,0,0);

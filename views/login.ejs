@@ -35,6 +35,12 @@
 		<script src="/jquery.js"></script>
 		<script src='/js/particlesloader.js'></script>
 		<script>
+			$(document).keypress(function(e) {
+				if(e.which == 13) {
+					login();
+				}
+			});
+			
 			function login() {
 				$.post("/login",
 				    {

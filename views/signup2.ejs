@@ -50,6 +50,12 @@
         );
     };
 
+    $(document).keypress(function(e) {
+				if(e.which == 13) {
+					signup2();
+				}
+			});
+
     function signup2() {
     	var files = $('#profilePic')[0].files;
         var file = files[0];
