@@ -19,12 +19,17 @@ socket.on('newComment', function(comment) {
 
 //preload
 var hasPreloaded = false;
+
+function runPreload() {
+    if (!hasPreloaded) {
+        hasPreloaded = true;
+        preload();
+    }
+}
+
 $(window).scroll(function() {
     if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-        if (!hasPreloaded) {
-            hasPreloaded = true;
-            preload();
-        }
+        //runPreload();
     }
  });
 
@@ -63,6 +68,8 @@ function preload() {
             if (data.data.posts != "[]") {
                 addAllPosts(JSON.parse(data.data.posts));
                 hasPreloaded = false;
+            } else {
+                document.getElementById("loadmorebutton").style.display = 'none';
             }
         } else {
             console.log(data.err);
