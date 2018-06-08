@@ -135,6 +135,10 @@ body {
     background-color: #35A7FF;
 }
 
+.sidebar .noHeight {
+    padding-bottom: 0 !important;
+}
+
 .bubbleIcon img {
     max-width: 100%;
     max-height: 1.5em;
@@ -144,6 +148,22 @@ body {
 .sidebar .elem.active, .sidebar .elem:hover {
     color: #35A7FF;
     background-color: white;
+}
+
+.manageBubble {
+    width: 200%;
+    width: calc(100% + 5vw);
+    left: 0;
+    margin-left: -2.5vw;
+    overflow: hidden;
+}
+
+.manageBubble > * {
+    font-size: 0.7em !important;
+    border: 0 !important;
+    border-top: 3px solid #35A7FF !important;
+    padding: 5px 10px !important;
+    color: #35A7FF;
 }
 
 .feed.container {
