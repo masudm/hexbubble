@@ -148,6 +148,20 @@ exports.isMember = function(userId, bubbleId, callback) {
 	});
 }
 
+//verify if they are an admin by checking that userid against that bubbleid in the member table
+exports.isAdmin = function(userId, bubbleId, callback) {
+	userId = rawdb.parse(userId);
+	bubbleId = rawdb.parse(bubbleId);
+
+	rawdb.getDataWhere('admin', 'members', ('userId = ' + userId + ' and bubbleId = ' + bubbleId), function(err, data) {
+		if (err) {
+			console.log(err);
+			return callback("Server error.");
+		}
+		return callback(null, data);
+	});
+}
+
 //get bubbleId using the name
 exports.getBubble = function(name, callback) {
 	name = rawdb.parse(name);

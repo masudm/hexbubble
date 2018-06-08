@@ -6,7 +6,10 @@ var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var db = require('../helpers/db'); //a reference to the database functions so they can be used
 
 apiRoutes.get('/:id', function(req, res) {
-    res.send("hi" + req.params.id);
+    //check for auth of user - if they are actually an admin
+    db.isAdmin(req.decoded.userId, req.params.id, function(err, data) {
+        res.send(!!data[0].admin);
+    });
 });
 
 module.exports = apiRoutes;
