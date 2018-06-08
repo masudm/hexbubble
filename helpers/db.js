@@ -165,7 +165,7 @@ exports.isAdmin = function(userId, bubbleId, callback) {
 //get bubbleId using the name
 exports.getBubble = function(name, callback) {
 	name = rawdb.parse(name);
-	rawdb.getDataWhereLimit("bubbleId", "bubbles", "bubbleName = " + name, 1, function(err, data) {
+	rawdb.getDataWhereLimit("bubbleId, password", "bubbles", "bubbleName = " + name, 1, function(err, data) {
 		if (err) {
 			console.log(err);
 			return callback("Server error.");

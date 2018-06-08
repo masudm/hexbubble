@@ -88,6 +88,15 @@ apiRoutes.post('/join', function(req, res) {
                 error: "Bubble does not exist"
             });
         }
+
+        if (data[0].password && !req.body.password) {
+            return res.json({
+                success: false,
+                error: "Password needed."
+            });
+            return false;
+        }
+
         //otherwise, add a new member using their id, the bubbleid and non-admin
         db.newMember(req.decoded.userId, data[0].bubbleId, 0, function(err, member) {
             //if there was an error, return it as json to the front-end
