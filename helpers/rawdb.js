@@ -96,6 +96,7 @@ exports.getBubbles = function(userId, callback) {
 }
 
 exports.getPosts = function(bubbleId, skip, userId, callback) {
+	let limitPosts = 10;
 	//get a new connection from the pool
 	pool.getConnection(function(err, connection) {
 		//if there is an error
@@ -115,7 +116,7 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
 		WHERE p.bubbleId = ${bubbleId}
 		GROUP BY p.postId
 		ORDER BY p.dateCreated DESC
-		LIMIT ${skip}, ${skip+10}`;
+		LIMIT ${skip}, ${limitPosts}`;
 	    connection.query(sql, function(err, results, fields) {
 	        //finished with the connection - send it back to the pool
 	        connection.release();
