@@ -3,8 +3,8 @@ $.get("/me/bubbles", function(data, status){
     data = data.data;
     for (bubble in data) {
         b = data[bubble];
-
-        manage = true;
+        
+        manage = !!b.admin; //the !! converts 0 or 1 into its respective bool op.
         containerClass = "";
         manageDiv = "";
 

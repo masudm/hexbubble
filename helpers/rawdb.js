@@ -87,7 +87,7 @@ exports.searchUsers = function(term, callback) {
 }
 
 exports.getBubbles = function(userId, callback) {
-	let sql = `SELECT b.bubbleId, b.bubblePicture, b.bubbleName
+	let sql = `SELECT b.bubbleId, b.bubblePicture, b.bubbleName, m.admin
 	FROM members AS m
 	INNER JOIN bubbles AS b ON m.bubbleId = b.bubbleId
 	WHERE m.userId = ${userId}
