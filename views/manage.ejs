@@ -23,6 +23,8 @@
 		<script src="/jquery.js"></script>
 		<script src='/moment.js'></script>
 		<script>
+            var bubbleId = <%- bubbleId %>;
+
             function changePassword() {
                 pass1 = $("#password1").val();
                 pass2 = $("#password2").val();
@@ -30,7 +32,15 @@
                 if (pass2 != pass1) {
                     alert('Passwords do not match');
                 } else {
-                    
+                    $.post("/manage/changePassword",
+                    {
+                        bubbleId: bubbleId,
+                        password: pass1
+                    },
+                    function(data, status){
+                        console.log(data);
+                        console.log(status);
+                    });
                 }
             }
 		</script>
