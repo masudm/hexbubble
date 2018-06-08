@@ -32,7 +32,7 @@ apiRoutes.post('/changePassword', function(req, res) {
                 }
                 res.json({
                     success: true,
-                    data: json
+                    //data: data
                 });
             });
         }
