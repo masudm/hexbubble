@@ -41,6 +41,7 @@ The project utilises MySQL as a backend.
 	  `bubbleName` VARCHAR(255) NOT NULL,
 	  `dateCreated` DATETIME NOT NULL,
 	  `bubblePicture` VARCHAR(100) NOT NULL,
+	  `password` CHAR(60) NOT NULL,
 	  `bio` TEXT NOT NULL,
 	  PRIMARY KEY (`bubbleId`),
 	  UNIQUE INDEX `bubbleId_UNIQUE` (`bubbleId` ASC),
@@ -86,6 +87,11 @@ The project utilises MySQL as a backend.
 		`postId` INT NOT NULL,
 		PRIMARY KEY (`commentId`),
 		UNIQUE INDEX `commentId_UNIQUE` (`commentId` ASC));
+
+
+ALTER TABLE `hexbubble`.`bubbles` 
+ADD COLUMN `password` CHAR(60) NULL AFTER `bio`;
+
 
 
 

@@ -302,6 +302,16 @@ exports.searchUsers = function(term, callback) {
 	});
 }
 
+exports.changeBubblePassword = function(bubbleId, password, callback) {
+	rawdb.updateRow("bubbles", `password='${password}'`, `bubbleId=${parseInt(bubbleId)}`, function(err, data) {
+		if (err) {
+			console.log(err);
+			return callback("Server error.");
+		}
+		return callback(null, data);
+	});
+}
+
 //using the decoded id, return the email and username
 //instead of returning the whole decoded array 
 //which may contain sensitive info.

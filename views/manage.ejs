@@ -1,1 +1,38 @@
-HELLO DEANO
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hexbubble</title>
+		<% include head %>
+	</head>
+	<body>
+		<% include header %>
+		<div class='main'>
+			<% include sidebar %>
+			<div class='container feed'>
+                <br/>
+                    <div class='newPost shadow'>
+                        <h1>Password: </h1>
+                        <h5><i>Leave this box empty if you would like no password</i></h5>
+                        <input type="password" placeholder="Password" class="commenter" id="password1">
+                        <hr/>
+                        <input type="password" placeholder="Retype Password" class="commenter" id="password2">
+                        <div class='submitComment button' onclick="changePassword()">Change</div>
+                    </div>
+			</div>
+		</div>
+		<script src="/jquery.js"></script>
+		<script src='/moment.js'></script>
+		<script>
+            function changePassword() {
+                pass1 = $("#password1").val();
+                pass2 = $("#password2").val();
+
+                if (pass2 != pass1) {
+                    alert('Passwords do not match');
+                } else {
+                    
+                }
+            }
+		</script>
+	</body>
+</html>
