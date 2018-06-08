@@ -8,7 +8,13 @@ var db = require('../helpers/db'); //a reference to the database functions so th
 apiRoutes.get('/:id', function(req, res) {
     //check for auth of user - if they are actually an admin
     db.isAdmin(req.decoded.userId, req.params.id, function(err, data) {
-        res.send(!!data[0].admin);
+        let isAdmin = !!data[0].admin;
+
+        if (!isAdmin) {
+            res.send('You are not an admin.');
+        } else {
+            res.render('manage');
+        }
     });
 });
 
