@@ -10,7 +10,7 @@ $.get("/me/bubbles", function(data, status){
 
         if (manage) {
             containerClass = "noHeight";
-            manageDiv = "<div class='manageBubble'><span class='button'>Manage</span></div>";
+            manageDiv = "<a href='/manage/" + b.bubbleId + "'><div class='manageBubble'><span class='button'>Manage</span></div></a>";
         }
         
         $('#meIcon').after("<li class='elem bubbleIcon "+containerClass+"' id='bubbleIcon_" + b.bubbleId + "' onclick=\"window.location.href = '/feed/" + b.bubbleId + "'\">\n            <img src='/bubblePictures/" + b.bubblePicture + "'>\n            <div class='bubbleName'>" + b.bubbleName + "</div>"+manageDiv+"\n        </li>");

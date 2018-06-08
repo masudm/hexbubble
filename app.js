@@ -74,6 +74,7 @@ app.use('/', require('./routes/feed'));
 app.use('/user', require('./routes/user'));
 app.use('/me', require('./routes/me'));
 app.use('/bubble', require('./routes/bubble'));
+app.use('/manage', require('./routes/manage'));
 app.use('/search', require('./routes/search'));
 app.use('/recommendation', require('./routes/recommendation'));
 
