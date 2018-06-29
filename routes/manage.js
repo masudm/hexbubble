@@ -18,22 +18,35 @@ apiRoutes.get('/:id', function(req, res) {
 apiRoutes.post('/changePassword', function(req, res) {
     let bubbleId = req.body.bubbleId;
     let password = req.body.password;
+    let oldPassword = req.body.oldPassword;
 
     isAdmin(req.decoded.userId, bubbleId, function(isAdmin) {
         if (!isAdmin) {
-            res.send('You are not an admin.');
+            return res.json({
+                success: false,
+                error: 'You are not an admin.'
+            });
         } else {
-            db.changeBubblePassword(bubbleId, password, function(err, data) {
-                if (err) {
+            db.isBubblePasswordCorrect(oldPassword, bubbleId, function(err, isCorrect) {
+                if (!isCorrect) {
                     return res.json({
                         success: false,
-                        error: err
+                        error: 'Incorrect old password'
+                    });
+                } else {
+                    db.changeBubblePassword(bubbleId, password, function(err, data) {
+                        if (err) {
+                            return res.json({
+                                success: false,
+                                error: err
+                            });
+                        }
+                        res.json({
+                            success: true,
+                            //data: data
+                        });
                     });
                 }
-                res.json({
-                    success: true,
-                    //data: data
-                });
             });
         }
     });

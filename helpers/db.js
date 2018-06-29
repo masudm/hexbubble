@@ -312,6 +312,19 @@ exports.changeBubblePassword = function(bubbleId, password, callback) {
 	});
 }
 
+exports.isBubblePasswordCorrect = function(password, bubbleId, callback) {
+	rawdb.getDataWhere('password', 'bubbles', `bubbleId=${parseInt(bubbleId)}`, function(err, data) {
+		if (err) {
+			console.log(err);
+			return callback("Server error.");
+		}
+		if (password == data[0].password) {
+			return callback(null, true);
+		} 
+		return callback(null, false);
+	});
+}
+
 //using the decoded id, return the email and username
 //instead of returning the whole decoded array 
 //which may contain sensitive info.
