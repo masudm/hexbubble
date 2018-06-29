@@ -69,6 +69,7 @@ apiRoutes.post('/new', upload.single('bubblePicture'), function (req, res, next)
 apiRoutes.post('/join', function(req, res) {
     //get the bubbleid using the name provided
     let name = req.body.name;
+    let password = req.body.password;
 
     if (db.nullCheck(name)) {
 		return res.json(db.makeError("Please enter a name."));
@@ -89,12 +90,22 @@ apiRoutes.post('/join', function(req, res) {
             });
         }
 
-        if (data[0].password && !req.body.password) {
+        if (data[0].password && !password) {
             return res.json({
                 success: false,
                 error: "Password needed."
             });
             return false;
+        }
+
+        if (data[0].password && password) {
+            if (data[0].password != password) {
+                return res.json({
+                    success: false,
+                    error: "Password incorrect."
+                });
+                return false;
+            }
         }
 
         //otherwise, add a new member using their id, the bubbleid and non-admin

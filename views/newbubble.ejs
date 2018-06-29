@@ -12,6 +12,8 @@
                 <br>
                 <h1>Join a new bubble: </h1>
                 <input placeholder="Bubble name" class='newbubble' id='bubbleName'>
+                <br/>
+                <input type="password" placeholder="Password (leave blank if no password)" class='newbubble' id='bubblePassword'>
                 <div class='button' onclick='joinBubble()'>Join</div>
                 <br>
                 <br>
@@ -43,13 +45,16 @@
             function joinBubble() {
                 $.post("/bubble/join",
                 {
-                    name: $('#bubbleName').val()
+                    name: $('#bubbleName').val(),
+                    password: $('#bubblePassword').val()
                 },
                 function(data, status){
                     if (data.success) {
                         window.location.href = "/feed/" + data.feedId;
                     } else {
-                        console.log(data);
+                        if (data.error) {
+                            alert(data.error);
+                        }
                     }
                 });
             }

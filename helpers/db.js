@@ -268,7 +268,8 @@ exports.createBubble = function(name, bio, pic, callback) {
 		bubbleName: name,
 		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
 		bio: bio,
-		bubblePicture: pic
+		bubblePicture: pic,
+		password: ""
 	};
 
 	//use the insertData function to insert the user object into the user table

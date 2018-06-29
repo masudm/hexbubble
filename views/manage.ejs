@@ -10,14 +10,15 @@
 			<% include sidebar %>
 			<div class='container feed'>
                 <br/>
-                    <div class='newPost shadow'>
                         <h1>Password: </h1>
                         <h5><i>Leave this box empty if you would like no password</i></h5>
-                        <input type="password" placeholder="Old Password" class="commenter" id="password0">
-                        <input type="password" placeholder="New Password" class="commenter" id="password1">
-                        <input type="password" placeholder="Retype Password" class="commenter" id="password2">
+                        <input type="password" placeholder="Old Password" class="newbubble" id="password0">
+                        <br/>
+                        <input type="password" placeholder="New Password" class="newbubble" id="password1">
+                        <br/>
+                        <input type="password" placeholder="Retype Password" class="newbubble" id="password2">
+                        <br/>
                         <div class='submitComment button' onclick="changePassword()">Change</div>
-                    </div>
 			</div>
 		</div>
 		<script src="/jquery.js"></script>
