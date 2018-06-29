@@ -10,15 +10,20 @@
 			<% include sidebar %>
 			<div class='container feed'>
                 <br/>
-                        <h1>Password: </h1>
-                        <h5><i>Leave this box empty if you would like no password</i></h5>
-                        <input type="password" placeholder="Old Password" class="newbubble" id="password0">
-                        <br/>
-                        <input type="password" placeholder="New Password" class="newbubble" id="password1">
-                        <br/>
-                        <input type="password" placeholder="Retype Password" class="newbubble" id="password2">
-                        <br/>
-                        <div class='submitComment button' onclick="changePassword()">Change</div>
+                    <h1>Password: </h1>
+                    <h5><i>Leave this box empty if you would like no password</i></h5>
+                    <input type="password" placeholder="Old Password" class="newbubble" id="password0">
+                    <br/>
+                    <input type="password" placeholder="New Password" class="newbubble" id="password1">
+                    <br/>
+                    <input type="password" placeholder="Retype Password" class="newbubble" id="password2">
+                    <br/>
+                    <div class='submitComment button' onclick="changePassword()">Change</div>
+
+                    <br/><br/><br/><br/>
+
+                    <h1>Kick all members: </h1>
+                    <div class='submitComment button' onclick="kickMembers()">Kick All Members</div>
 			</div>
 		</div>
 		<script src="/jquery.js"></script>
@@ -46,6 +51,10 @@
                         }
                     });
                 }
+            }
+
+            function kickMembers() {
+                oldPass = prompt("Old Bubble password:")
             }
 		</script>
 	</body>
