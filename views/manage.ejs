@@ -40,8 +40,9 @@
                         oldPassword: oldPass
                     },
                     function(data, status){
-                        console.log(data);
-                        console.log(status);
+                        if (data.error) {
+                            alert(data.error);
+                        }
                     });
                 }
             }
