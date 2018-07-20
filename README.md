@@ -93,6 +93,9 @@ ALTER TABLE `hexbubble`.`bubbles`
 ADD COLUMN `password` CHAR(60) NULL AFTER `bio`;
 ALTER TABLE `hexbubble`.`bubbles` 
 CHANGE COLUMN `password` `password` CHAR(80) NULL DEFAULT NULL ;
+ALTER TABLE `hexbubble`.`posts` 
+ADD COLUMN `favourite` TINYINT(1) NULL AFTER `post`;
+
 
 
 
