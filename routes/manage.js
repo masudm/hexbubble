@@ -4,6 +4,7 @@ var bodyParser = require('body-parser'); //use the body parser to parse the body
 var moment = require('moment'); //a library for time and date functions
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var db = require('../helpers/db'); //a reference to the database functions so they can be used
+var sha256 = require('../helpers/encrypt');
 
 apiRoutes.get('/:id', function(req, res) {
     isAdmin(req.decoded.userId, req.params.id, function(isAdmin) {
@@ -17,8 +18,8 @@ apiRoutes.get('/:id', function(req, res) {
 
 apiRoutes.post('/changePassword', function(req, res) {
     let bubbleId = req.body.bubbleId;
-    let password = req.body.password;
-    let oldPassword = req.body.oldPassword;
+    let password = sha256(req.body.password);
+    let oldPassword = sha256(req.body.oldPassword);
 
     isAdmin(req.decoded.userId, bubbleId, function(isAdmin) {
         if (!isAdmin) {

@@ -4,6 +4,7 @@ var bodyParser = require('body-parser'); //use the body parser to parse the body
 var db = require('../helpers/db'); //a reference to the database functions so they can be used
 var multer = require('multer');
 var st = require('../helpers/storage');
+var sha256 = require('../helpers/encrypt');
 
 //multer variables for file storage
 var upload = multer({
@@ -69,7 +70,7 @@ apiRoutes.post('/new', upload.single('bubblePicture'), function (req, res, next)
 apiRoutes.post('/join', function(req, res) {
     //get the bubbleid using the name provided
     let name = req.body.name;
-    let password = req.body.password;
+    let password = sha256(req.body.password);
 
     if (db.nullCheck(name)) {
 		return res.json(db.makeError("Please enter a name."));

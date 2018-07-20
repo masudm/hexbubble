@@ -5,6 +5,7 @@
 var moment = require('moment'); //get time/format times
 var rawdb = require('./rawdb');
 var crypto = require('crypto');
+var sha256 = require('./encrypt');
 
 exports.nullCheck = function(variable) {
 	if (variable == null || variable == "" || variable == undefined) {
@@ -269,7 +270,7 @@ exports.createBubble = function(name, bio, pic, callback) {
 		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
 		bio: bio,
 		bubblePicture: pic,
-		password: ""
+		password: sha256("")
 	};
 
 	//use the insertData function to insert the user object into the user table

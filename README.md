@@ -25,7 +25,7 @@ The project utilises MySQL as a backend.
 	CREATE TABLE `hexbubble`.`users` (
 	  `userId` INT NOT NULL AUTO_INCREMENT,
 	  `email` VARCHAR(320) NOT NULL,
-	  `password` CHAR(60) NOT NULL,
+	  `password` CHAR(80) NOT NULL,
 	  `name` TINYTEXT NOT NULL,
 	  `dateCreated` DATETIME NOT NULL,
 	  `profilePicture` VARCHAR(100) NOT NULL,
@@ -41,7 +41,7 @@ The project utilises MySQL as a backend.
 	  `bubbleName` VARCHAR(255) NOT NULL,
 	  `dateCreated` DATETIME NOT NULL,
 	  `bubblePicture` VARCHAR(100) NOT NULL,
-	  `password` CHAR(60) NOT NULL,
+	  `password` CHAR(80) NOT NULL,
 	  `bio` TEXT NOT NULL,
 	  PRIMARY KEY (`bubbleId`),
 	  UNIQUE INDEX `bubbleId_UNIQUE` (`bubbleId` ASC),
@@ -91,6 +91,9 @@ The project utilises MySQL as a backend.
 
 ALTER TABLE `hexbubble`.`bubbles` 
 ADD COLUMN `password` CHAR(60) NULL AFTER `bio`;
+ALTER TABLE `hexbubble`.`bubbles` 
+CHANGE COLUMN `password` `password` CHAR(80) NULL DEFAULT NULL ;
+
 
 
 

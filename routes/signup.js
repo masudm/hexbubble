@@ -6,6 +6,7 @@ var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var db = require('../helpers/db'); //a reference to the database functions so they can be used
 var multer = require('multer');
 var st = require('../helpers/storage');
+var sha256 = require('../helpers/encrypt');
 
 //multer variables for file storage
 var upload = multer({
@@ -81,6 +82,7 @@ apiRoutes.post('/', function(req, res) {
 
 //sign the user up and add member
 function signUserUp(res, email, password, name) {
+	password = sha256(password);
 	//use the db function
 	db.signup(email, password, name, function(err, user) {
 		if (err) {

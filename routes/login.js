@@ -3,6 +3,7 @@ var apiRoutes = express.Router(); //use the router function within express to de
 var bodyParser = require('body-parser'); //use the body parser to parse the body request from the client
 var db = require('../helpers/db'); //a reference to the database functions so they can be used
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
+var sha256 = require('../helpers/encrypt');
 
 //after the base route (in this case, '/login', go to the next route):
 //full route: /login/
@@ -22,7 +23,7 @@ apiRoutes.get('/', function(req, res) {
 apiRoutes.post('/', function(req, res) {
 	//create block level variables with the POSTed values
 	let email = req.body.email;
-	let password = req.body.password;
+	let password = sha256(req.body.password);
 
 	if (db.nullCheck(email)) {
 		return res.json(db.makeError("Please enter an email."));
