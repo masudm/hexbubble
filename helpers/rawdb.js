@@ -95,6 +95,41 @@ exports.getBubbles = function(userId, callback) {
 	query(sql, callback);
 }
 
+exports.getTopPosts = function(bubbleId, userId, callback) {
+	let limitPosts = 10;
+	//get a new connection from the pool
+	pool.getConnection(function(err, connection) {
+		//if there is an error
+		if (err) {
+        	return callback(err);
+        }
+	    // Use the connection
+	    var sql = `
+	    SELECT p.postId, p.post, p.dateCreated, b.bubbleName, u.name AS username, u.userId, 
+	    COUNT(l.likeId) as likes, COUNT(lu.likeId) as likeId
+	    FROM posts AS p
+		INNER JOIN bubbles AS b ON p.bubbleId = b.bubbleId
+		INNER JOIN users AS u ON p.userId = u.userId 
+		LEFT JOIN likes AS l ON p.postId = l.postId
+		LEFT JOIN likes AS lu ON p.postId = lu.postId AND lu.userId = ${userId}
+		WHERE p.bubbleId = ${bubbleId} AND p.favourite = 1
+		GROUP BY p.postId
+		ORDER BY p.dateCreated DESC
+		LIMIT ${limitPosts}`;
+	    connection.query(sql, function(err, results, fields) {
+	        //finished with the connection - send it back to the pool
+	        connection.release();
+	        //if there is an error
+			if (err) {
+				return callback(err);
+			}
+
+	        return callback(null, results)
+	        //Don't use the connection here, it has been returned to the pool.
+	    });
+	});
+}
+
 exports.getPosts = function(bubbleId, skip, userId, callback) {
 	let limitPosts = 10;
 	//get a new connection from the pool

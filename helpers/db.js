@@ -53,6 +53,19 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
 	});
 }
 
+exports.getTopPosts = function(bubbleId, userId, callback) {
+	bubbleId = rawdb.parse(bubbleId);
+	userId = rawdb.parse(userId);
+	
+	rawdb.getTopPosts(bubbleId, userId, function(err, data) {
+		if (err) {
+			console.log(err);
+			return callback("Server error.");
+		}
+		return callback(null, data);
+	});
+}
+
 //insert a new post
 exports.newPost = function(post, callback) {
 	rawdb.insertData(post, 'posts', function(err, data) {

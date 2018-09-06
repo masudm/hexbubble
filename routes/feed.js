@@ -36,7 +36,16 @@ apiRoutes.get('/feed/:bubbleId', function(req, res) {
 	}
 
 	getPosts(req.decoded.userId, bid, 0, req.decoded, function(json) {
-		res.render('feed', json);
+		db.getTopPosts(bid, req.decoded.userId, (err, top) => {
+			if (err) {
+				return res.json({
+					success: false,
+					error: err
+				});
+			}
+
+			res.render('feed', Object.assign(json, top));
+		});
 	});
 });
 
