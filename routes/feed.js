@@ -43,8 +43,7 @@ apiRoutes.get('/feed/:bubbleId', function(req, res) {
 					error: err
 				});
 			}
-
-			res.render('feed', Object.assign(json, top));
+			res.render('feed', Object.assign(json, {topPosts: JSON.stringify(top)}));
 		});
 	});
 });

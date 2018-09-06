@@ -47,6 +47,8 @@ $(document).ready(function() {
     //join socket bubble when the document is ready.
     socket.emit('joinBubble', bubbleId);
     addAllPosts(posts);
+    alert('do something with the code below me!');
+    console.log(topPosts);
     
     var sidebarIcon = $("#bubbleIcon_" + bubbleId);
     sidebarIcon.addClass('active');
