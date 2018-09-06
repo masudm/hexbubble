@@ -96,6 +96,11 @@ CHANGE COLUMN `password` `password` CHAR(80) NULL DEFAULT NULL ;
 ALTER TABLE `hexbubble`.`posts` 
 ADD COLUMN `favourite` TINYINT(1) NULL AFTER `post`;
 
+TODO:
+favourite posts w/sorting stuff
+kick all members
+members list add/remove admins
+
 
 
 

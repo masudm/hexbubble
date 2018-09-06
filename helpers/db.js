@@ -65,6 +65,25 @@ exports.newPost = function(post, callback) {
 }
 
 //like the post using the insert id function
+exports.favouritePost = function(userId, bubbleId, postId, callback) {
+	exports.isAdmin(userId, bubbleId, (err, data) => {
+		if (err) {
+			console.log(err);
+			return callback("Server error.");
+		}
+
+		rawdb.updateRow('posts', `favourite=1`, `postId=${postId}`, (err, data) => {
+			if (err) {
+				console.log(err);
+				return callback("Server error.");
+			}
+
+			return callback(null, data);
+		});
+	});
+}
+
+//like the post using the insert id function
 exports.likePost = function(userId, postId, callback) {
 	//create an object for inserting into the like table
 	var like = {

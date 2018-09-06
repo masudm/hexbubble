@@ -37,7 +37,8 @@ apiRoutes.post('/new', function(req, res) {
 		userId: userId, //userid from decoding
 		bubbleId: bid, //bubble id from passed post request
 		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"), //current date in needed format
-		post: post //the actual post
+		post: post, //the actual post
+		favourite: 0, //by default, it is not a favourite
 	};
 
 	uploadPost(parseInt(userId), bid, post, function(json) {
@@ -73,7 +74,8 @@ apiRoutes.post('/new/upload', upload.single('postPicture'), function(req, res) {
 		userId: userId, //userid from decoding
 		bubbleId: bid, //bubble id from passed post request
 		dateCreated: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"), //current date in needed format
-		post: post //the actual post
+		post: post, //the actual post
+		favourite: 0, //by default, it is not a favourite
 	};
 
 	uploadPost(parseInt(req.decoded.userId), bid, post, function(json) {
@@ -116,6 +118,31 @@ function uploadPost(userId, bid, post, callback) {
 		}
 	});
 }
+
+//favourites are posted to this route
+apiRoutes.post('/favourite', function(req, res) {
+	let postId = req.body.postId;
+	let bubbleId = req.body.bubbleId;
+
+	if (db.nullCheck(postId)) {
+		return res.json(db.makeError("Please enter a post id."));
+	}
+
+	if (db.nullCheck(bubbleId)) {
+		return res.json(db.makeError("Please enter a bubble id."));
+	}
+
+	db.favouritePost(req.decoded.userId, bubbleId, postId, (err, data) => {
+		if (err) {
+            return res.json({
+                success: false,
+                error: err
+            });
+		}
+		
+		return res.json({success: true});
+	});
+});
 
 //likes are posted to this route
 apiRoutes.post('/like', function(req, res) {
