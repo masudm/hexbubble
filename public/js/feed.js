@@ -47,8 +47,9 @@ $(document).ready(function() {
     //join socket bubble when the document is ready.
     socket.emit('joinBubble', bubbleId);
     addAllPosts(posts);
-    alert('do something with the code below me!');
+    //alert('do something with the code below me!');
     console.log(topPosts);
+    addAllPosts(topPosts, '#topPosts');
     
     var sidebarIcon = $("#bubbleIcon_" + bubbleId);
     sidebarIcon.addClass('active');
@@ -79,12 +80,12 @@ function preload() {
     });
 }
 
-function addAllPosts(posts) {
+function addAllPosts(posts, postContainer) {
     for (i in posts) {
         if (posts[i].likeId != null && posts[i].likeId != 0) {
-            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId);
+            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId, postContainer);
         } else {
-            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId);
+            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId, postContainer);
         }
         postsNum += i;
     }
@@ -181,7 +182,13 @@ function onUpload(data) {
     }
 }
 
-function addPost(userlink, username, date, post, likes, isLiked, isNewPost, id) {
+function addPost(userlink, username, date, post, likes, isLiked, isNewPost, id, overridePostContainer) {
+    var postContainer = "#posts";
+
+    if (overridePostContainer != undefined) {
+        postContainer = overridePostContainer;
+    }
+
     var heart = "";//<div class='heart' id='fav." + id + "' " + favAction + "></div>
     var heartAction = "onclick='love(\"" + id + "\")'";
     var favAction = "onclick='favourite(\"" + id + "\")'";
@@ -225,7 +232,7 @@ function addPost(userlink, username, date, post, likes, isLiked, isNewPost, id) 
     // <br>
     // <br>`;    
     if (isNewPost) {
-        $("#posts").prepend(postStructure);
+        $(postContainer).prepend(postStructure);
         post = unescape(post);
         
         if (post.substring(0, 4) == "/tts") {
@@ -234,7 +241,7 @@ function addPost(userlink, username, date, post, likes, isLiked, isNewPost, id) 
             window.speechSynthesis.speak(msg);
         }
     } else {
-        $("#posts").append(postStructure);
+        $(postContainer).append(postStructure);
     }
 
     commentsSkip[id] = 0;

@@ -305,6 +305,18 @@ body {
 	box-shadow: 5px 5px 15px 0 #e9ecef;
 }
 
+#topPostButton {
+    display: inline-flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0;
+    
+}
+
+#topPosts {
+    /* background-color: red; */
+}
+
 .newPost {
     display: inline-block;
     width: 40vw;
