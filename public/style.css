@@ -318,6 +318,14 @@ body {
     display: none;
 }
 
+#topPostsContainer > .button {
+    width: 7vw;
+    font-size: 1em;
+    padding: 10px;
+    word-wrap: break-word;
+    margin-bottom: 20px;
+}
+
 #topPosts > .post{
     /* background-color: red; */
     border: 2px solid #35A7FF;
