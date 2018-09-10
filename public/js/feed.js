@@ -48,7 +48,7 @@ $(document).ready(function() {
     socket.emit('joinBubble', bubbleId);
     addAllPosts(posts);
     //alert('do something with the code below me!');
-    console.log(topPosts);
+    // console.log(topPosts);
     addAllPosts(topPosts, '#topPosts');
     
     var sidebarIcon = $("#bubbleIcon_" + bubbleId);
@@ -375,5 +375,18 @@ function favourite(id) {
 }
 
 function showTopPosts() {
-    document.getElementById("topPosts").style.display = document.getElementById("topPosts").style.display == "block" ? "none" : "block";
+    document.getElementById("topPostsContainer").style.display = document.getElementById("topPostsContainer").style.display == "block" ? "none" : "block";
+}
+
+function resetTopPosts() {
+    document.getElementById("topPosts").innerHTML = "";
+}
+
+function sortTop(sortBy, reverse) {
+    resetTopPosts();
+    topPosts = sort(topPosts, sortBy);
+    if (reverse) {
+        topPosts = topPosts.reverse();
+    }
+    addAllPosts(topPosts, '#topPosts');
 }

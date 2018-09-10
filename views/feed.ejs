@@ -27,8 +27,15 @@
 						<h2>Top Posts</h2>
 						<h1>⮟</h1>
 					</div>
-					<div id='topPosts'>
-						<!-- TOP POSTS GO HERE -->
+					<div id='topPostsContainer'>
+						<h3>Sort by:</h3>
+						<div class="button" id="" onclick="sortTop('likes', true)">Likes (high to low)</div>
+						<div class="button" id="" onclick="sortTop('likes', false)">Likes (low to high)</div>
+						<div class="button" id="" onclick="sortTop('dateCreated', true)">Date (descending)</div>
+						<div class="button" id="" onclick="sortTop('dateCreated', false)">Date (ascending)</div>
+						<div id='topPosts'>
+							<!-- TOP POSTS GO HERE -->
+						</div>
 					</div>
 					<div id='posts'>
 						<!-- POSTS GO HERE -->
@@ -52,5 +59,6 @@
 		</script>
 		<script src='/js/showdown.js'></script>
 		<script src='/js/feed.js'></script>
+		<script src='/js/mergesort.js'></script>
 	</body>
 </html>
