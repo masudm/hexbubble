@@ -373,3 +373,7 @@ function favourite(id) {
             }
         });
 }
+
+function showTopPosts() {
+    document.getElementById("topPosts").style.display = document.getElementById("topPosts").style.display == "block" ? "none" : "block";
+}
