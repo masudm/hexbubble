@@ -78,14 +78,14 @@ exports.newPost = function(post, callback) {
 }
 
 //like the post using the insert id function
-exports.favouritePost = function(userId, bubbleId, postId, callback) {
+exports.favouritePost = function(fav, userId, bubbleId, postId, callback) {
 	exports.isAdmin(userId, bubbleId, (err, data) => {
 		if (err) {
 			console.log(err);
 			return callback("Server error.");
 		}
 
-		rawdb.updateRow('posts', `favourite=1`, `postId=${postId}`, (err, data) => {
+		rawdb.updateRow('posts', `favourite=${fav}`, `postId=${postId}`, (err, data) => {
 			if (err) {
 				console.log(err);
 				return callback("Server error.");

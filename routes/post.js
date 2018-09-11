@@ -132,7 +132,31 @@ apiRoutes.post('/favourite', function(req, res) {
 		return res.json(db.makeError("Please enter a bubble id."));
 	}
 
-	db.favouritePost(req.decoded.userId, bubbleId, postId, (err, data) => {
+	db.favouritePost(1, req.decoded.userId, bubbleId, postId, (err, data) => {
+		if (err) {
+            return res.json({
+                success: false,
+                error: err
+            });
+		}
+		
+		return res.json({success: true});
+	});
+});
+
+apiRoutes.post('/unfavourite', function(req, res) {
+	let postId = req.body.postId;
+	let bubbleId = req.body.bubbleId;
+
+	if (db.nullCheck(postId)) {
+		return res.json(db.makeError("Please enter a post id."));
+	}
+
+	if (db.nullCheck(bubbleId)) {
+		return res.json(db.makeError("Please enter a bubble id."));
+	}
+
+	db.favouritePost(0, req.decoded.userId, bubbleId, postId, (err, data) => {
 		if (err) {
             return res.json({
                 success: false,
