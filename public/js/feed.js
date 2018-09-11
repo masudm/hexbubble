@@ -359,19 +359,33 @@ function favourite(id) {
     var fav = document.getElementById("fav." + id);
     fav.className = "fav animateHeart";
     fav.onclick = function() {
-        //love(id);
+        unfavourite(id);
     }
 
-    $.post("/post/favourite",
-        {
-            postId: id,
-            bubbleId: bubbleId
-        },
-        function(data, status){
-            if (data.success == false)  {
-                console.log(data.error);
-            }
-        });
+    fav(id, "/post/favourite");
+}
+
+function unfavourite(id) {
+    var fav = document.getElementById("fav." + id);
+    fav.className = "fav animateHeart";
+    fav.onclick = function() {
+        favourite(id);
+    }
+
+    fav(id, "/post/unfavourite");
+}
+
+function fav(id, link) {
+    $.post(link,
+    {
+        postId: id,
+        bubbleId: bubbleId
+    },
+    function(data, status){
+        if (data.success == false)  {
+            console.log(data.error);
+        }
+    });
 }
 
 function showTopPosts() {
