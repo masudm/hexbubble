@@ -580,6 +580,62 @@ body {
             transform-origin :100% 100%;
 }
 
+.star-five {
+    margin: 1vw 10px;
+    position: relative;
+    display: inline-block;
+    color: #35A7FF;
+    width: 0px;
+    height: 0px;
+    border-right:  2vw solid transparent;
+    border-bottom: 1.4vw  solid #35A7FF;
+    border-left:   2vw solid transparent;
+    -moz-transform:    rotate(35deg);
+    -webkit-transform: rotate(35deg);
+    -ms-transform:     rotate(35deg);
+    -o-transform:      rotate(35deg);
+ }
+
+ .star-five:before {
+    border-bottom: 1.6vw solid #35A7FF;
+    border-left: 0.6vw solid transparent;
+    border-right: 0.6vw solid transparent;
+    position: absolute;
+    height: 0;
+    width: 0;
+    top: -0.8vw;
+    left: -1vw;
+    display: block;
+    content: '';
+    -webkit-transform: rotate(-35deg);
+    -moz-transform:    rotate(-35deg);
+    -ms-transform:     rotate(-35deg);
+    -o-transform:      rotate(-35deg);
+ 
+ }
+ 
+ .star-five:after {
+    position: absolute;
+    display: block;
+    color: #35A7FF;
+    top: 0.1vw;
+    left: -2.01vw;
+    width: 0px;
+    height: 0px;
+    border-right: 2vw solid transparent;
+    border-bottom: 1.42vw solid #35A7FF;
+    border-left: 2vw solid transparent;
+    -webkit-transform: rotate(-70deg);
+    -moz-transform:    rotate(-70deg);
+    -ms-transform:     rotate(-70deg);
+    -o-transform:      rotate(-70deg);
+    content: '';
+ }
+
+ .star-five:hover, .star-five:hover:after, .star-five:hover:before, .activeStar, .activeStar:after, .activeStar:before {
+    border-bottom-color: #FF6B7F; !important;
+}
+
 @keyframes heartbeat {
     0% {
         transform: scale( 1);

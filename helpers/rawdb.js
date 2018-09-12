@@ -105,7 +105,7 @@ exports.getTopPosts = function(bubbleId, userId, callback) {
         }
 	    // Use the connection
 	    var sql = `
-	    SELECT p.postId, p.post, p.dateCreated, b.bubbleName, u.name AS username, u.userId, 
+	    SELECT p.postId, p.post, p.dateCreated, b.bubbleName, u.name AS username, u.userId, p.favourite AS fav,
 	    COUNT(l.likeId) as likes, COUNT(lu.likeId) as likeId
 	    FROM posts AS p
 		INNER JOIN bubbles AS b ON p.bubbleId = b.bubbleId
@@ -140,7 +140,7 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
         }
 	    // Use the connection
 	    var sql = `
-	    SELECT p.postId, p.post, p.dateCreated, b.bubbleName, u.name AS username, u.userId, 
+	    SELECT p.postId, p.post, p.dateCreated, b.bubbleName, u.name AS username, u.userId, p.favourite AS fav,
 	    COUNT(l.likeId) as likes, COUNT(lu.likeId) as likeId
 	    FROM posts AS p
 		INNER JOIN bubbles AS b ON p.bubbleId = b.bubbleId

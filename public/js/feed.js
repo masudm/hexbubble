@@ -82,10 +82,15 @@ function preload() {
 
 function addAllPosts(posts, postContainer) {
     for (i in posts) {
+        var fav = false;
+        if (posts[i].fav == 1) {
+            fav = true;
+        }
+
         if (posts[i].likeId != null && posts[i].likeId != 0) {
-            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId, postContainer);
+            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, true, false, posts[i].postId, postContainer, fav);
         } else {
-            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId, postContainer);
+            addPost('/user/' + posts[i].userId, posts[i].username, posts[i].dateCreated, posts[i].post, posts[i].likes, false, false, posts[i].postId, postContainer, fav);
         }
         postsNum += i;
     }
@@ -182,7 +187,7 @@ function onUpload(data) {
     }
 }
 
-function addPost(userlink, username, date, post, likes, isLiked, isNewPost, id, overridePostContainer) {
+function addPost(userlink, username, date, post, likes, isLiked, isNewPost, id, overridePostContainer, isFav) {
     var postContainer = "#posts";
 
     if (overridePostContainer != undefined) {
@@ -191,10 +196,16 @@ function addPost(userlink, username, date, post, likes, isLiked, isNewPost, id, 
 
     var heart = "";//<div class='heart' id='fav." + id + "' " + favAction + "></div>
     var heartAction = "onclick='love(\"" + id + "\")'";
-    var favAction = "onclick='favourite(\"" + id + "\")'";
     if (isLiked) {
         heart = "activeHeart";
         heartAction = "onclick='unlove(\"" + id + "\")'";
+    }
+
+    var favStyle = "";
+    var favAction = "onclick='favourite(\"" + id + "\")'";
+    if (isFav) {
+        favStyle = "activeStar";
+        favAction = "onclick='unfavourite(\"" + id + "\")'";
     }
 
     if (post.indexOf("|img|") > -1) {
@@ -209,7 +220,7 @@ function addPost(userlink, username, date, post, likes, isLiked, isNewPost, id, 
     postData = converter.makeHtml(postData);
 
     //for old computers. convert
-    var postStructure = "<div class='post shadow'><div class='postUser'>    <!-- <img class='postProfilePic'> -->    <div class='postUserName'><a href='" + userlink + "'>" + username + "</a></div>    <div class='postUserDate' title='" + date + "'>" + moment(date).fromNow() + "</div></div><div class='postData'>" + (postData) + "</div><div class='postLikes'>    <div>    <div class='heart' id='fav." + id + "' " + favAction + "></div><div class='heart " + heart + "' id='heart." + id + "' " + heartAction + "></div>    <span class='likeNum'>Likes: <span id='like." + id + "'>" + likes + "</span></span>    </div>    "+ commentStructure +"</div><div class='postComments'>    <ul id='comments_" + id + "'>    </ul>    <div class='commentFlex'><input type='text' placeholder='Comment....' class='commenter' id='commenter_" + id + "'>    <div class='submitComment button' onclick='addComment(\"" + id + "\")'>Submit</div></div></div>    </div>    <br>    <br>";    
+    var postStructure = "<div class='post shadow'><div class='postUser'>    <!-- <img class='postProfilePic'> -->    <div class='postUserName'><a href='" + userlink + "'>" + username + "</a></div>    <div class='postUserDate' title='" + date + "'>" + moment(date).fromNow() + "</div></div><div class='postData'>" + (postData) + "</div><div class='postLikes'>    <div>    <div class='star-five " + favStyle + "' id='fav." + id + "' " + favAction + "></div><div class='heart " + heart + "' id='heart." + id + "' " + heartAction + "></div>    <span class='likeNum'>Likes: <span id='like." + id + "'>" + likes + "</span></span>    </div>    "+ commentStructure +"</div><div class='postComments'>    <ul id='comments_" + id + "'>    </ul>    <div class='commentFlex'><input type='text' placeholder='Comment....' class='commenter' id='commenter_" + id + "'>    <div class='submitComment button' onclick='addComment(\"" + id + "\")'>Submit</div></div></div>    </div>    <br>    <br>";    
     // var postStructure = `<div class='post shadow'>
     //     <div class='postUser'>
     //         <!-- <img class='postProfilePic'> -->
@@ -357,25 +368,26 @@ function unlove(id) {
 
 function favourite(id) {
     var fav = document.getElementById("fav." + id);
-    fav.className = "fav animateHeart";
+    fav.className = "star-five animateHeart activeStar";
     fav.onclick = function() {
         unfavourite(id);
     }
 
-    fav(id, "/post/favourite");
+    favPost(id, "/post/favourite");
 }
 
 function unfavourite(id) {
+    alert('a');
     var fav = document.getElementById("fav." + id);
-    fav.className = "fav animateHeart";
+    fav.className = "star-five animateHeart";
     fav.onclick = function() {
         favourite(id);
     }
 
-    fav(id, "/post/unfavourite");
+    favPost(id, "/post/unfavourite");
 }
 
-function fav(id, link) {
+function favPost(id, link) {
     $.post(link,
     {
         postId: id,
