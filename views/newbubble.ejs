@@ -40,14 +40,18 @@
         <script src="/load-image.js"></script>
         <script src="/jq-progress.js"></script>
         <script>
+            //for the icon - set it a different colour
             $("#newIcon").addClass("active");
-            
+
+            //join bubble function
             function joinBubble() {
+                //ajax to the join bubble route and send along the name and password for the bubble
                 $.post("/bubble/join",
                 {
                     name: $('#bubbleName').val(),
                     password: $('#bubblePassword').val()
                 },
+                //if they're correct, redirect to the new feed otherwise show an error
                 function(data, status){
                     if (data.success) {
                         window.location.href = "/feed/" + data.feedId;
@@ -59,6 +63,7 @@
                 });
             }
 
+            //load the images in that were selected through the input element
             document.getElementById('bubblePicture').onchange = function (e) {
                 loadImage(e.target.files[0], function (img) {
                         $("#preview").html(img);
@@ -69,9 +74,14 @@
                 );
             };
 
+            //create a bubble function
             function createBubble() {
+                //get the files from the input element
                 var files = $('#bubblePicture')[0].files;
+                //get the first file in the array as that is the main file
                 var file = files[0];
+
+                //verify the files and the size of them
                 if (files.length < 1) {
                     alert("No files chosen to upload");
                     return false;
@@ -81,16 +91,22 @@
                     return false;
                 }
 
+                //create some new formdata including the bubble file
                 var formData = new FormData($("#newBubble")[0]);
+
+                //ajax it to the new bubble route, sending along the data
                 $.ajax({
                     url: "/bubble/new",
                     type: 'POST',
                     data: formData,
                     async: true,
+                    //if the ajax returns data...
                     success: function (data) {
+                        //and it is correct, redirect
                         if (data.success) {
                             window.location.href = "/feed/" + data.feedId;
                         } else {
+                            //otherwise just log the error
                             console.log(data);
                         }
                     },
@@ -98,6 +114,7 @@
                     contentType: false,
                     processData: false
                 }).uploadProgress(function (e) {
+                    //check if you can display the percentage complete, and if you can, display it
                     if (e.lengthComputable) {
                         var percentage = Math.round((e.loaded * 100) / e.total);
                         $("#picUploading").html("Uploading: " + percentage + "%");

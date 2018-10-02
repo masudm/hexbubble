@@ -2,9 +2,9 @@ var express = require('express'); //the express web server dependency
 var apiRoutes = express.Router(); //use the router function within express to define the routes
 var bodyParser = require('body-parser'); //use the body parser to parse the body request from the client
 var db = require('../helpers/db'); //a reference to the database functions so they can be used
-var multer = require('multer');
-var st = require('../helpers/storage');
-var sha256 = require('../helpers/encrypt');
+var multer = require('multer'); //library for storage
+var st = require('../helpers/storage'); //the storage details
+var sha256 = require('../helpers/encrypt'); //for encryption
 
 //multer variables for file storage
 var upload = multer({

@@ -35,28 +35,38 @@
 		<script src="/jquery.js"></script>
 		<script src='/js/particlesloader.js'></script>
 		<script>
+			//when a key is pressed...
 			$(document).keypress(function(e) {
+				//when you press the enter button
 				if(e.which == 13) {
+					//run the login function
 					login();
 				}
 			});
 			
+			//this is the login function
 			function login() {
+				//post to the /login route with ajax sending the email and apssword as body requests
 				$.post("/login",
 				    {
 				        email: $("#email").val(),
 				        password: $("#password").val()
 				    },
 				    function(data, status){
-				    	localStorage.setItem('token', data.token);
+						//set the auth token to save it on the client side
+						localStorage.setItem('token', data.token);
+						
+						//if the auth is correct, redirect and log in 
 				        if (data.success == true) {
 				        	window.location = '/feed';
 				        } else {
+							//otherwise display the errror - why you cant login
 				        	alert(data.error);
 				        }
 				    });
 			}
 
+			//this is for the input animation
 			$('.field__input').on('input', function() {
 				var $field = $(this).closest('.field');
 				if (this.value) {

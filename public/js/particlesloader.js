@@ -1,3 +1,4 @@
+//a simple function to get the current parameter in the URLs
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
         sURLVariables = sPageURL.split('&'),
@@ -13,6 +14,8 @@ var getUrlParameter = function getUrlParameter(sParam) {
     }
 };
 
+//load in the particles
+//only if a query in the url "parameter" is not false
 var head = document.getElementsByTagName('head')[0];
 var js = document.createElement("script");
 var js2 = document.createElement("script");

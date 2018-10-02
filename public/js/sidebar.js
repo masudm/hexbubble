@@ -1,10 +1,16 @@
+//ajax request to get the sidebar
 $.get("/me/bubbles", function(data, status){
-    $('#sidebarLoading').remove()
-    data = data.data;
+    $('#sidebarLoading').remove(); //remove the loading symbol
+    
+    data = data.data; //set the data to the data object
+    
+    //for each bubble in the data object
     for (bubble in data) {
-        b = data[bubble];
+        b = data[bubble]; //get the data for that bubble
         
         manage = !!b.admin; //the !! converts 0 or 1 into its respective bool op.
+        
+        //append all the bubble templates to it;s respective container
         containerClass = "";
         manageDiv = "";
 

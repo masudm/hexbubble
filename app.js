@@ -3,7 +3,6 @@
 const express = require('express'); //the express web server dependency
 const app = express(); //create a web server using express
 const http = require('http').Server(app);
-const mysql = require('mysql'); //mysql api connection wrapper to connect to mysql server
 const bodyParser = require('body-parser'); //middleware for parsing body requests
 const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 const cookieParser = require('cookie-parser');

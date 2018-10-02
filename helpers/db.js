@@ -7,6 +7,8 @@ var rawdb = require('./rawdb');
 var crypto = require('crypto');
 var sha256 = require('./encrypt');
 
+//check if a variable is null in various ways 
+//this helps validation
 exports.nullCheck = function(variable) {
 	if (variable == null || variable == "" || variable == undefined) {
 		return true;
@@ -18,9 +20,12 @@ exports.nullCheck = function(variable) {
 //an async function to login
 //pass an email, password and a callback function as parameters
 exports.login = function(email, password, callback) {
+	//parse the body data to get rid of any weird characters
+	//or anything that would affect the database negatively
 	email = rawdb.parse(email);
 	password = rawdb.parse(password);
 
+	//fund the user where the email and password match
 	rawdb.getDataWhere('*', 'users', `email = ${email} and password = ${password}`, function(err, results) {
 		if (err) {
 			console.log(err);
@@ -53,6 +58,7 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
 	});
 }
 
+//get the top posts on the database using the current bubbleid and the user
 exports.getTopPosts = function(bubbleId, userId, callback) {
 	bubbleId = rawdb.parse(bubbleId);
 	userId = rawdb.parse(userId);
@@ -77,7 +83,7 @@ exports.newPost = function(post, callback) {
 	});
 }
 
-//like the post using the insert id function
+//favourite the post 
 exports.favouritePost = function(fav, userId, bubbleId, postId, callback) {
 	exports.isAdmin(userId, bubbleId, (err, data) => {
 		if (err) {
@@ -326,6 +332,8 @@ exports.getUser = function(userId, callback) {
 	});
 }
 
+
+//search the database for a certain user
 exports.searchUsers = function(term, callback) {
 	rawdb.searchUsers(term, function(err, data) {
 		if (err) {
@@ -336,6 +344,7 @@ exports.searchUsers = function(term, callback) {
 	});
 }
 
+//change a certain bubble's password
 exports.changeBubblePassword = function(bubbleId, password, callback) {
 	rawdb.updateRow("bubbles", `password='${password}'`, `bubbleId=${parseInt(bubbleId)}`, function(err, data) {
 		if (err) {
@@ -346,6 +355,7 @@ exports.changeBubblePassword = function(bubbleId, password, callback) {
 	});
 }
 
+//check if the password to a bubble is correct
 exports.isBubblePasswordCorrect = function(password, bubbleId, callback) {
 	rawdb.getDataWhere('password', 'bubbles', `bubbleId=${parseInt(bubbleId)}`, function(err, data) {
 		if (err) {

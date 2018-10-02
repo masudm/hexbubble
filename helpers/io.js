@@ -1,3 +1,4 @@
+//export the http function so it can imported elsewhere
 module.exports = function(http) {
 	//use the passed in http module to start the io server
 	io = require('socket.io')(http);
@@ -10,7 +11,7 @@ module.exports = function(http) {
 		
 		//join a bubble method
 		socket.on('joinBubble', function(bid){
-			//run the method
+			//run the method to join a socket
 			socket.join(bid);
 		});
 
@@ -26,7 +27,4 @@ module.exports = function(http) {
 			io.to(data[0]).emit('newComment', data[1]);
 		});
 	});
-
-	//provide the main app with the routes
-	//return io;
 };

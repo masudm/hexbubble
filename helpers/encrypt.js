@@ -1,18 +1,24 @@
 module.exports = function sha256(ascii) {
+	//right rotate a value 
 	function rightRotate(value, amount) {
+		// >>> does a zero fill right shift
 		return (value>>>amount) | (value<<(32 - amount));
 	};
 	
+	//setup the length for max word
 	let maxWord = Math.pow(2, 32);
 	let i, j; // Used as a counter across the whole file
-	let result = '';
+	let result = ''; //final result that is going to be eventually returned
 
+	//for splitting into chunks with
 	let words = [];
+	//how long each chunk should be
 	let asciiBitLength = ascii['length']*8;
 
 	let hash = [], k = [];
 	let primeCounter = 0;
 
+	//calculate primes and store them
 	let isPrime = {};
 	for (let candidate = 2; primeCounter < 64; candidate++) {
 		if (!isPrime[candidate]) {
@@ -71,10 +77,11 @@ module.exports = function sha256(ascii) {
 		}
 		
 		for (i = 0; i < 8; i++) {
-			hash[i] = (hash[i] + oldHash[i])|0;
+			hash[i] = (hash[i] + oldHash[i])|0; //merge the hash and the constant
 		}
 	}
 	
+	//concatenate operation
 	for (i = 0; i < 8; i++) {
 		for (j = 3; j + 1; j--) {
 			let b = (hash[i]>>(j*8))&255;

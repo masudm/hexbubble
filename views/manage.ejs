@@ -26,20 +26,25 @@
 		<script>
             var bubbleId = <%- bubbleId %>;
 
+            //this is the change password function
             function changePassword() {
+                //capture the old password, and both new passwords
                 oldPass = $("#password0").val();
                 pass1 = $("#password1").val();
                 pass2 = $("#password2").val();
 
+                //check if the new passwords match
                 if (pass2 != pass1) {
                     alert('Passwords do not match');
                 } else {
+                    //if they do, ajax to the /manage route and send along the ata
                     $.post("/manage/changePassword",
                     {
                         bubbleId: bubbleId,
                         password: pass1,
                         oldPassword: oldPass
                     },
+                    //show confirmation about what happened
                     function(data, status){
                         if (data.error) {
                             alert(data.error);

@@ -13,6 +13,7 @@ var pool = mysql.createPool({
     database: 'hexbubble'
 });
 
+//escape any weird looking characters
 exports.parse = function(string) {
 	return pool.escape(string);
 }
@@ -37,6 +38,7 @@ exports.getDataWhereLimit = function(columns, table, where, limit, callback) {
     query(sql, callback);
 }
 
+//delete any rows from the table that match the criteria
 exports.deleteRow = function(table, where, callback) {
 	let sql = `DELETE FROM ${table} WHERE ${where}`;
 	query(sql, callback);
@@ -75,6 +77,7 @@ exports.insertData = function(data, table, callback) {
 	});
 }
 
+//search through that database by using a where like sql command
 exports.searchUsers = function(term, callback) {
 	let sql = `SELECT userId, name
 	FROM users
@@ -86,6 +89,7 @@ exports.searchUsers = function(term, callback) {
 	query(sql, callback);
 }
 
+//get bubbles by selecting any bubbles where a user is a member, and order by the data it was created
 exports.getBubbles = function(userId, callback) {
 	let sql = `SELECT b.bubbleId, b.bubblePicture, b.bubbleName, m.admin
 	FROM members AS m
@@ -95,6 +99,7 @@ exports.getBubbles = function(userId, callback) {
 	query(sql, callback);
 }
 
+//get a certain number of posts that are favourited (have the fav tag as 1)
 exports.getTopPosts = function(bubbleId, userId, callback) {
 	let limitPosts = 10;
 	//get a new connection from the pool
@@ -103,7 +108,11 @@ exports.getTopPosts = function(bubbleId, userId, callback) {
 		if (err) {
         	return callback(err);
         }
-	    // Use the connection
+		// Use the connection
+		//the sql gets the postid, the post, date created, bubble name it belongs too, username that made the post, userid that made the post, likes, if the user liked it and the favourite column
+		//it gets posts where the post is part of a certain bubble and also where the user is a member
+		//to check if a user has liked the post, it will join the like column to veerify if there is a row that matches the user and that post
+		//finally it groups all this data into rows based on the post id so it is unique
 	    var sql = `
 	    SELECT p.postId, p.post, p.dateCreated, b.bubbleName, u.name AS username, u.userId, p.favourite AS fav,
 	    COUNT(l.likeId) as likes, COUNT(lu.likeId) as likeId
@@ -121,6 +130,7 @@ exports.getTopPosts = function(bubbleId, userId, callback) {
 	        connection.release();
 	        //if there is an error
 			if (err) {
+				//return the error
 				return callback(err);
 			}
 
@@ -129,16 +139,19 @@ exports.getTopPosts = function(bubbleId, userId, callback) {
 	    });
 	});
 }
-
+//get a page of posts for a certain bubble
 exports.getPosts = function(bubbleId, skip, userId, callback) {
-	let limitPosts = 10;
+	let limitPosts = 10; //this is the amount of posts per page
 	//get a new connection from the pool
 	pool.getConnection(function(err, connection) {
 		//if there is an error
 		if (err) {
         	return callback(err);
         }
-	    // Use the connection
+		// Use the connection
+		//sql gets posts where the post belongs in a bubble
+		//it also gets whether a user has liked a post, the amount of likes
+		//this is very similar to the sql above for getting top posts
 	    var sql = `
 	    SELECT p.postId, p.post, p.dateCreated, b.bubbleName, u.name AS username, u.userId, p.favourite AS fav,
 	    COUNT(l.likeId) as likes, COUNT(lu.likeId) as likeId
@@ -165,6 +178,7 @@ exports.getPosts = function(bubbleId, skip, userId, callback) {
 	});
 }
 
+//a function to get comments
 exports.getComments = function(postId, skip, callback) {
     //get a new connection from the pool
     pool.getConnection(function(err, connection) {
@@ -172,7 +186,9 @@ exports.getComments = function(postId, skip, callback) {
 		if (err) {
         	return callback(err);
         }
-        // Use the connection
+		// Use the connection
+		//get comments where the comment has the same post id as a post, also join
+		//users so I can display username
         connection.query(`
             SELECT c.comment as comment, c.dateCreated as dateCreated, u.name as username, u.userId as userId
             FROM comments as c
@@ -194,6 +210,10 @@ exports.getComments = function(postId, skip, callback) {
     });
 }
 
+//a basic query function that reduces code reuse 
+//as most sql commands go through this
+//and they need a connection from the pool as well as the connection
+//to be returned
 function query(sql, callback) {
     //get a new connection from the pool
 	pool.getConnection(function(err, connection) {

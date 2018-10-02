@@ -40,57 +40,60 @@
     <script src="/jq-progress.js"></script>
     <script src='/js/particlesloader.js'></script>
     <script>
-    document.getElementById('profilePic').onchange = function (e) {
-        loadImage(e.target.files[0], function (img) {
-                $("#profilePicPreview").html(img);
-            }, { // Options
-                maxWidth: 150,
-                maxHeight: 150
-            } 
-        );
-    };
+        //when the file input changes, run a function to load the image in
+        document.getElementById('profilePic').onchange = function (e) {
+            loadImage(e.target.files[0], function (img) {
+                    $("#profilePicPreview").html(img);
+                }, { // Options
+                    maxWidth: 150,
+                    maxHeight: 150
+                } 
+            );
+        };
 
-    $(document).keypress(function(e) {
-				if(e.which == 13) {
-					signup2();
-				}
-			});
+        //when you press the enter key, signup
+        $(document).keypress(function(e) {
+                    if(e.which == 13) {
+                        signup2();
+                    }
+                });
 
-    function signup2() {
-    	var files = $('#profilePic')[0].files;
-        var file = files[0];
-        if (files.length < 1) {
-            alert("No files chosen to upload");
-            return false;
-        }
-        if (file.size > (1024 * 1024 * 2)) {
-            alert("Max total file size of 2mb reached");
-            return false;
-        }
-
-        var formData = new FormData($("#signup")[0]);
-        $.ajax({
-            url: "/signup/2",
-            type: 'POST',
-            data: formData,
-            async: true,
-            success: function (data) {
-                if (data.success) {
-                    window.location.href = "/feed";
-                } else {
-                    console.log(data);
-                }
-            },
-            cache: false,
-            contentType: false,
-            processData: false
-        }).uploadProgress(function (e) {
-            if (e.lengthComputable) {
-                var percentage = Math.round((e.loaded * 100) / e.total);
-                $("#picUploading").html("Uploading: " + percentage + "%");
+        //load in the file for profile picture, verify them, and then post the data to the signup route
+        function signup2() {
+            var files = $('#profilePic')[0].files;
+            var file = files[0];
+            if (files.length < 1) {
+                alert("No files chosen to upload");
+                return false;
             }
-        });
-    }
+            if (file.size > (1024 * 1024 * 2)) {
+                alert("Max total file size of 2mb reached");
+                return false;
+            }
+
+            var formData = new FormData($("#signup")[0]);
+            $.ajax({
+                url: "/signup/2",
+                type: 'POST',
+                data: formData,
+                async: true,
+                success: function (data) {
+                    if (data.success) {
+                        window.location.href = "/feed";
+                    } else {
+                        console.log(data);
+                    }
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            }).uploadProgress(function (e) {
+                if (e.lengthComputable) {
+                    var percentage = Math.round((e.loaded * 100) / e.total);
+                    $("#picUploading").html("Uploading: " + percentage + "%");
+                }
+            });
+        }
     </script>
 </body>
 
