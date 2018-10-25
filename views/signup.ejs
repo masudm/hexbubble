@@ -53,12 +53,26 @@
             
     //this is the signup function        
     function signup() {
+        var name = $("#name").val();
+        var email = $("#email").val();
+        var password = $("#password").val();
+
+        function validateEmail(email) {
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+        if (!validateEmail(email)) {
+            alert("Please enter a valid email");
+            return false;
+        }
+
         //post to the /signup route with the data needed
     	$.post("/signup",
     	    {
-    	        name: $("#name").val(),
-    	        email: $("#email").val(),
-                password: $("#password").val()
+    	        name: name,
+    	        email: email,
+                password: password
     	    },
     	    function(data, status){
                 //save the token to the client side
@@ -67,7 +81,7 @@
     	        if (data.success == true) {
     	        	window.location = '/signup/2';
     	        } else {
-    	        	alert(data.error);
+    	        	alert(data.err);
     	        }
     	    });
     }

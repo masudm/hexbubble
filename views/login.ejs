@@ -59,10 +59,12 @@
 						//if the auth is correct, redirect and log in 
 				        if (data.success == true) {
 				        	window.location = '/feed';
-				        } else {
+				        } else if (data.err) {
 							//otherwise display the errror - why you cant login
-				        	alert(data.error);
-				        }
+				        	alert(data.err);
+				        } else {
+							alert("Invalid login")
+						}
 				    });
 			}
 

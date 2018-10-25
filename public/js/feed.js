@@ -221,7 +221,7 @@ function onUpload(data) {
         socket.emit("newPost", [bubbleId, fullPost]);
     } else {
         //otherwise display an error
-        alert("Error posting.");
+        alert(data.err);
         console.log(data);
     }
 }
@@ -375,6 +375,8 @@ function postComment(postId, comment) {
                 fullComment.username = me.username;
                 fullComment.date = new Date();
                 socket.emit("newComment", [bubbleId, fullComment]); //emit the comment to all other users
+            } else {
+                alert(data.err);
             }
         });
 }

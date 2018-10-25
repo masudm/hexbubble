@@ -81,7 +81,7 @@
                     if (data.success) {
                         window.location.href = "/feed";
                     } else {
-                        console.log(data);
+                        alert(data.err);
                     }
                 },
                 cache: false,
